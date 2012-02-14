@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="GraphOne" id="ManualLayout/GraphOne"
+		spec="1.0" width="200" height="150" jsClass="GraphOne"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript"><![CDATA[
+	GraphOne = function() {};
+	
+	GraphOne.prototype.onload = function() {
+		// maybe do something
+	};
+	]]></require>
+
+	<require type="image" src="widgets/graph1.jpg" />
+
+    <content>
+		<![CDATA[
+		<img src="widgets/graph1.jpg" width="100%" height="100%" alt="" />
+		]]>
+    </content>
+</widget>

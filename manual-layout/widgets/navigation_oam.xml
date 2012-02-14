@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="Navigation" id="ManualLayout/Navigation"
+		spec="1.0" width="300" height="40" jsClass="Navigation"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript"><![CDATA[
+	Navigation = function() {};
+	
+	Navigation.prototype.onload = function() {
+		// maybe do something
+	};
+	]]></require>
+
+	<require type="image" src="widgets/navigation.jpg" />
+
+    <content>
+		<![CDATA[
+		<img src="widgets/navigation.jpg" width="100%" height="100%" alt="" />
+		]]>
+    </content>
+</widget>

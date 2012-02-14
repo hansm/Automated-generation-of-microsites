@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="MapTwo" id="anualLayout/MapTwo"
+		spec="1.0" width="200" height="150" jsClass="MapTwo"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript"><![CDATA[
+	MapTwo = function() {};
+	
+	MapTwo.prototype.onload = function() {
+		// maybe do something
+	};
+	]]></require>
+
+	<require type="image" src="widgets/map2.jpg" />
+
+    <content>
+		<![CDATA[
+		<img src="widgets/map2.jpg" width="100%" height="100%" alt="" />
+		]]>
+    </content>
+</widget>
