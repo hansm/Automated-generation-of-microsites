@@ -65,7 +65,7 @@ function initHub() {
 
 			dojo.setStyle("mapOne", {
 				width: "50%",
-				height: "100%",
+				height: "80%",
 				float: "left"
 			});
 		},
@@ -93,6 +93,25 @@ function initHub() {
 			alert(error);
 		}
 	});
+
+	// load graph 1
+	var graphOne = myLoader.create({
+		spec: "widgets/graph1_oam.xml",
+		target: dojo.byId("graphOne"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("graphOne", {
+				width: "50%",
+				height: "20%",
+				float: "left"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
 }
 
 dojo.ready(initHub);
@@ -101,5 +120,6 @@ dojo.ready(initHub);
 <body>
 	<div id="mapOne"></div>
 	<div id="mapTwo"></div>
+	<div id="graphOne"></div>
 </body>
 </html>
