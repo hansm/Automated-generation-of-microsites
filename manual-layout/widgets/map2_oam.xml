@@ -26,5 +26,6 @@
 	<categories>
 		<category name="Map" />
     	<category name="Visualization" />
+    	<category name="Content" />
     </categories>
 </widget>
