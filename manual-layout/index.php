@@ -55,9 +55,30 @@ function initHub() {
 			scope: window
         }});
 	myHub = myLoader.hub;
+
+	// load map 1
+	var mapOne = myLoader.create({
+		spec: "widgets/map1_oam.xml",
+		target: dojo.byId("mapOne"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("mapOne", {
+				width: "100%",
+				height: "100%"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
 }
+
+dojo.ready(initHub);
 </script>
 </head>
-<body onload="initHub();">
+<body>
+	<div id="mapOne"></div>
 </body>
 </html>
