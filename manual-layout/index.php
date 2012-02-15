@@ -65,7 +65,7 @@ function initHub() {
 
 			dojo.setStyle("mapOne", {
 				width: "50%",
-				height: "75%",
+				height: "70%",
 				float: "left"
 			});
 		},
@@ -84,7 +84,7 @@ function initHub() {
 
 			dojo.setStyle("mapTwo", {
 				width: "50%",
-				height: "75%",
+				height: "70%",
 				float: "right"
 			});
 		},
@@ -167,12 +167,32 @@ function initHub() {
 			alert(error);
 		}
 	});
+
+	// load globa navigation widget
+	var globalNavigation = myLoader.create({
+		spec: "widgets/global_navigation_oam.xml",
+		target: dojo.byId("globalNavigation"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("globalNavigation", {
+				float: "right",
+				height: "5%",
+				width: "100%"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
 }
 
 dojo.ready(initHub);
 </script>
 </head>
 <body>
+	<div id="globalNavigation"></div>
 	<div id="navigation"></div>
 	<div id="search"></div>
 	<div style="clear:both;"></div>
