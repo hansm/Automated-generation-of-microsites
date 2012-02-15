@@ -22,4 +22,9 @@
 		<img src="widgets/search.jpg" width="100%" height="100%" alt="" />
 		]]>
     </content>
+    
+	<categories>
+    	<category name="Search" />
+    	<category name="Navigation" />
+    </categories>
 </widget>

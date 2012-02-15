@@ -22,4 +22,8 @@
 		<img src="widgets/graph2.jpg" width="100%" height="100%" alt="" />
 		]]>
     </content>
+    
+	<categories>
+    	<category name="Visualization" />
+    </categories>
 </widget>

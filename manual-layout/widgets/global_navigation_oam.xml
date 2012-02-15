@@ -22,4 +22,9 @@
 		<img src="widgets/global_navigation.jpg" width="966" height="37" alt="" />
 		]]>
     </content>
+    
+    <categories>
+    	<category name="GlobalNavigation" />
+    	<category name="Navigation" />
+    </categories>
 </widget>

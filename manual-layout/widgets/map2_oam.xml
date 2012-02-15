@@ -22,4 +22,9 @@
 		<img src="widgets/map2.jpg" width="100%" height="100%" alt="" />
 		]]>
     </content>
+    
+	<categories>
+		<category name="Map" />
+    	<category name="Visualization" />
+    </categories>
 </widget>
