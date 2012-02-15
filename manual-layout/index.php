@@ -64,8 +64,28 @@ function initHub() {
 			console.log(metadata);
 
 			dojo.setStyle("mapOne", {
-				width: "100%",
-				height: "100%"
+				width: "50%",
+				height: "100%",
+				float: "left"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+
+	// load map 2
+	var mapTwo = myLoader.create({
+		spec: "widgets/map2_oam.xml",
+		target: dojo.byId("mapTwo"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("mapTwo", {
+				width: "50%",
+				height: "100%",
+				float: "right"
 			});
 		},
 		onError: function(error) {
@@ -80,5 +100,6 @@ dojo.ready(initHub);
 </head>
 <body>
 	<div id="mapOne"></div>
+	<div id="mapTwo"></div>
 </body>
 </html>
