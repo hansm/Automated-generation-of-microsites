@@ -65,7 +65,7 @@ function initHub() {
 
 			dojo.setStyle("mapOne", {
 				width: "50%",
-				height: "80%",
+				height: "75%",
 				float: "left"
 			});
 		},
@@ -84,7 +84,7 @@ function initHub() {
 
 			dojo.setStyle("mapTwo", {
 				width: "50%",
-				height: "80%",
+				height: "75%",
 				float: "right"
 			});
 		},
@@ -103,7 +103,7 @@ function initHub() {
 
 			dojo.setStyle("graphOne", {
 				width: "50%",
-				height: "20%",
+				height: "15%",
 				float: "left"
 			});
 		},
@@ -122,8 +122,26 @@ function initHub() {
 
 			dojo.setStyle("graphTwo", {
 				width: "50%",
-				height: "20%",
+				height: "15%",
 				float: "right"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+
+	// load navigation widget
+	var navigation = myLoader.create({
+		spec: "widgets/navigation_oam.xml",
+		target: dojo.byId("navigation"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("navigation", {
+				float: "left",
+				height: "10%"
 			});
 		},
 		onError: function(error) {
@@ -137,6 +155,8 @@ dojo.ready(initHub);
 </script>
 </head>
 <body>
+	<div id="navigation"></div>
+	<div style="clear:both;"></div>
 	<div id="mapOne"></div>
 	<div id="mapTwo"></div>
 	<div id="graphOne"></div>
