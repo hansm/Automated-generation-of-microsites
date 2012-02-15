@@ -19,7 +19,7 @@
 
     <content>
 		<![CDATA[
-		<div style="width:100%;height:100%;background-color:red;">
+		<div style="width:100%;height:100%;background-color:red;text-align:center;">
 			<img src="widgets/global_navigation.jpg" width="966" height="37" alt="" />
 		</div>
 		]]>
