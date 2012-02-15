@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="GraphTwo" id="ManualLayout/GraphTwo"
-		spec="1.0" width="200" height="150" jsClass="GraphTwo"
+<widget name="GraphTwo" id="ManualLayout/Widgets/GraphTwo"
+		spec="1.0" width="200" height="150" jsClass="Widgets.GraphTwo"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	GraphTwo = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+
+	Widgets.GraphTwo = function() {};
 	
-	GraphTwo.prototype.onload = function() {
+	Widgets.GraphTwo.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

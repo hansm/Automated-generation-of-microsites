@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="Search" id="ManualLayout/Search"
-		spec="1.0" width="238" height="34" jsClass="Search"
+<widget name="Search" id="ManualLayout/Widgets/Search"
+		spec="1.0" width="238" height="34" jsClass="Widgets.Search"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	Search = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
 	
-	Search.prototype.onload = function() {
+	Widgets.Search = function() {};
+	
+	Widgets.Search.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

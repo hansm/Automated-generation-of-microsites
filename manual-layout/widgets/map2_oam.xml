@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="MapTwo" id="anualLayout/MapTwo"
-		spec="1.0" width="200" height="150" jsClass="MapTwo"
+<widget name="MapTwo" id="anualLayout/Widgets/MapTwo"
+		spec="1.0" width="200" height="150" jsClass="Widgets.MapTwo"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	MapTwo = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
 	
-	MapTwo.prototype.onload = function() {
+	Widgets.MapTwo = function() {};
+	
+	Widgets.MapTwo.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

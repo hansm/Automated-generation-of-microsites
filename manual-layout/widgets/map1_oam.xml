@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="MapOne" id="ManualLayout/MapOne"
-		spec="1.0" width="200" height="150" jsClass="MapOne"
+<widget name="MapOne" id="ManualLayout/Widgets/MapOne"
+		spec="1.0" width="200" height="150" jsClass="Widgets.MapOne"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	MapOne = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
 	
-	MapOne.prototype.onload = function() {
+	Widgets.MapOne = function() {
+	};
+	
+	Widgets.MapOne.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

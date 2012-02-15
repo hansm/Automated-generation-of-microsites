@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="GraphOne" id="ManualLayout/GraphOne"
-		spec="1.0" width="200" height="150" jsClass="GraphOne"
+<widget name="GraphOne" id="ManualLayout/Widgets/GraphOne"
+		spec="1.0" width="200" height="150" jsClass="Widgets.GraphOne"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	GraphOne = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+
+	Widgets.GraphOne = function() {};
 	
-	GraphOne.prototype.onload = function() {
+	Widgets.GraphOne.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

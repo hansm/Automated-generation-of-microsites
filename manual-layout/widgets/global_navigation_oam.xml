@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="GlobalNavigation" id="ManualLayout/GlobalNavigation"
-		spec="1.0" width="966" height="37" jsClass="GlobalNavigation"
+<widget name="GlobalNavigation" id="ManualLayout/Widgets/GlobalNavigation"
+		spec="1.0" width="966" height="37" jsClass="Widgets.GlobalNavigation"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	GlobalNavigation = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+
+	Widgets.GlobalNavigation = function() {};
 	
-	GlobalNavigation.prototype.onload = function() {
+	Widgets.GlobalNavigation.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>

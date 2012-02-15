@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="Navigation" id="ManualLayout/Navigation"
-		spec="1.0" width="300" height="40" jsClass="Navigation"
+<widget name="Navigation" id="ManualLayout/Widgets/Navigation"
+		spec="1.0" width="300" height="40" jsClass="Widgets.Navigation"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript"><![CDATA[
-	Navigation = function() {};
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+
+	Widgets.Navigation = function() {};
 	
-	Navigation.prototype.onload = function() {
+	Widgets.Navigation.prototype.onLoad = function() {
 		// maybe do something
 	};
 	]]></require>
