@@ -149,6 +149,24 @@ function initHub() {
 			alert(error);
 		}
 	});
+
+	// load search widget
+	var search = myLoader.create({
+		spec: "widgets/search_oam.xml",
+		target: dojo.byId("search"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+
+			dojo.setStyle("search", {
+				float: "right",
+				height: "10%"
+			});
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
 }
 
 dojo.ready(initHub);
@@ -156,6 +174,7 @@ dojo.ready(initHub);
 </head>
 <body>
 	<div id="navigation"></div>
+	<div id="search"></div>
 	<div style="clear:both;"></div>
 	<div id="mapOne"></div>
 	<div id="mapTwo"></div>
