@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="HelloWorld" id="http://maesalu.com/widgetSamples/HelloWorld"
+		width="200" height="100" jsClass="HelloWorld"
+		xmlns="http://openajax.org/metadata">
+	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
+		<require type="javascript" src="jquery.min.js"/>
+	</library>
+	<require type="css" src="HelloWorld.css" />
+	<require type="javascript"><![CDATA[
+	HelloWorld = function() {};
+	HelloWorld.prototype.onLoad = function() {
+		var thisWidget = this;
+		$("#__WID__button").click(function(e) {
+			e.preventDefault();
+			thisWidget.OpenAjax.hub.publish("Sample.Hello", "Tere, maailm!");
+		});
+		// subscribe to Sample.Time
+		this.OpenAjax.hub.subscribe("Sample.Time", function(topic, data) {
+			$("#__WID__time").html(data);
+		});
+	};
+	]]></require>
+	<content><![CDATA[
+		<div id="__WID__time" class="time">&nbsp;</div>
+		<button id="__WID__button">Hello World!</button>
+	]]></content>
+	<category name="Navigation" />
+	<topic name="Sample.Time" type="number" subscribe="true" />
+	<topic name="Sample.Hello" type="string" publish="true" />
+</widget>

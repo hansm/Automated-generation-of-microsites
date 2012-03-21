@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="Search" id="ManualLayout/Widgets/Search"
+		spec="1.0" width="238" height="34" jsClass="Widgets.Search"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript"><![CDATA[
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+	
+	Widgets.Search = function() {};
+	
+	Widgets.Search.prototype.onLoad = function() {
+		// maybe do something
+	};
+	]]></require>
+
+	<require type="image" src="widgets/search.jpg" />
+
+    <content>
+		<![CDATA[
+		<img src="widgets/search.jpg" width="100%" height="100%" alt="" />
+		]]>
+    </content>
+    
+	<categories>
+    	<category name="Search" />
+    	<category name="Navigation" />
+    </categories>
+</widget>

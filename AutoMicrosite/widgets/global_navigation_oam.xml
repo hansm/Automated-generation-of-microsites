@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="GlobalNavigation" id="ManualLayout/Widgets/GlobalNavigation"
+		spec="1.0" width="966" height="37" jsClass="Widgets.GlobalNavigation"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript"><![CDATA[
+	if (typeof(Widgets) == "undefined") {
+		Widgets = {};
+	}
+
+	Widgets.GlobalNavigation = function() {};
+	
+	Widgets.GlobalNavigation.prototype.onLoad = function() {
+		// maybe do something
+	};
+	]]></require>
+
+	<require type="image" src="widgets/global_navigation.jpg" />
+
+    <content>
+		<![CDATA[
+		<div style="width:100%;height:100%;background-color:red;text-align:center;">
+			<img src="widgets/global_navigation.jpg" width="966" height="37" alt="" />
+		</div>
+		]]>
+    </content>
+    
+    <categories>
+    	<category name="GlobalNavigation" />
+    	<category name="Navigation" />
+    </categories>
+</widget>
