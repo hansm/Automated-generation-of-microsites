@@ -17,6 +17,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 		hub: null,
 
 		widgets: [],
+		
+		grid: {},
 
 		/**
 		 * Constructor method
@@ -38,6 +40,57 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetIdPrefix = divMashupId + "_widget_";
 			this.widgets = [];
+			this.grid = {};
+			this.buildGrid();
+		},
+
+		/**
+		 * Build grid for attaching widgets
+		 */
+		buildGrid: function() {
+			domConstruct.empty(this.divMashup);
+
+			var divTopLine = domConstruct.create("div", {
+				"class": "line top"
+			}, this.divMashup);
+
+			this.grid["left-top"] = domConstruct.create("div", {
+				"class": "left"
+			}, divTopLine);
+			this.grid["center-top"] = domConstruct.create("div", {
+				"class": "center"
+			}, divTopLine);
+			this.grid["right-top"] = domConstruct.create("div", {
+				"class": "right"
+			}, divTopLine);
+
+			var divMiddleLine = domConstruct.create("div", {
+				"class": "line middle"
+			}, this.divMashup);
+
+			this.grid["left-center"] = domConstruct.create("div", {
+				"class": "left"
+			}, divMiddleLine);
+			this.grid["center-center"] = domConstruct.create("div", {
+				"class": "center"
+			}, divMiddleLine);
+			this.grid["right-center"] = domConstruct.create("div", {
+				"class": "right"
+			}, divMiddleLine);
+
+			var divBottomLine = domConstruct.create("div", {
+				"class": "line bottom"
+			}, this.divMashup);
+
+			this.grid["left-bottom"] = domConstruct.create("div", {
+				"class": "left"
+			}, divBottomLine);
+			this.grid["center-bottom"] = domConstruct.create("div", {
+				"class": "center"
+			}, divBottomLine);
+			this.grid["right-bottom"] = domConstruct.create("div", {
+				"class": "right"
+			}, divBottomLine);
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
@@ -60,7 +113,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 		},
 
 		loadWidgets: function() {
-			domConstruct.empty(this.divMashup);
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
 			}
@@ -68,14 +120,14 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 
 		loadWidget: function(index, widget) {
 			// create element for widget
-			domConstruct.create("div", {
+			var divWidget = domConstruct.create("div", {
 				id: this.widgetIdPrefix + index
-			}, this.divMashup);
-console.log(widget.file);
+			}, this.grid[widget.position]);
+
 			// load widget
 			this.widgets[index] = this.loader.create({
 				spec: widget.file,
-				target: dom.byId(this.widgetIdPrefix + index),
+				target: divWidget,
 				onComplete: function(metadata) {
 					console.log(metadata);
 				},

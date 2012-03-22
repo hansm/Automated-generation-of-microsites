@@ -27,6 +27,9 @@ class Hub {
 	 */
 	private $widgets = array();
 
+	public function getWidgets() {
+		return $this->widgets;
+	}
 
 	public function __construct() {
 	}
@@ -60,6 +63,27 @@ body {
 }
 #mapOne {
 	margin-top: 50px;
+}
+.line {
+	width: 100%;
+	overflow: auto;
+}
+.line.top {
+}
+.line.middle {
+}
+.line.bottom {
+}
+.line>.left {
+	float: left;
+	width: 20%;
+}
+.line>.center {
+	float: left;
+}
+.line>.right {
+	float: right;
+	width: 20%;
 }
 </style>
 <script type="text/javascript" src="js/OpenAjaxManagedHub-all.js"></script>

@@ -47,6 +47,8 @@ class Widget {
 	 */
 	private $priority;
 
+	private $position;
+
 	/**
 	 * Widget getter
 	 * @return \SplFixedArray
@@ -61,6 +63,14 @@ class Widget {
 
 	public function setPriority($priority) {
 		$this->priority = $priority;
+	}
+	
+	public function getPosition() {
+		return $this->position;
+	}
+
+	public function setPosition($position) {
+		$this->position = $position;
 	}
 
 	public function __construct($file) {
@@ -132,6 +142,7 @@ class Widget {
 		$data = array(
 			'file'		=>	$this->getUrl(),
 			'priority'	=>	$this->priority,
+			'position'	=>	$this->position,
 
 			// TODO: maybe not needed, these are loaded from widget file anyways
 			'width'		=>	$this->width,

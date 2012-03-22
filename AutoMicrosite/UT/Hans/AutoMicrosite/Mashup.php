@@ -54,8 +54,16 @@ class Mashup {
 		// TODO: some magic
 
 		// TODO: use rules to get general position (top, bottom, left, right, middle)
+		/*
+		TOP LEFT	TOP		TOP RIGHT
+		LEFT		MIDDLE	RIGHT
+		BOTTOM LEFT	BOTTOM	BOTTOM RIGHT
+		 */
 		// TODO: use priority, and possibly even more rules, to determin order in general position
 		// TODO: calculate dimensions (percentages? maybe should be done in JavaScript since JavaScript knows window dimensions)
+		foreach ($this->hub->getWidgets() as $widget) {
+			$widget->setPosition("center-center");
+		}
 	}
 
 	/**
