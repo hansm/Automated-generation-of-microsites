@@ -6,6 +6,6 @@ namespace UT\Hans\AutoMicrosite;
  *
  * @author Hans
  */
-class WidgetException extends \Exeption {}
+class WidgetException extends \Exception {}
 
 ?>

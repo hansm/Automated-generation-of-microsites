@@ -96,7 +96,7 @@ class Widget {
 	public function __construct($file) {
 		$this->metadataFile = realpath($file);
 		if ($this->metadataFile === false) {
-			throw new WidgetException('Metadata file not found.');
+			throw new WidgetException('Metadata file not found ('. $file .').');
 		}
 	}
 
