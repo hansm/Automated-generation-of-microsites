@@ -1,9 +1,11 @@
 /**
- * Mashup handling object
+ * Mashup handling class
  * 
  * @author Hans
  */
-define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMicrosite/Proxy"], function(declare, dom, domConstruct, proxy) {
+define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
+	, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Proxy"]
+	, function(declare, dom, domConstruct, domStyle, win, on, proxy) {
 	return declare(null, {
 
 		widgetData: [],
@@ -12,12 +14,24 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 
 		divMashup: null,
 
+		/**
+		 * Widget loader object
+		 */
 		loader: null,
 
+		/**
+		 * OpenAjax hub object
+		 */
 		hub: null,
 
+		/**
+		 * Widget objects
+		 */
 		widgets: [],
 		
+		/**
+		 * DOM elements of grid
+		 */
 		grid: {},
 
 		/**
@@ -36,11 +50,15 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 
 			// widgets data
 			this.widgetData = widgets;
+			this.widgetData.sort(function(a, b) {
+				return a.priority - b.priority;
+			})
 
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetIdPrefix = divMashupId + "_widget_";
 			this.widgets = [];
 			this.grid = {};
+
 			this.buildGrid();
 		},
 
@@ -91,6 +109,28 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 			this.grid["right-bottom"] = domConstruct.create("div", {
 				"class": "right"
 			}, divBottomLine);
+			
+			this.windowResize();
+			
+			var here = this;
+			on(window, "resize", function() {
+				here.windowResize();
+			});
+		},
+		
+		windowResize: function() {
+			console.log("resize event");
+			// TODO: this is temporary to make nice colorful grid, remove
+			var vp = win.getBox();
+			var boxWidth = (vp.w / 3) - 2;
+			var boxHeight = (vp.h / 3) - 2;
+			for (var i in this.grid) {
+				domStyle.set(this.grid[i], {
+					border: "1px solid red",
+					width: boxWidth +"px",
+					height: boxHeight +"px"
+				});
+			}
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
@@ -112,12 +152,18 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "UT/Hans/AutoMic
 			// TODO: do something about it
 		},
 
+		/**
+		 * Load all widgets into mashup
+		 */
 		loadWidgets: function() {
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
 			}
 		},
 
+		/**
+		 * Load widget into mashup
+		 */
 		loadWidget: function(index, widget) {
 			// create element for widget
 			var divWidget = domConstruct.create("div", {

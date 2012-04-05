@@ -19,7 +19,12 @@ class Mashup {
 	 * @var string
 	 */
 	private $title;
-
+	
+        /**
+         * Widget priority calculation object
+         * 
+         * @var WidgetPriority 
+         */
 	private $widgetPriorityCalculator;
 
 	/**
@@ -47,10 +52,7 @@ class Mashup {
 		$this->hub->addWidget($widget);
 	}
 
-	/**
-	 * Use guidelines, rules extracted from other sites, information gathered about widgets to position them
-	 */
-	public function positionWidgets() {
+	public function applyRules() {
 		// TODO: some magic
 
 		// TODO: use rules to get general position (top, bottom, left, right, middle)
@@ -61,9 +63,13 @@ class Mashup {
 		 */
 		// TODO: use priority, and possibly even more rules, to determin order in general position
 		// TODO: calculate dimensions (percentages? maybe should be done in JavaScript since JavaScript knows window dimensions)
+		
+		// Apply rules to widgets
+		$rules = new Rules();
 		foreach ($this->hub->getWidgets() as $widget) {
-			$widget->setPosition("center-center");
+			$rules->addWidget($widget);
 		}
+		$rules->apply();
 	}
 
 	/**

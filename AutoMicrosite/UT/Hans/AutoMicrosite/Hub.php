@@ -66,7 +66,7 @@ body {
 }
 .line {
 	width: 100%;
-	overflow: auto;
+	overflow: hidden;
 }
 .line.top {
 }
@@ -92,14 +92,14 @@ var dojoConfig = {
     baseUrl: "js/",
     tlmSiblingOfDojo: false,
     packages: [
-        { name: "dojo", location: "http://ajax.googleapis.com/ajax/libs/dojo/1.7.1" }
+        { name: "dojo", location: "lib/dojo/" }
     ]
 };
 oaaLoaderConfig = {
 		proxy: "proxy.php"
 };
 </script>
-<script type="text/javascript" data-dojo-config="async: true" src="js/lib/dojo.js"></script>
+<script type="text/javascript" data-dojo-config="async: true" src="js/lib/dojo/dojo.js"></script>
 <script type="text/javascript" src="js/loader.js"></script>
 </head>';
 	}

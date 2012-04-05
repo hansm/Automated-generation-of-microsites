@@ -47,6 +47,10 @@ class Widget {
 	 */
 	private $priority;
 
+        /**
+         * Position in mashup grid
+         * @var string 
+         */
 	private $position;
 
 	/**
@@ -57,18 +61,34 @@ class Widget {
 		return $this->categories;
 	}
 
+        /**
+         * Get widget priority
+         * @return int 
+         */
 	public function getPriority() {
 		return $this->priority;
 	}
 
+        /**
+         * Set widget priority
+         * @param int $priority 
+         */
 	public function setPriority($priority) {
 		$this->priority = $priority;
 	}
 	
+        /**
+         * Get widget position in mashup grid
+         * @return string 
+         */
 	public function getPosition() {
 		return $this->position;
 	}
 
+        /**
+         * Set widget position in mashup grid
+         * @param string $position 
+         */
 	public function setPosition($position) {
 		$this->position = $position;
 	}

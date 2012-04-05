@@ -18,8 +18,9 @@ $mashup = new Mashup();
 $mashup->setTitle('New mashup');
 
 $mashup->loadWidget(ROOT .'Widgets/map1_oam.xml');
+$mashup->loadWidget(ROOT .'Widgets/map1_oam.xml');
 
-$mashup->positionWidgets();
+$mashup->applyRules();
 $mashup->output();
 
 ?>
