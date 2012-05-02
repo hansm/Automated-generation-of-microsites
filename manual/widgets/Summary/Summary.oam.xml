@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="SummaryWidget" id="AutoMicrosite/Widget/Summary"
+		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Summary"
+		sandbox="true"
+		x:min-width="640" x:max-width="100%"
+		xmlns="http://openajax.org/metadata"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
+			
+	<require type="javascript" src="Summary.js"></require>
+
+    <content>
+		<![CDATA[
+		<style type="text/css">
+		#__WID__content {
+			width: 100%;
+			height: 100%;
+			text-align: right;
+			padding: 0
+			overflow: hidden;
+			font-family: sans-serif;
+			font-size: 1em;
+		}
+		#__WID__content p {
+			padding: 4px;
+			margin: 0;
+		}
+		</style>
+		<div id="__WID__content">summary</div>
+		]]>
+    </content>
+    
+	<categories>
+		<category name="Content" />
+    </categories>
+
+	<topic name="AutoMicrosite.Data.Summary" type="object" subscribe="true">
+		<example><![CDATA[
+			{"data": [
+					{label: "Countries", value: 10},
+					{label: "Average salary", value: 5.6}
+				]
+			}
+		]]></example>
+		<property name="data" datatype="array">
+			<property name="*" datatype="object">
+				<property name="label" datatype="string" />
+				<property name="value" datatype="number" />
+			</property>
+		</property>
+	</topic>
+	
+</widget>

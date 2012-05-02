@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="MapWidget" id="AutoMicrosite/Widget/Menu"
+		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Menu"
+		xmlns="http://openajax.org/metadata">
+
+	<require type="javascript" src="https://www.google.com/jsapi" />
+
+	<require type="javascript"><![CDATA[
+	if (typeof(AutoMicrosite) == "undefined") {
+		AutoMicrosite = {};
+	}
+	if (typeof(AutoMicrosite.Widget) == "undefined") {
+		AutoMicrosite.Widget = {};
+	}
+	
+	/**
+	 * Widget constructor
+	 */
+	AutoMicrosite.Widget.Menu = function() {
+		this.menu = null;
+		this.buttons = [];
+	};
+	
+	AutoMicrosite.Widget.Menu.prototype = {
+	
+		/**
+		 * Widget loaded
+		 */
+		onLoad: function() {
+			console.log("AutoMicrosite.Widget.Menu.onLoad");
+			var thisWidget = this;
+			this.menu = document.getElementById("__WID__menu");
+			
+			this.OpenAjax.hub.subscribe("AutoMicrosite.Pages", function(topic, data) {
+				for (var i = 0; i < data.length; i++) {
+					thisWidget.buttons.push(data[i]);
+				}
+
+				thisWidget.drawMenu();
+			});
+		},
+		
+		buttonClick: function(button) {
+			var link = button.href;
+			var page = link.match(/#(.+)$/)[1];
+			this.OpenAjax.hub.publish("AutoMicrosite.SwitchPage", page);
+		},
+
+		drawMenu: function() {
+			var thisWidget = this;
+			
+			this.menu.innerHTML = "";
+			var button, a;
+			for (var i in this.buttons) {
+				button = this.buttons[i];
+				a = document.createElement("a");
+				a.href = "#"+ button.page;
+				a.innerHTML = button.label;
+				a.onclick = function() {
+					thisWidget.buttonClick(this);
+					return false;
+				};
+				this.menu.appendChild(a);
+			}
+		}
+	};
+	
+	]]></require>
+
+    <content>
+		<![CDATA[
+		<style type="text/css">
+		#__WID__menu {
+			width: 100%;
+			height: 100%;
+			background-color: black;
+		}
+		#__WID__menu a {
+			display: block;
+			float: left;
+			line-height: 50px;
+			padding: 0 25px;
+			color: white;
+			font-family: sans-serif;
+			text-decoration: none;
+			font-size: 20px;
+		}
+		#__WID__menu a:hover {
+			color: white;
+			background: #303030;
+			text-decoration: none;
+		}
+		</style>
+		<div id="__WID__menu"></div>
+		]]>
+    </content>
+    
+	<categories>
+		<category name="Navigation" />
+    </categories>
+</widget>

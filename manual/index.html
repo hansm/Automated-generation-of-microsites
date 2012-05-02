@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Manual Mashup</title>
+<style type="text/css">
+body {
+	font-family: sans-serif;
+	font-size: 1em;
+	color: #000;
+	margin: 0;
+	padding: 0;
+}
+#content>div {
+}
+</style>
+<script type="text/javascript" src="js/OpenAjaxManagedHub-all.js"></script>
+<script type="text/javascript" src="js/dojo.js"></script>
+<script type="text/javascript">
+oaaLoaderConfig = {
+		proxy: "proxy.php"
+};
+</script>
+<script type="text/javascript" src="js/loader.js"></script>
+<script type="text/javascript" src="js/PageManager.js"></script>
+<script type="text/javascript">
+
+var myLoader, myHub;
+
+/**
+ * Page manager object that handles switching pages in mashup
+ */
+
+PageManager.setPages([
+	{"label": "Map", "href": "map"},
+	{"label": "Table", "href": "table"}
+]);
+
+
+function onMHPublish(topic, data, publishContainer, subscribeContainer) {
+	return true;
+}
+
+function onMHSubscribe(topic, container) {
+	return true;
+}
+
+function onMHUnsubscribe(topic, container) {
+	return true;
+}
+
+function onMHSecurityAlert(source, alertType) {
+	return true;
+}
+
+function initHub() {
+	// create new loader (+hub)
+	myLoader = new OpenAjax.widget.Loader({ManagedHub: {
+		onPublish: onMHPublish,
+		onSubscribe: onMHSubscribe,
+		onUnsubscribe: onMHUnsubscribe,
+		onSecurityAlert: onMHSecurityAlert,
+		scope: window
+	}});
+	myHub = myLoader.hub;
+	
+	PageManager.init(myHub);
+	
+	myLoader.create({
+		spec: "widgets/Menu/Menu.oam.xml",
+		target: dojo.byId("menu"),
+		properties: {"buttons": PageManager.getPages()},
+		onComplete: function(metadata) {
+			console.log("menu");
+			console.log(metadata);
+
+			//metadata.OpenAjax.setPropertyValue();
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+
+	var table = myLoader.create({
+		spec: "widgets/Table/Table.oam.xml",
+		target: dojo.byId("table"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+
+	var map = myLoader.create({
+		spec: "widgets/Map/Map.oam.xml",
+		target: dojo.byId("map"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+	
+	myLoader.create({
+		spec: "widgets/Summary/Summary.oam.xml",
+		target: dojo.byId("summary"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+	
+	myLoader.create({
+		spec: "widgets/DataManager/DataManager.oam.xml",
+		target: dojo.byId("dataManager"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+	
+	myLoader.create({
+		spec: "data/data.oam.xml",
+		target: dojo.byId("data"),
+		onComplete: function(metadata) {
+			console.log(metadata);
+		},
+		onError: function(error) {
+			console.log(error);
+			alert(error);
+		}
+	});
+}
+
+dojo.ready(initHub);
+</script>
+</head>
+<body>
+	<div id="header">
+		<div id="data"></div>
+		<div id="menu"></div>
+	</div>
+	<div id="content">
+		<div id="page-map">
+			<div id="map"></div>
+		</div>
+		<div id="page-table">
+			<div id="table"></div>
+		</div>
+	</div>
+	<div id="footer">
+		<div id="summary"></div>
+	</div>
+	<div id="dataManager"></div>
+</body>
+</html>
