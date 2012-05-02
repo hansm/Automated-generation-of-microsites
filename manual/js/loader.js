@@ -1586,11 +1586,13 @@ console.error( error );
             _head.appendChild(link);
         } else {
             var style = document.createElement('STYLE');
-            if (!window.attachEvent) { //XXX FIXME: odd test
-                style.text = data;
-            } else {
-                document.styleSheets[document.styleSheets.length - 1].cssText = data;
-            }
+			var rules = document.createTextNode(data);
+			style.type = 'text/css';
+			if (style.styleSheet) {
+				style.styleSheet.cssText = rules.nodeValue;
+			} else {
+				style.appendChild(rules);
+			}
             _head.appendChild(style);
         }
     },
