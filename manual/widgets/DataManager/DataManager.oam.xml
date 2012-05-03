@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="DataWidget" id="AutoMicrosite/Widget/DataManager"
+<widget name="DataManagerWidget" id="AutoMicrosite/Widget/DataManager"
 		width="0" height="0"
 		spec="1.0" jsClass="AutoMicrosite.Manual.DataManager"
 		xmlns="http://openajax.org/metadata">
@@ -74,10 +74,10 @@
 		</description>
 		<example><![CDATA[
 			{"id": "Estonia",
-				"column": 2}
+				"column": "1999"}
 		]]></example>
 		<property name="id" datatype="string" />
-		<property name="column" datatype="number" />
+		<property name="column" datatype="string" />
 	</topic>
 	<topic name="AutoMicrosite.Data.Receive" type="array" subscribe="true" />
 	

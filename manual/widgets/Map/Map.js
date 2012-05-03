@@ -49,6 +49,8 @@ AutoMicrosite.Widget.Map.prototype = {
 		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.Row", function(topic, receivedData) {
 			thisWidget.bubbleText(receivedData.data);
 		});
+		
+		this.drawMenu();
 	},
 
 	mapLoaded: function() {
@@ -165,6 +167,29 @@ AutoMicrosite.Widget.Map.prototype = {
 			p.appendChild(document.createTextNode(data[i].label +": "+ data[i].value));
 			this.divBubble.appendChild(p);
 		}
+	},
+	
+	drawMenu: function() {
+		var thisWidget = this;
+		var divMenu = document.getElementById(this.widgetId +"mapMenu");
+		var buttons = this.OpenAjax.getPropertyValue("buttons");
+		divMenu.innerHTML = "";
+
+		var a;
+		for (var i in buttons) {
+			a = document.createElement("a");
+			a.innerHTML = buttons[i];
+			a.href = "#"+ buttons[i];
+			a.onclick = function() {
+				thisWidget.requestData(this.innerHTML);
+				return false;
+			};
+			divMenu.appendChild(a);
+		}
+	},
+	
+	requestData: function(column) {
+		this.OpenAjax.hub.publish("AutoMicrosite.Data.Select", {column: column});
 	}
 	
 };

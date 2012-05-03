@@ -33,7 +33,7 @@ AutoMicrosite.Manual.DataManager.prototype = {
 			
 			thisWidget.publishSummary();
 			thisWidget.publishTable();
-			thisWidget.publish2D(1);
+			thisWidget.publish2D("1997");
 		});
 		
 		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.Select", function(topic, receivedData) {
@@ -49,12 +49,15 @@ AutoMicrosite.Manual.DataManager.prototype = {
 	/**
 	 * Publish data summary
 	 */
-	publishSummary: function() {
+	publishSummary: function(column) {
+		if (column == undefined) {
+			column = 1;
+		}
 		var data = [];
 		
 		// TODO: actually do something useful here
 		data.push({label: "Number of '"+ this.columns[0] +"' objects", value: this.data.length});
-		data.push({label: "'"+ this.columns[1] +"' average", value: this.average(this.getColumnValues(1))});
+		data.push({label: "'"+ this.columns[column] +"' average", value: this.average(this.getColumnValues(column))});
 		
 		this.OpenAjax.hub.publish("AutoMicrosite.Data.Summary", {data: data});
 	},
@@ -75,12 +78,22 @@ AutoMicrosite.Manual.DataManager.prototype = {
 	 * Publish 2 dimensional data (key with some other parameter)
 	 */
 	publish2D: function(column) {
+		for (var i = 0; i < this.columns.length; i++) {
+			if (this.columns[i] == column) {
+				column = i;
+				break;
+			}
+		}
+
 		var data = [];
 		data.push({id: this.columns[0], value: this.columns[column]});
 		for (var i = 0; i < this.data.length; i++) {
 			data.push({id: this.data[i][0], value: this.data[i][column]});
 		}
+		console.log(data);
 		this.OpenAjax.hub.publish("AutoMicrosite.Data.2D", {data: data});
+		
+		this.publishSummary(column);
 	},
 	
 	publishRow: function(id) {
