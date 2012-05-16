@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.ruleml.org/1.0/relaxng/datalog_relaxed.rnc"?>
+
+<RuleML xmlns="http://ruleml.org/spec">
+	<!--
+	Search in top right corner.
+	-->
+	<Implies>
+		<if>
+			<Atom>
+				<Rel>equals</Rel>
+				<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+				<Ind>search</Ind>
+			</Atom>
+		</if>
+		<then>
+			<Atom>
+				<Rel>set</Rel>
+				<Ind type="#location">location</Ind>
+				<Data>right top</Data>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	Site navigation top center
+	-->
+	<Implies>
+		<if>
+			<Atom>
+				<Rel>equals</Rel>
+				<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+				<Ind>navigation</Ind>
+			</Atom>
+		</if>
+		<then>
+			<Atom>
+				<Rel>set</Rel>
+				<Ind type="#location">location</Ind>
+				<Data>center top</Data>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	2 content panels that are instances of same widget, side by side, 50% width.
+	-->
+	<Implies>
+		<if>
+			
+		</if>
+		<then>
+
+		</then>
+	</Implies>
+	
+	<!--
+	Header height must be 125px or less
+	-->
+	<Implies>
+		<if>
+			<And>
+				<Atom>
+					<Rel>equals</Rel>
+					<Var type="#location">location</Var>
+					<Ind>header</Ind>
+				</Atom>
+				<Atom>
+					<Rel>greaterThan</Rel>
+					<Var type="#height">height</Var>
+					<Ind>150px</Ind>
+				</Atom>
+			</And>
+		</if>
+		<then>
+			<Atom>
+				<Rel>set</Rel>
+				<Var type="#height">height</Var>
+				<Data>150px</Data>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	Data should be visualized
+	-->
+	<Implies>
+		<if>
+			<And>
+				<Atom>
+					<Rel>equals</Rel>
+					<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+					<Ind>data</Ind>
+				</Atom>
+			</And>
+		</if>
+		<then>
+			<Atom>
+				<Rel>addWidget</Rel>
+				<slot>
+					<Ind type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">type</Ind>
+					<Data>visualization</Data>
+				</slot>
+			</Atom>
+		</then>
+	</Implies>
+</RuleML>
