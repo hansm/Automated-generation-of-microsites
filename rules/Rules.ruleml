@@ -9,15 +9,14 @@
 		<if>
 			<Atom>
 				<Rel>equals</Rel>
-				<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+				<slot><Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
 				<Ind>search</Ind>
 			</Atom>
 		</if>
 		<then>
 			<Atom>
 				<Rel>set</Rel>
-				<Ind type="#location">location</Ind>
-				<Data>right top</Data>
+				<slot><Ind iri="#location">location</Ind><Data>right top</Data></slot>
 			</Atom>
 		</then>
 	</Implies>
@@ -29,15 +28,14 @@
 		<if>
 			<Atom>
 				<Rel>equals</Rel>
-				<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+				<Var iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
 				<Ind>navigation</Ind>
 			</Atom>
 		</if>
 		<then>
 			<Atom>
 				<Rel>set</Rel>
-				<Ind type="#location">location</Ind>
-				<Data>center top</Data>
+				<slot><Ind iri="#location">location</Ind><Data>center top</Data></slot>
 			</Atom>
 		</then>
 	</Implies>
@@ -62,12 +60,12 @@
 			<And>
 				<Atom>
 					<Rel>equals</Rel>
-					<Var type="#location">location</Var>
+					<Var iri="#location">location</Var>
 					<Ind>header</Ind>
 				</Atom>
 				<Atom>
 					<Rel>greaterThan</Rel>
-					<Var type="#height">height</Var>
+					<Var iri="#height">height</Var>
 					<Ind>150px</Ind>
 				</Atom>
 			</And>
@@ -75,7 +73,7 @@
 		<then>
 			<Atom>
 				<Rel>set</Rel>
-				<Var type="#height">height</Var>
+				<Var iri="#height">height</Var>
 				<Data>150px</Data>
 			</Atom>
 		</then>
@@ -89,7 +87,7 @@
 			<And>
 				<Atom>
 					<Rel>equals</Rel>
-					<Var type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+					<Var iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
 					<Ind>data</Ind>
 				</Atom>
 			</And>
@@ -98,7 +96,7 @@
 			<Atom>
 				<Rel>addWidget</Rel>
 				<slot>
-					<Ind type="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">type</Ind>
+					<Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">type</Ind>
 					<Data>visualization</Data>
 				</slot>
 			</Atom>
