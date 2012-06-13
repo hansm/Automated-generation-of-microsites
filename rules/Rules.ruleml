@@ -9,7 +9,7 @@
 		<if>
 			<Atom>
 				<Rel>equals</Rel>
-				<slot><Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
+				<slot><Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Ind></Var>
 				<Ind>search</Ind>
 			</Atom>
 		</if>
