@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.ruleml.org/1.0/relaxng/datalog_relaxed.rnc"?>
+<RuleML xmlns="http://ruleml.org/spec">
+	<!--
+	Query for widget data
+	-->
+	<Query>
+			<Atom>
+				<Rel>WidgetResponse</Rel>
+				<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+				<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
+				<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
+				<slot><Ind>width</Ind><Var>width</Var></slot>
+				<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
+				<slot><Ind>height</Ind><Var>height</Var></slot>
+				<slot><Ind>units</Ind><Var>heightUnits</Var></slot>
+				<slot><Ind>priority</Ind><Var>priority</Var></slot>
+			</Atom>
+	</Query>
+
+</RuleML>

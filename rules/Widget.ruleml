@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.ruleml.org/1.0/relaxng/datalog_relaxed.rnc"?>
+<RuleML xmlns="http://ruleml.org/spec">
+	<!--
+	Example facts about widget, should be generated from widget metadata file.
+	Based on Map.oam.xml
+	-->
+
+	<Assert>
+	
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#width" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>width</Ind><Ind>800</Ind></slot>
+			<slot><Ind>units</Ind><Ind>px</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#height" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>height</Ind><Ind>600</Ind></slot>
+			<slot><Ind>units</Ind><Ind>px</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#category" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>category</Ind><Ind>Map</Ind></slot>
+		</Atom>
+
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#category" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#topic" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>topic</Ind><Ind>AutoMicrosite.Data.2D</Ind></slot>
+			<slot><Ind>publish</Ind><Ind>false</Ind></slot>
+			<slot><Ind>subscribe</Ind><Ind>true</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#topic" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>topic</Ind><Ind>AutoMicrosite.Data.Select</Ind></slot>
+			<slot><Ind>publish</Ind><Ind>true</Ind></slot>
+			<slot><Ind>subscribe</Ind><Ind>false</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#topic" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>topic</Ind><Ind>AutoMicrosite.Data.Select</Ind></slot>
+			<slot><Ind>publish</Ind><Ind>true</Ind></slot>
+			<slot><Ind>subscribe</Ind><Ind>false</Ind></slot>
+		</Atom>
+		
+		<Atom>
+			<Rel iri="http://openajax.org/metadata#id" />
+			<slot><Ind>widget</Ind><Ind>1</Ind></slot>
+			<slot><Ind>id</Ind><Ind>http://automicrosite.maesalu.com/Widget/Map</Ind></slot>
+		</Atom>
+	
+	</Assert>
+
+</RuleML>

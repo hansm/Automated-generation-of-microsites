@@ -35,7 +35,7 @@ public class KnowledgebaseFacadeREST extends AbstractFacade<Knowledgebase> {
 	 * @return 
 	 */
 	@POST
-    @Consumes({"application/json"})
+	@Consumes({"application/json"})
 	@Produces({"application/json"})
 	public Response createRuleset(Request request) {
 		Knowledgebase entity = new Knowledgebase();

@@ -1,105 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://www.ruleml.org/1.0/relaxng/datalog_relaxed.rnc"?>
-
 <RuleML xmlns="http://ruleml.org/spec">
-	<!--
-	Search in top right corner.
-	-->
-	<Implies>
-		<if>
-			<Atom>
-				<Rel>equals</Rel>
-				<slot><Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Ind></Var>
-				<Ind>search</Ind>
-			</Atom>
-		</if>
-		<then>
-			<Atom>
-				<Rel>set</Rel>
-				<slot><Ind iri="#location">location</Ind><Data>right top</Data></slot>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	Site navigation top center
-	-->
-	<Implies>
-		<if>
-			<Atom>
-				<Rel>equals</Rel>
-				<Var iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
-				<Ind>navigation</Ind>
-			</Atom>
-		</if>
-		<then>
-			<Atom>
-				<Rel>set</Rel>
-				<slot><Ind iri="#location">location</Ind><Data>center top</Data></slot>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	2 content panels that are instances of same widget, side by side, 50% width.
-	-->
-	<Implies>
-		<if>
-			
-		</if>
-		<then>
+	<Assert>
 
-		</then>
-	</Implies>
+		<!--
+		Search in top right corner.
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Search</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>right</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Site navigation top center
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Navigation</Ind></slot>
+				</Atom>
+				<!-- TODO: how to know that it is global -->
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<!--
+		Content center center, below navigation.
+		TODO: If multiple content elements exist then position them below eachother according to priority.
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>center</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+
+		<!--
+		2 content panels that are instances of same widget, side by side, 50% width.
+		TODO: make it work
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>firstWidget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>secondWidget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>stringEqualIgnoreCase</Rel>
+							<Var>firstWidget</Var>
+							<Var>secondWidget</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Something</Rel>
+					<slot><Ind>first</Ind><Var>firstWidget</Var></slot>
+					<slot><Ind>second</Ind><Var>secondWidget</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<!--
+		Header height must be 125px or less
+		Move taller thing to left side
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Height</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>height</Ind><Var type="Integer">height</Var></slot>
+						<slot><Ind>units</Ind><Ind>px</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>Location</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>horizontal</Ind><Var>horizontalLocation</Var></slot>
+						<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var type="Integer">height</Var>
+						<Ind type="Integer">125</Ind>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>left</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>center</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Site intro (media?) first thing below top navigation.
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Media</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>center</Ind></slot>
+				</Atom>
+				<Atom>
+					<Rel>Priority</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Site map bottom center
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Navigation</Ind></slot>
+					</Atom>
+					<!-- TODO: additional conditions to recognize sitemap -->
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>bottom</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<!--
+		Logo top left
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Logo</Ind></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>left</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
 	
-	<!--
-	Header height must be 125px or less
-	-->
-	<Implies>
-		<if>
-			<And>
-				<Atom>
-					<Rel>equals</Rel>
-					<Var iri="#location">location</Var>
-					<Ind>header</Ind>
-				</Atom>
-				<Atom>
-					<Rel>greaterThan</Rel>
-					<Var iri="#height">height</Var>
-					<Ind>150px</Ind>
-				</Atom>
-			</And>
-		</if>
-		<then>
-			<Atom>
-				<Rel>set</Rel>
-				<Var iri="#height">height</Var>
-				<Data>150px</Data>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	Data should be visualized
-	-->
-	<Implies>
-		<if>
-			<And>
-				<Atom>
-					<Rel>equals</Rel>
-					<Var iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">category</Var>
-					<Ind>data</Ind>
-				</Atom>
-			</And>
-		</if>
-		<then>
-			<Atom>
-				<Rel>addWidget</Rel>
-				<slot>
-					<Ind iri="http://www.openajax.org/member/wiki/OpenAjax_Metadata_1.0_Specification_Widget_Metadata#category_element">type</Ind>
-					<Data>visualization</Data>
-				</slot>
-			</Atom>
-		</then>
-	</Implies>
+	</Assert>
 </RuleML>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="MapWidget" id="AutoMicrosite/Widget/Map"
+<widget name="MapWidget" id="http://automicrosite.maesalu.com/Widget/Map"
 		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Map"
 		sandbox="true"
 		x:min-width="640" x:max-width="100%"
