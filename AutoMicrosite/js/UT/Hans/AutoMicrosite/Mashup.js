@@ -156,6 +156,11 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Load all widgets into mashup
 		 */
 		loadWidgets: function() {
+			// TODO: remove
+			this.loadWidget(100,
+				{metadataFile: "data/data.oam.xml", horizontalPosition: "center", verticalPosition: "top"});
+
+
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
 			}
@@ -168,13 +173,15 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			// create element for widget
 			var divWidget = domConstruct.create("div", {
 				id: this.widgetIdPrefix + index
-			}, this.grid[widget.position]);
+			}, this.grid[widget.horizontalPosition +"-"+ widget.verticalPosition]);
 
 			// load widget
 			this.widgets[index] = this.loader.create({
-				spec: widget.file,
+				spec: widget.metadataFile,
 				target: divWidget,
+				properties: widget.properties ? widget.properties : {},
 				onComplete: function(metadata) {
+					console.log("Loaded:");
 					console.log(metadata);
 				},
 				onError: function(error) {

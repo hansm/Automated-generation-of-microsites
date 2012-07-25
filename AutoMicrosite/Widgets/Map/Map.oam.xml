@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="MapWidget" id="http://automicrosite.maesalu.com/Widget/Map"
+		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Map"
+		x:min-width="640" x:max-width="100%"
+		x:min-height="640" x:max-height="100%"
+		xmlns="http://openajax.org/metadata"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
+
+	<title>Map widget</title>
+	<description>
+		Smart map widget that can visualize data that contains location in one
+		column and numeric value in another.
+	</description>
+
+	<require type="javascript" src="https://www.google.com/jsapi" />
+	<require type="javascript" src="Map.js"></require>
+
+    <content>
+		<![CDATA[
+		<style>
+		.bubble {
+			display: none;
+			position: absolute;
+			bottom: 100px;
+			left: 250px;
+			width: 400px;
+			border: 1px solid #CCCCCC;
+			background: #FFFFFF;
+			box-shadow: 2px 2px 4px #888888;
+			z-index: 1000;
+			padding: 6px;
+		}
+		.bubble p {
+			margin: 5px;
+			padding: 0;
+		}
+		.bubble a.close {
+			float: right;
+		}
+		#__WID__mapMenu {
+		}
+		#__WID__mapMenu a {
+			color: #000000;
+			display: inline-block;
+			padding: 6px 17px;
+			text-decoration: none;
+		}
+		#__WID__mapMenu a:hover {
+			background-color: #303030;
+			color: #FFF;
+		}
+		</style>
+		<div id="__WID__mapMenu" style="width:100%;height:10%; position:relative;"></div>
+		<div id="__WID__map" style="width:100%;height:90%; position:relative;"></div>
+		]]>
+    </content>
+	
+	<topic name="AutoMicrosite.Data.2D" type="object" subscribe="true">
+		<example><![CDATA[
+			{"data": [
+					{id: "Estonia", value: 10},
+					{id: "USA", value: 20}
+				]
+			}
+		]]></example>
+		<property name="data" datatype="array">
+			<property name="*" datatype="object">
+				<property name="id" datatype="string" />
+				<property name="value" datatype="string" />
+			</property>
+		</property>
+	</topic>
+	<topic name="AutoMicrosite.Data.Row" type="object" subscribe="true">
+		<example><![CDATA[
+			{"data": [
+					{label: "Country", value: "Estonia"},
+					{label: "1999", value: "10"},
+					{label: "200", value: "20"}
+				]
+			}
+		]]></example>
+		<property name="data" datatype="array">
+			<property name="*" datatype="object">
+				<property name="label" datatype="string" />
+				<property name="value" datatype="string" />
+			</property>
+		</property>
+	</topic>
+	
+	<topic name="AutoMicrosite.Data.Select" type="object" publish="true">
+		<description>
+			Query data manager for data based on id and/or column, data will be
+			returned to appropriate topic.
+		</description>
+		<example><![CDATA[
+			{"id": "Estonia",
+				"column": 2}
+		]]></example>
+		<property name="id" datatype="string" />
+		<property name="column" datatype="number" />
+	</topic>
+
+	<property name="buttons" datatype="array" />
+
+	<categories>
+		<category name="Content" />
+		<category name="Map" />
+		<category name="Media" />
+    </categories>
+</widget>

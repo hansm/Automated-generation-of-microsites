@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RuleML xmlns="http://ruleml.org/spec">
+	<Assert>
+
+	<!--
+	Response to widget query
+	-->
+	<Implies>
+		<if>
+			<And>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
+					<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
+				</Atom>
+				
+				<Atom>
+					<Rel>Width</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>width</Ind><Var>width</Var></slot>
+					<slot><Ind>units</Ind><Var>widthUnits</Var></slot>
+				</Atom>
+				
+				<Atom>
+					<Rel>Height</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>height</Ind><Var>height</Var></slot>
+					<slot><Ind>units</Ind><Var>heightUnits</Var></slot>
+				</Atom>
+				
+				<Atom>
+					<Rel>Priority</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Var>priority</Var></slot>
+				</Atom>
+			</And>
+		</if>
+		<then>
+			<Atom>
+				<Rel>WidgetResponse</Rel>
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
+				<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
+				<slot><Ind>width</Ind><Var>width</Var></slot>
+				<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
+				<slot><Ind>height</Ind><Var>height</Var></slot>
+				<slot><Ind>heightUnits</Ind><Var>heightUnits</Var></slot>
+				<slot><Ind>priority</Ind><Var>priority</Var></slot>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	Width
+	-->
+	<Implies>
+		<if>
+			<Atom>
+				<Rel iri="http://openajax.org/metadata#width" />
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>width</Ind><Var>width</Var></slot>
+				<slot><Ind>units</Ind><Var>units</Var></slot>
+			</Atom>
+		</if>
+		<then>
+			<Atom>
+				<Rel>Width</Rel>
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>width</Ind><Var>width</Var></slot>
+				<slot><Ind>units</Ind><Var>units</Var></slot>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	Height
+	-->
+	<Implies>
+		<if>
+			<Atom>
+				<Rel iri="http://openajax.org/metadata#height" />
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>height</Ind><Var>height</Var></slot>
+				<slot><Ind>units</Ind><Var>units</Var></slot>
+			</Atom>
+		</if>
+		<then>
+			<Atom>
+				<Rel>Height</Rel>
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>height</Ind><Var>height</Var></slot>
+				<slot><Ind>units</Ind><Var>units</Var></slot>
+			</Atom>
+		</then>
+	</Implies>
+	
+	<!--
+	Default priority
+	-->
+	<Atom>
+		<Rel>Priority</Rel>
+		<slot><Ind>widget</Ind><Var>widget</Var></slot>
+		<slot><Ind>priority</Ind><Ind>0</Ind></slot>
+	</Atom>
+	
+	<!--
+	Category
+	-->
+	<Implies>
+		<if>
+			<Atom>
+				<Rel iri="http://openajax.org/metadata#category" />
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>category</Ind><Var>category</Var></slot>
+			</Atom>
+		</if>
+		<then>
+			<Atom>
+				<Rel>Category</Rel>
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>category</Ind><Var>category</Var></slot>
+			</Atom>
+		</then>
+	</Implies>
+
+	</Assert>
+	
+</RuleML>

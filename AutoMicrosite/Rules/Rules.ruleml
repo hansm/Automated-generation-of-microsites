@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RuleML xmlns="http://ruleml.org/spec">
+	<Assert>
+
+		<!--
+		Search in top right corner.
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Search</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>right</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Site navigation top center
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Navigation</Ind></slot>
+				</Atom>
+				<!-- TODO: how to know that it is global -->
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<!--
+		Content center center, below navigation.
+		TODO: If multiple content elements exist then position them below eachother according to priority.
+		-->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>Category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>center</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Site map bottom center
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Navigation</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Sitemap</Ind></slot>
+					</Atom>
+					<!-- TODO: additional conditions to recognize sitemap -->
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>bottom</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Logo top left
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Logo</Ind></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>left</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>top</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+
+		<!--
+		Data widgets (non-visual) in the bottom of the page
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Data</Ind></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>bottom</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+
+
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>Summary</Ind></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>Location</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>horizontal</Ind><Ind>center</Ind></slot>
+					<slot><Ind>vertical</Ind><Ind>bottom</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+	</Assert>
+</RuleML>

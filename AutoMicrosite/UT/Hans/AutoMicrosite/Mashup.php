@@ -1,6 +1,8 @@
 <?php
 namespace UT\Hans\AutoMicrosite;
 
+use \UT\Hans\AutoMicrosite\Widget\Widget;
+
 /**
  * Masup creation happens here
  *
@@ -10,22 +12,17 @@ class Mashup {
 
 	/**
 	 * Hub object
-	 * @var  Hub
+	 * 
+	 * @var  \UT\Hans\AutoMicrosite\Hub
 	 */
 	private $hub;
 
 	/**
 	 * Mashup title
+	 *
 	 * @var string
 	 */
 	private $title;
-	
-        /**
-         * Widget priority calculation object
-         * 
-         * @var WidgetPriority 
-         */
-	private $widgetPriorityCalculator;
 
 	/**
 	 * Set mashup title
@@ -33,43 +30,27 @@ class Mashup {
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
+		$this->hub->setTitle($title);
 	}
 
 	public function __construct() {
 		$this->hub = new Hub();
-		$this->widgetPriorityCalculator = new WidgetPriority();
 	}
 
 	/**
-	 * Load widget file into mashup
+	 * Add widget into mashup
+	 *
 	 * @param string $widgetFile
-	 * @throws WidgetException
+	 * @throws \UT\Hans\AutoMicrosite\Widget\WidgetException
 	 */
-	public function loadWidget($widgetFile) {
+	public function addWidget($widgetFile) {
 		$widget = new Widget($widgetFile);
-		$widget->loadWidgetData();
-		$widget->setPriority($this->widgetPriorityCalculator->find($widget));
-		$this->hub->addWidget($widget);
+		// $widget->loadWidgetData();
+		$this->hub->attachWidget($widget);
 	}
 
 	public function applyRules() {
-		// TODO: some magic
-
-		// TODO: use rules to get general position (top, bottom, left, right, middle)
-		/*
-		TOP LEFT	TOP		TOP RIGHT
-		LEFT		MIDDLE	RIGHT
-		BOTTOM LEFT	BOTTOM	BOTTOM RIGHT
-		 */
-		// TODO: use priority, and possibly even more rules, to determin order in general position
-		// TODO: calculate dimensions (percentages? maybe should be done in JavaScript since JavaScript knows window dimensions)
-		
-		// Apply rules to widgets
-		$rules = new Rules();
-		foreach ($this->hub->getWidgets() as $widget) {
-			$rules->addWidget($widget);
-		}
-		$rules->apply();
+		$this->hub->applyRules();
 	}
 
 	/**

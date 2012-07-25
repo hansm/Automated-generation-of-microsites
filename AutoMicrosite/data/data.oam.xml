@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="DataWidget" id="AutoMicrosite/Manual/Data"
+		spec="1.0" width="800" height="40" jsClass="AutoMicrosite.Manual.Data"
+		xmlns="http://openajax.org/metadata">
+
+	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
+		<require type="javascript" src="jquery.min.js"/>
+	</library>
+
+	<require type="javascript"><![CDATA[
+	if (typeof(AutoMicrosite) == "undefined") {
+		AutoMicrosite = {};
+	}
+	if (typeof(AutoMicrosite.Manual) == "undefined") {
+		AutoMicrosite.Manual = {};
+	}
+	
+	AutoMicrosite.Manual.Data = function() {};
+	
+	AutoMicrosite.Manual.Data.prototype.onLoad = function() {
+		var thisWidget = this;
+
+		
+		$("#__WID__publish").click(function(e) {
+			e.preventDefault();
+			console.log("Publish");
+			
+			$.get("data/data.txt", function(data) {
+				data = data.split("\n");
+
+/*
+				var colNames = data[0].split("\t");
+				colNames = $.map(colNames, $.trim);
+console.log(colNames);
+				var newData = [];
+				var dataRow;
+				var dataValues;
+				for (var i = 1; i < data.length; i++) {
+					dataRow = {};
+					dataValues = $.map(data[i].split("\t"), $.trim);
+
+					for (var j = 0; j < dataValues.length; j++) {
+						dataRow[colNames[j]] = dataValues[j] == ":" ? null : dataValues[j];
+						if (dataRow[colNames[j]] != null && !isNaN(dataRow[colNames[j]])) {
+							dataRow[colNames[j]] = parseFloat(dataRow[colNames[j]]);
+						}
+					}
+
+					newData.push(dataRow);
+				}*/
+				
+				var newData = [];
+				var dataRow;
+				var dataValues;
+				var value;
+				
+				for (var i = 0; i < data.length; i++) {
+					dataRow = [];
+					dataValues = $.map(data[i].split("\t"), $.trim);
+
+					for (var j = 0; j < dataValues.length; j++) {
+						value = dataValues[j] == ":" ? null : dataValues[j];
+						if (value != null && !isNaN(value)) {
+							value = parseFloat(value);
+						}
+						dataRow.push(value);
+					}
+
+					newData.push(dataRow);
+				}
+				
+
+				thisWidget.OpenAjax.hub.publish("AutoMicrosite.Data.Receive", newData);
+			}, "text");
+		});
+	};
+	]]></require>
+
+	<require type="image" src="data.txt" />
+
+    <content>
+		<![CDATA[
+		<button id="__WID__publish" style="width:100%;height:100%;">Publish data</button>
+		]]>
+    </content>
+    
+	<categories>
+		<category name="Data" />
+    </categories>
+</widget>
