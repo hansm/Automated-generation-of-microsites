@@ -38,6 +38,10 @@ body {
 </style>
 <script type="text/javascript" src="js/OpenAjaxManagedHub-all.js"></script>
 <script type="text/javascript">
+if (!console) {
+	var console = {log: function() {}};
+}
+
 var dojoConfig = {
     baseUrl: "js/",
     tlmSiblingOfDojo: false,

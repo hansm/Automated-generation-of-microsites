@@ -40,10 +40,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		constructor: function(widgets, divMashupId) {
 			// create loader and a hub
 			this.loader = new OpenAjax.widget.Loader({ManagedHub: {
-				onPublish:			proxy(this.onPublish, this),
-				onSubscribe:		proxy(this.onSubscribe, this),
-				onUnsubscribe:		proxy(this.onUnsubscribe, this),
-				onSecurityAlert:	proxy(this.onSecurityAlert, this),
+				onPublish:			this.onPublish.bind(this),
+				onSubscribe:		this.onSubscribe.bind(this),
+				onUnsubscribe:		this.onUnsubscribe.bind(this),
+				onSecurityAlert:	this.onSecurityAlert.bind(this),
 				scope: window
 			}});
 			this.hub = this.loader.hub;
@@ -126,7 +126,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			var boxHeight = (vp.h / 3) - 2;
 			for (var i in this.grid) {
 				domStyle.set(this.grid[i], {
-					border: "1px solid red",
+					border: "1px solid #F5F5F5",
 					width: boxWidth +"px",
 					height: boxHeight +"px"
 				});
