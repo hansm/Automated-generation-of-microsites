@@ -13,7 +13,7 @@
 				<slot><Ind>width</Ind><Var>width</Var></slot>
 				<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
 				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>units</Ind><Var>heightUnits</Var></slot>
+				<slot><Ind>heightUnits</Ind><Var>heightUnits</Var></slot>
 				<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			</Atom>
 	</Query>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="http://www.ruleml.org/1.0/relaxng/datalog_relaxed.rnc"?>
 <RuleML xmlns="http://ruleml.org/spec">
+	<Assert>
+
 	<!--
 	Response to widget query
 	-->
@@ -44,7 +46,7 @@
 				<slot><Ind>width</Ind><Var>width</Var></slot>
 				<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
 				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>units</Ind><Var>heightUnits</Var></slot>
+				<slot><Ind>heightUnits</Ind><Var>heightUnits</Var></slot>
 				<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			</Atom>
 		</then>
@@ -122,5 +124,6 @@
 			</Atom>
 		</then>
 	</Implies>
-	
+
+	</Assert>
 </RuleML>
