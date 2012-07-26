@@ -14,7 +14,8 @@ class Hub {
 
 	const TEMPLATE_DIR = 'Template/';
 
-	const RULEML_SERVICE_URL = 'http://localhost:8080/RuleMLApp/RuleMLService';
+	//const RULEML_SERVICE_URL = 'http://localhost:8080/RuleMLApp/RuleMLService';
+	const RULEML_SERVICE_URL = 'http://automicrosite.maesalu.com:8080/RuleMlApp2/RuleMLService';
 
 	const RULES_FILE = 'Rules/Rules.ruleml';
 

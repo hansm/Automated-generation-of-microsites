@@ -16,7 +16,7 @@ class Request {
 	public $widgetsDir;
 
 	public function __construct() {
-		$this->widgetsDir = ROOT .'widgets/';
+		$this->widgetsDir = ROOT .'Widgets/';
 
 		if (isset($_POST['build'])) {
 			$this->build();
