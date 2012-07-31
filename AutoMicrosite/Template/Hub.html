@@ -61,8 +61,8 @@ oaaLoaderConfig = {
   <div id="mashup">Loading widgets...</div>
   <script type="text/javascript">
 	require(["UT/Hans/AutoMicrosite/Mashup"], function(Mashup){
-		var mashup = new Mashup({$widgetData}, "mashup");
-		mashup.loadWidgets();
+		var mashup = new Mashup("mashup");
+		mashup.loadWidgets({$widgetData});
 	});
   </script>
 </body>

@@ -4,13 +4,11 @@
  * @author Hans
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
-	, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Proxy"]
-	, function(declare, dom, domConstruct, domStyle, win, on, proxy) {
+	, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Grid"]
+	, function(declare, dom, domConstruct, domStyle, win, on, Grid) {
 	return declare(null, {
 
 		widgetData: [],
-
-		widgetIdPrefix: "",
 
 		divMashup: null,
 
@@ -32,12 +30,14 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * DOM elements of grid
 		 */
-		grid: {},
+		grid: null,
 
 		/**
 		 * Constructor method
+		 *
+		 * @param string divMashupId ID of element where hub should be attached
 		 */
-		constructor: function(widgets, divMashupId) {
+		constructor: function(divMashupId) {
 			// create loader and a hub
 			this.loader = new OpenAjax.widget.Loader({ManagedHub: {
 				onPublish:			this.onPublish.bind(this),
@@ -47,90 +47,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				scope: window
 			}});
 			this.hub = this.loader.hub;
-
-			// widgets data
-			this.widgetData = widgets;
-			this.widgetData.sort(function(a, b) {
-				return a.priority - b.priority;
-			})
-
 			this.divMashup = dom.byId(divMashupId);
-			this.widgetIdPrefix = divMashupId + "_widget_";
-			this.widgets = [];
-			this.grid = {};
-
-			this.buildGrid();
-		},
-
-		/**
-		 * Build grid for attaching widgets
-		 */
-		buildGrid: function() {
-			domConstruct.empty(this.divMashup);
-
-			var divTopLine = domConstruct.create("div", {
-				"class": "line top"
-			}, this.divMashup);
-
-			this.grid["left-top"] = domConstruct.create("div", {
-				"class": "left"
-			}, divTopLine);
-			this.grid["center-top"] = domConstruct.create("div", {
-				"class": "center"
-			}, divTopLine);
-			this.grid["right-top"] = domConstruct.create("div", {
-				"class": "right"
-			}, divTopLine);
-
-			var divMiddleLine = domConstruct.create("div", {
-				"class": "line middle"
-			}, this.divMashup);
-
-			this.grid["left-center"] = domConstruct.create("div", {
-				"class": "left"
-			}, divMiddleLine);
-			this.grid["center-center"] = domConstruct.create("div", {
-				"class": "center"
-			}, divMiddleLine);
-			this.grid["right-center"] = domConstruct.create("div", {
-				"class": "right"
-			}, divMiddleLine);
-
-			var divBottomLine = domConstruct.create("div", {
-				"class": "line bottom"
-			}, this.divMashup);
-
-			this.grid["left-bottom"] = domConstruct.create("div", {
-				"class": "left"
-			}, divBottomLine);
-			this.grid["center-bottom"] = domConstruct.create("div", {
-				"class": "center"
-			}, divBottomLine);
-			this.grid["right-bottom"] = domConstruct.create("div", {
-				"class": "right"
-			}, divBottomLine);
+			this.widgetData = [];
 			
-			this.windowResize();
-			
-			var here = this;
-			on(window, "resize", function() {
-				here.windowResize();
-			});
-		},
-		
-		windowResize: function() {
-			console.log("resize event");
-			// TODO: this is temporary to make nice colorful grid, remove
-			var vp = win.getBox();
-			var boxWidth = (vp.w / 3) - 2;
-			var boxHeight = (vp.h / 3) - 2;
-			for (var i in this.grid) {
-				domStyle.set(this.grid[i], {
-					border: "1px solid #F5F5F5",
-					width: boxWidth +"px",
-					height: boxHeight +"px"
-				});
-			}
+			this.grid = new Grid(this.divMashup);
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
@@ -155,7 +75,15 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * Load all widgets into mashup
 		 */
-		loadWidgets: function() {
+		loadWidgets: function(widgets) {
+			this.widgetData = widgets;
+			this.setGridDimensions();
+			
+			// reorder in priority order
+			this.widgetData.sort(function(a, b) {
+				return a.priority - b.priority;
+			});
+			
 			// TODO: remove
 			this.loadWidget(100,
 				{metadataFile: "data/data.oam.xml", horizontalPosition: "center", verticalPosition: "top"});
@@ -165,15 +93,15 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.loadWidget(i, this.widgetData[i]);
 			}
 		},
-
+		
 		/**
 		 * Load widget into mashup
 		 */
 		loadWidget: function(index, widget) {
 			// create element for widget
 			var divWidget = domConstruct.create("div", {
-				id: this.widgetIdPrefix + index
-			}, this.grid[widget.horizontalPosition +"-"+ widget.verticalPosition]);
+				id: this.widgetIdPrefix +"_"+ index
+			}, this.grid.getBlock(widget.verticalPosition, widget.horizontalPosition));
 
 			// load widget
 			this.widgets[index] = this.loader.create({
@@ -189,6 +117,44 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					alert(error);
 				}
 			});
+		},
+		
+		/**
+		 * Update grid dimensions to fit widgets
+		 */
+		setGridDimensions: function() {
+			var dimensions = {};
+			var widget;
+			for (var i in this.widgetData) {
+				widget = this.widgetData[i];
+				
+				if (!dimensions[widget.verticalPosition]) {
+					dimensions[widget.verticalPosition] = {};
+				}
+				if (!dimensions[widget.verticalPosition][widget.horizontalPosition]) {
+					dimensions[widget.verticalPosition][widget.horizontalPosition] = {
+						width: 0, height: 0
+					}
+				}
+				
+				dimensions[widget.verticalPosition][widget.horizontalPosition].height += widget.height;
+				
+				if (widget.width > dimensions[widget.verticalPosition][widget.horizontalPosition].width) {
+					dimensions[widget.verticalPosition][widget.horizontalPosition].width = widget.width;
+				}
+			}
+			
+			for (var v in dimensions) {
+				for (var h in dimensions[v]) {
+					// TODO: temporary because of publish data button, remove
+					if (v == "top") {
+						dimensions[v][h].height += 40;
+					}
+					
+					this.grid.setDimensions({vertical: v, horizontal: h}
+						, dimensions[v][h].width +"px", dimensions[v][h].height +"px");
+				}
+			}
 		}
 	})
 });
