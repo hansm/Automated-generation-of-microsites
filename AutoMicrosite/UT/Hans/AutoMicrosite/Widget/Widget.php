@@ -39,16 +39,12 @@ class Widget {
 	 */
 	public $width;
 
-	public $widthUnits;
-
 	/**
 	 * Height with units
 	 * 
 	 * @var string
 	 */
 	public $height;
-
-	public $heightUnits;
 
 	/**
 	 * Priority

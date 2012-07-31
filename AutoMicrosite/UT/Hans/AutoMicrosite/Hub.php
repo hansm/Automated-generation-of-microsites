@@ -134,14 +134,9 @@ class Hub {
 					case 'height':
 						$widget->height = (int) $value;
 						break;
-					case 'heightUnits':
-						$widget->heightUnits = $value;
 						break;
 					case 'width':
 						$widget->width = (int) $value;
-						break;
-					case 'widthUnits':
-						$widget->widthUnits = $value;
 						break;
 					case 'priority':
 						$widget->priority = (int) $value;

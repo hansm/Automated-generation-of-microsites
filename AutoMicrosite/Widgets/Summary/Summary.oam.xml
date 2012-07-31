@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="SummaryWidget" id="AutoMicrosite/Widget/Summary"
 		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Summary"
-		x:min-width="640" x:max-width="100%"
+		x:min-width="640" x:max-width="2000"
 		xmlns="http://openajax.org/metadata"
 		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
 			

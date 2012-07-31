@@ -19,14 +19,12 @@
 					<Rel>Width</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>width</Ind><Var>width</Var></slot>
-					<slot><Ind>units</Ind><Var>widthUnits</Var></slot>
 				</Atom>
 				
 				<Atom>
 					<Rel>Height</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>height</Ind><Var>height</Var></slot>
-					<slot><Ind>units</Ind><Var>heightUnits</Var></slot>
 				</Atom>
 				
 				<Atom>
@@ -43,9 +41,7 @@
 				<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
 				<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
 				<slot><Ind>width</Ind><Var>width</Var></slot>
-				<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
 				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>heightUnits</Ind><Var>heightUnits</Var></slot>
 				<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			</Atom>
 		</then>
@@ -60,7 +56,6 @@
 				<Rel iri="http://openajax.org/metadata#width" />
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
 				<slot><Ind>width</Ind><Var>width</Var></slot>
-				<slot><Ind>units</Ind><Var>units</Var></slot>
 			</Atom>
 		</if>
 		<then>
@@ -68,7 +63,6 @@
 				<Rel>Width</Rel>
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
 				<slot><Ind>width</Ind><Var>width</Var></slot>
-				<slot><Ind>units</Ind><Var>units</Var></slot>
 			</Atom>
 		</then>
 	</Implies>
@@ -82,7 +76,6 @@
 				<Rel iri="http://openajax.org/metadata#height" />
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
 				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>units</Ind><Var>units</Var></slot>
 			</Atom>
 		</if>
 		<then>
@@ -90,7 +83,6 @@
 				<Rel>Height</Rel>
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
 				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>units</Ind><Var>units</Var></slot>
 			</Atom>
 		</then>
 	</Implies>

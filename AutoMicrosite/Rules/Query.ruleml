@@ -5,9 +5,7 @@
 			<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
 			<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
 			<slot><Ind>width</Ind><Var>width</Var></slot>
-			<slot><Ind>widthUnits</Ind><Var>widthUnits</Var></slot>
 			<slot><Ind>height</Ind><Var>height</Var></slot>
-			<slot><Ind>heightUnits</Ind><Var>heightUnits</Var></slot>
 			<slot><Ind>priority</Ind><Var>priority</Var></slot>
 		</Atom>
 </Query>
