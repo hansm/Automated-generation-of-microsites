@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="TableWidget" id="AutoMicrosite/Widget/Table"
 		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Table"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
 	<require type="javascript" src="Table.js"></require>
@@ -56,7 +57,6 @@
 	</topic>
     
 	<categories>
-		<category name="Content" />
-		<category name="Table" />
+		<category x:iri="http://schema.org/Table" />
     </categories>
 </widget>

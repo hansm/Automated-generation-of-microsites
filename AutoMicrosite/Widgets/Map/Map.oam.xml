@@ -103,8 +103,6 @@
 	<property name="buttons" datatype="array" />
 
 	<categories>
-		<category name="Content" />
-		<category name="Map" />
-		<category name="Media" />
+		<category x:iri="http://schema.org/Map" />
     </categories>
 </widget>

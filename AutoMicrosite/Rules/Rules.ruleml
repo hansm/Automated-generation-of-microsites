@@ -31,7 +31,7 @@
 				<Atom>
 					<Rel>Category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>category</Ind><Ind>Navigation</Ind></slot>
+					<slot><Ind>category</Ind><Ind iri="http://schema.org/SiteNavigationElement" /></slot>
 				</Atom>
 				<!-- TODO: how to know that it is global -->
 			</if>
@@ -54,7 +54,7 @@
 				<Atom>
 					<Rel>Category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>category</Ind><Ind>Content</Ind></slot>
+					<slot><Ind>category</Ind><Ind iri="http://schema.org/WebPageElement" /></slot>
 				</Atom>
 			</if>
 			<then>

@@ -36,7 +36,7 @@
     </content>
     
 	<categories>
-		<category name="Navigation" />
+		<category x:iri="http://schema.org/SiteNavigationElement" />
     </categories>
 
 	<property name="buttons" datatype="Array" />

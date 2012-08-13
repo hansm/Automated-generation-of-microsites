@@ -115,6 +115,13 @@
 			</Atom>
 		</then>
 	</Implies>
+	
+	<!-- All widgets are Things  -->
+	<Atom>
+		<Rel>Category</Rel>
+		<slot><Ind>widget</Ind><Var>widget</Var></slot>
+		<slot><Ind>category</Ind><Var iri="http://www.schema.org/Thing" /></slot>
+	</Atom>
 
 	</Assert>
 	

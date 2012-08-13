@@ -29,7 +29,7 @@
     </content>
     
 	<categories>
-		<category name="Summary" />
+		<category x:iri="http://schema.org/WPFooter" />
     </categories>
 
 	<topic name="AutoMicrosite.Data.Summary" type="object" subscribe="true">

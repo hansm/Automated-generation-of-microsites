@@ -2,7 +2,8 @@
 <widget name="DataManagerWidget" id="AutoMicrosite/Widget/DataManager"
 		width="0" height="0"
 		spec="1.0" jsClass="AutoMicrosite.Manual.DataManager"
-		xmlns="http://openajax.org/metadata">
+		xmlns="http://openajax.org/metadata"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
 
 	<require type="javascript" src="DataManager.js"></require>
 
@@ -81,7 +82,9 @@
 	</topic>
 	<topic name="AutoMicrosite.Data.Receive" type="array" subscribe="true" />
 	
+	<!-- Dataset is currently just a proposal -->
 	<categories>
-		<category name="Data" />
+		<category x:iri="http://schema.org/Dataset" />
     </categories>
+
 </widget>
