@@ -1,11 +1,13 @@
 <?php
 namespace UT\Hans\AutoMicrosite;
 
-use \UT\Hans\AutoMicrosite\Widget\Widget;
-use \UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient;
-use \UT\Hans\AutoMicrosite\RuleMl\RuleMl;
-use \UT\Hans\AutoMicrosite\RuleMl\OpenAjaxToRuleMl;
-use \UT\Hans\AutoMicrosite\RuleMl\RuleMlQuery;
+use UT\Hans\AutoMicrosite\Widget\Widget;
+use UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient;
+use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
+use UT\Hans\AutoMicrosite\RuleMl\OpenAjaxToRuleMl;
+use UT\Hans\AutoMicrosite\RuleMl\RuleMlQuery;
+use UT\Hans\AutoMicrosite\Template\Templates;
+use UT\Hans\AutoMicrosite\Template\MicrodataTemplate;
 
 /**
  * Hub creation class
@@ -34,6 +36,21 @@ class Hub {
 	 * @var int
 	 */
 	private $widgetsNumber = 0;
+	
+	/**
+	 * Templates management object
+	 * 
+	 * @var \UT\Hans\AutoMicrosite\Template\Templates 
+	 */
+	private $templates;
+	
+	/**
+	 *
+	 * @var \UT\Hans\AutoMicrosite\Template\MicrodataTemplate 
+	 */
+	private $template;
+	
+	private $rulesetId;
 
 	/**
 	 * Return mashup title
@@ -70,6 +87,7 @@ class Hub {
 	}
 
 	public function __construct() {
+		$this->templates = new Templates();
 	}
 
 	/**
@@ -92,6 +110,73 @@ class Hub {
 		$widgetNumber = $this->getNextWidgetOrderNumber();
 		$widget->setOrderNumber($widgetNumber);
 		$this->widgets[$widgetNumber] = $widget;
+	}
+	
+	/**
+	 * Create ruleset and send to RuleML service
+	 * 
+	 * @return int 
+	 */
+	public function createRuleset() {
+		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
+
+		$rulesFile = \file_get_contents(self::RULES_FILE);
+		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
+		
+		// rules
+		$rules = RuleMl::createFromString($rulesFile);
+		$rules->merge(RuleMl::createFromString($rulesUtilFile));
+		
+		// add widget facts
+		$transform = new OpenAjaxToRuleMl();
+		foreach ($this->widgets as $widget) {
+			$rules->merge($transform->transformString(\file_get_contents($widget->metadataFile), $widget->getOrderNumber()));
+		}
+		
+		// add templates facts
+		$rules->merge($this->templates->getRuleMl());
+
+		$this->rulesetId = $client->create($rules);
+		
+		return $this->rulesetId;
+	}
+	
+	/**
+	 * Select template for mashup
+	 * 
+	 * @param int $rulesetId
+	 * @return type 
+	 * @throws \Exception
+	 */
+	public function selectTemplate($rulesetId) {
+		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
+		
+		// create query
+		$queryString = \file_get_contents('Rules/TemplateQuery.ruleml');
+		$query = RuleMlQuery::createFromString($queryString);
+		
+		// query ruleserver
+		$result = $client->query($rulesetId, $query);
+		
+		// get result value
+		$templateUrl = null;
+		$variables = $result->getDom()->getElementsByTagName('Var');
+		for ($i = 0; $i < $variables->length; $i++) {
+			$value = \trim(\reset(\explode(':', $variables->item($i)->nextSibling->textContent)));
+			switch (\trim($variables->item($i)->textContent)) {
+				case 'url':
+					$templateUrl = $value;
+					break;
+			}
+		}
+		
+		$this->template = $this->templates->getTemplate($templateUrl);
+		
+		return $templateUrl;
+	}
+	
+	public function selectWidgetPositions($rulesetId, $templateUrl) {
+		//
 	}
 
 	/**
@@ -164,12 +249,14 @@ class Hub {
 	 * @return string
 	 */
 	public function toHtml() {
+		$this->template->setTitle($this->getTitle());
+		/*
 		$content = \file_get_contents(self::TEMPLATE_DIR .'Hub.html');
 		$content = \str_replace(
 			array('{$title}', '{$widgetData}'),
 			array($this->getTitle(), $this->widgetsJson()),
-			$content);
-		return $content;
+			$content);*/
+		return $this->template->toHtml();
 	}
 
 	/**

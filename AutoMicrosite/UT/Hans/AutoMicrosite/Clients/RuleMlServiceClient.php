@@ -1,9 +1,9 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Clients;
 
-use \UT\Hans\AutoMicrosite\Util\CurlConnection;
-use \UT\Hans\AutoMicrosite\RuleMl\RuleMl;
-use \ErrorException;
+use UT\Hans\AutoMicrosite\Util\CurlConnection;
+use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
+use ErrorException;
 
 /**
  * RuleML service client code

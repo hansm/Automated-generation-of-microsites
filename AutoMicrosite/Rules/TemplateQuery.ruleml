@@ -1,0 +1,6 @@
+<Query>
+		<Atom>
+			<Rel>TemplateSlotsFilled</Rel>
+			<slot><Ind>url</Ind><Var>url</Var></slot>
+		</Atom>
+</Query>

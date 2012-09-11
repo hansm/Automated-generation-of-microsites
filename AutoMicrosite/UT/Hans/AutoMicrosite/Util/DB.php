@@ -1,7 +1,7 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Util;
 
-use \PDO;
+use PDO;
 
 /**
  * Singleton wrapper for PDO with some additional features.

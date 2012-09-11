@@ -1,8 +1,8 @@
 <?php
 namespace UT\Hans\AutoMicrosite\RuleMl;
 
-use \ErrorException;
-use \DOMDocument;
+use ErrorException;
+use DOMDocument;
 
 /**
  * RuleML class

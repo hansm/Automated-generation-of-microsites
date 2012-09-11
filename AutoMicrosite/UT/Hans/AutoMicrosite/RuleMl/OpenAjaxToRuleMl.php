@@ -1,8 +1,8 @@
 <?php
 namespace UT\Hans\AutoMicrosite\RuleMl;
 
-use \DOMDocument;
-use \XSLTProcessor;
+use DOMDocument;
+use XSLTProcessor;
 
 /**
  * Create RuleML facts from

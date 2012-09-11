@@ -1,7 +1,7 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Util;
 
-use \ErrorException;
+use ErrorException;
 
 /**
  * cURL connection class

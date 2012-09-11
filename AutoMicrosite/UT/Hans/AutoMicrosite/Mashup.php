@@ -1,7 +1,7 @@
 <?php
 namespace UT\Hans\AutoMicrosite;
 
-use \UT\Hans\AutoMicrosite\Widget\Widget;
+use UT\Hans\AutoMicrosite\Widget\Widget;
 
 /**
  * Masup creation happens here
@@ -50,7 +50,16 @@ class Mashup {
 	}
 
 	public function applyRules() {
-		$this->hub->applyRules();
+		$rulesetId = $this->hub->createRuleset();
+		$templateUrl = $this->hub->selectTemplate($rulesetId);
+		if (!isset($templateUrl)) {
+			throw new \RuntimeException('Template not found.');
+			// TODO: someone should probably catch this exception
+		}
+		
+		$this->hub->selectWidgetPositions($rulesetId, $templateUrl);
+		
+		//$this->hub->applyRules();
 	}
 
 	/**
