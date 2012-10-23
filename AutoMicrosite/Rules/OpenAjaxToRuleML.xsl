@@ -14,7 +14,7 @@
 					<Atom>
 						<Rel iri="http://openajax.org/metadata#category" />
 						<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
-						<slot><Ind>category</Ind><Ind iri="@iri" /></Ind></slot>
+						<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
 					</Atom>
 				</xsl:for-each>
 
@@ -35,6 +35,13 @@
 					<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 					<slot><Ind>height</Ind><Ind type="Integer"><xsl:value-of select="//@height" /></Ind></slot>
 				</Atom>
+				
+				<xsl:for-each select="//oa:property[@urlparam]">
+					<Atom>
+						<Rel iri="http://automicrosite.maesalu.com/DataType" />
+						<slot><Ind>data</Ind><Ind><xsl:value-of select="@urlparam" /></Ind></slot>
+					</Atom>
+				</xsl:for-each>
 			</Assert>
 		</RuleML>
 

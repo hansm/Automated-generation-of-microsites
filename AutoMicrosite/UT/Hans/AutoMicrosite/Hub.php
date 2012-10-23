@@ -22,6 +22,12 @@ class Hub {
 	const RULES_FILE = 'Rules/Rules.ruleml';
 
 	const RULES_FILE_UTIL = 'Rules/Util.ruleml';
+	
+	const WIDGET_SELECT_RULES = 'Rules/WidgetSelectRules.ruleml';
+	
+	const TEMPLATE_QUERY = 'Rules/TemplateQuery.ruleml';
+	
+	const WIDGET_PLACE_QUERY = 'Rules/WidgetPlaceQuery.ruleml';
 
 	/**
 	 * Mashup title
@@ -122,17 +128,20 @@ class Hub {
 
 		$rulesFile = \file_get_contents(self::RULES_FILE);
 		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
-		
+
 		// rules
 		$rules = RuleMl::createFromString($rulesFile);
 		$rules->merge(RuleMl::createFromString($rulesUtilFile));
-		
+
 		// add widget facts
 		$transform = new OpenAjaxToRuleMl();
 		foreach ($this->widgets as $widget) {
+			if (strpos($widget->metadataFile, 'DataManager') !== false) { // TODO: this is bad
+				continue;
+			}
 			$rules->merge($transform->transformString(\file_get_contents($widget->metadataFile), $widget->getOrderNumber()));
 		}
-		
+
 		// add templates facts
 		$rules->merge($this->templates->getRuleMl());
 
@@ -162,21 +171,51 @@ class Hub {
 		$templateUrl = null;
 		$variables = $result->getDom()->getElementsByTagName('Var');
 		for ($i = 0; $i < $variables->length; $i++) {
-			$value = \trim(\reset(\explode(':', $variables->item($i)->nextSibling->textContent)));
+			$value = \explode(':', $variables->item($i)->nextSibling->textContent);
+			$value = \trim(\reset($value));
+
 			switch (\trim($variables->item($i)->textContent)) {
-				case 'url':
-					$templateUrl = $value;
+				case 'template':
+					$templateUrl = trim($value, '"'); // RuleML service adds " to the end and beginning
 					break;
 			}
 		}
 		
 		$this->template = $this->templates->getTemplate($templateUrl);
-		
+
 		return $templateUrl;
 	}
 	
 	public function selectWidgetPositions($rulesetId, $templateUrl) {
-		//
+		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
+		
+		foreach ($this->widgets as $widget) {
+			if (strpos($widget->metadataFile, 'DataManager') !== false) { // TODO: this is bad
+				continue;
+			}
+			
+			// create query
+			$queryString = \file_get_contents(self::WIDGET_PLACE_QUERY);
+			$queryString = \str_replace(
+				array('{$widget}', '{$template}'),
+				array($widget->getOrderNumber(), $templateUrl),
+				$queryString); // TODO: this should probably be done using DOM
+			
+			$query = RuleMlQuery::createFromString($queryString);
+			$result = $client->query($rulesetId, $query);
+			
+			$variables = $result->getDom()->getElementsByTagName('Var');
+			for ($i = 0; $i < $variables->length; $i++) {
+				$value = \explode(':', $variables->item($i)->nextSibling->textContent);
+				$value = \trim(\reset($value));
+
+				switch (\trim($variables->item($i)->textContent)) {
+					case 'placeholder':
+						$widget->placeholder = trim($value, '"');
+						break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -184,6 +223,7 @@ class Hub {
 	 *
 	 * @throws \Exception
 	 */
+	/*
 	public function applyRules() {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 
@@ -241,7 +281,7 @@ class Hub {
 				);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Return hub HTML code
@@ -249,7 +289,13 @@ class Hub {
 	 * @return string
 	 */
 	public function toHtml() {
+		global $openAjaxHub; // TODO: remove
+		
 		$this->template->setTitle($this->getTitle());
+		
+		$openAjaxHub = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHub);
+		
+		$this->template->appendToHead($openAjaxHub);
 		/*
 		$content = \file_get_contents(self::TEMPLATE_DIR .'Hub.html');
 		$content = \str_replace(

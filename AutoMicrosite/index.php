@@ -14,8 +14,7 @@ spl_autoload_register(function($className) {
 	require (ROOT . str_replace('\\', DIRECTORY_SEPARATOR, $className) .'.php');
 });
 
-//new \UT\Hans\AutoMicrosite\Request();
-
+// TODO: this needs a special place
 $openAjaxHub = '<script type="text/javascript" src="js/OpenAjaxManagedHub-all.js"></script>
 <script type="text/javascript">
 if (!console) {
@@ -37,13 +36,19 @@ oaaLoaderConfig = {
 <script type="text/javascript" src="js/loader.js"></script>
 <script type="text/javascript" src="js/PageManager.js"></script>
 <script type="text/javascript">
-require(["UT/Hans/AutoMicrosite/Mashup", dojo/ready"], function(Mashup, ready){
+require(["UT/Hans/AutoMicrosite/Mashup", "dojo/ready"], function(Mashup, ready){
 	ready(function() {
 		var mashup = new Mashup("mashup");
 		mashup.loadWidgets({$widgetData});
 	});
 });
 </script>';
+
+new \UT\Hans\AutoMicrosite\Request();
+
+exit();
+
+
 
 
 $template = new \UT\Hans\AutoMicrosite\Template\MicrodataTemplate(

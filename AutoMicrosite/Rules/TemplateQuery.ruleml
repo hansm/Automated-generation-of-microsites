@@ -1,6 +1,6 @@
 <Query>
 		<Atom>
-			<Rel>TemplateSlotsFilled</Rel>
-			<slot><Ind>url</Ind><Var>url</Var></slot>
+			<Rel iri="http://automicrosite.maesalu.com/#template"/>
+			<slot><Ind>template</Ind><Var>template</Var></slot>
 		</Atom>
 </Query>

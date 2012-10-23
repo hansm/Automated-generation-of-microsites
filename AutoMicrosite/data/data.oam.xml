@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="DataWidget" id="AutoMicrosite/Manual/Data"
 		spec="1.0" width="800" height="40" jsClass="AutoMicrosite.Manual.Data"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
 	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
@@ -83,8 +84,32 @@ console.log(colNames);
 		<button id="__WID__publish" style="width:100%;height:100%;">Publish data</button>
 		]]>
     </content>
+	
+	<topic name="AutoMicrosite.Data.Select" type="object" publish="true">
+		<description>
+			Query data manager for data based on id and/or column, data will be
+			returned to appropriate topic.
+		</description>
+		<example><![CDATA[
+			{"id": "Estonia",
+				"column": 2}
+		]]></example>
+		<property name="id" datatype="string" />
+		<property name="column" datatype="number" />
+		<property name="data" datatype="array" urlparam="http://schema.org/Table">
+			<property name="data" datatype="object">
+				<property name="country" datatype="string" urlparam="http://schema.org/Country" />
+				<property name="data" datatype="array">
+					<property name="data" datatype="object">
+						<property name="year" datatype="number" urlparam="http://schema.org/Date" />
+						<property name="value" datatype="number" urlparam="http://schema.org/Number" />
+					</property>
+				</property>
+			</property>
+		</property>
+	</topic>
     
 	<categories>
-		<category name="Data" />
+		<category x:iri="http://schema.org/Dataset" />
     </categories>
 </widget>

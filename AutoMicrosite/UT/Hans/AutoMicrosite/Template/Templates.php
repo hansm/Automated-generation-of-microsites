@@ -34,7 +34,11 @@ class Templates {
 	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl 
 	 */
 	public function getRuleMl() {
-		return new RuleMl();
+		$ruleMl = new RuleMl();
+		foreach ($this->templates as $template) {
+			$ruleMl->merge($template->toRuleMl());
+		}
+		return $ruleMl;
 	}
 	
 	/**

@@ -11,6 +11,13 @@ class Widget {
 	 * @var string
 	 */
 	public $metadataFile;
+	
+	/**
+	 * Placeholder ID where to place the widget
+	 * 
+	 * @var string 
+	 */
+	public $placeholder;
 
 
 	/**

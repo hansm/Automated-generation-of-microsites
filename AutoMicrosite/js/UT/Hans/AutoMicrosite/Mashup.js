@@ -4,11 +4,13 @@
  * @author Hans
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
-	, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Grid"]
-	, function(declare, dom, domConstruct, domStyle, win, on, Grid) {
+	, "dojo/window", "dojo/on"]
+	, function(declare, dom, domConstruct, domStyle, win, on) {
 	return declare(null, {
 
 		widgetData: [],
+		
+		widgetIdPrefix: "widget",
 
 		divMashup: null,
 
@@ -28,10 +30,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		widgets: [],
 		
 		/**
-		 * DOM elements of grid
+		 * Template placeholders for the widgets
 		 */
-		grid: null,
-
+		placeholders: [],
+		
 		/**
 		 * Constructor method
 		 *
@@ -50,7 +52,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetData = [];
 			
-			this.grid = new Grid(this.divMashup);
+			// TODO: find a cross-browser way to do this
+			this.placeholders = document.querySelectorAll("[itemtype='http://automicrosite.maesalu.com/TemplatePlaceholder']");
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
@@ -77,7 +80,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		loadWidgets: function(widgets) {
 			this.widgetData = widgets;
-			this.setGridDimensions();
 			
 			// reorder in priority order
 			this.widgetData.sort(function(a, b) {
@@ -86,11 +88,24 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			
 			// TODO: remove
 			this.loadWidget(100,
-				{metadataFile: "data/data.oam.xml", horizontalPosition: "center", verticalPosition: "top"});
-
+				{metadataFile: "data/data.oam.xml", placeholder: null});
 
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
+			}
+			
+			// remove empty placeholders (optional)
+			for (var k = 0; k < this.placeholders.length; k++) {
+				var removeItem = true;
+				for (var j in this.widgetData) {
+					if (this.placeholders[k].getAttribute("itemid") == this.widgetData[j].placeholder) {
+						removeItem = false;
+						break;
+					}
+				}
+				if (removeItem) {
+					this.placeholders[k].parentNode.removeChild(this.placeholders[k]);
+				}
 			}
 		},
 		
@@ -101,7 +116,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			// create element for widget
 			var divWidget = domConstruct.create("div", {
 				id: this.widgetIdPrefix +"_"+ index
-			}, this.grid.getBlock(widget.verticalPosition, widget.horizontalPosition));
+			}, this.getPlaceholder(widget.placeholder));
 
 			// load widget
 			this.widgets[index] = this.loader.create({
@@ -119,42 +134,18 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			});
 		},
 		
-		/**
-		 * Update grid dimensions to fit widgets
-		 */
-		setGridDimensions: function() {
-			var dimensions = {};
-			var widget;
-			for (var i in this.widgetData) {
-				widget = this.widgetData[i];
-				
-				if (!dimensions[widget.verticalPosition]) {
-					dimensions[widget.verticalPosition] = {};
-				}
-				if (!dimensions[widget.verticalPosition][widget.horizontalPosition]) {
-					dimensions[widget.verticalPosition][widget.horizontalPosition] = {
-						width: 0, height: 0
-					}
-				}
-				
-				dimensions[widget.verticalPosition][widget.horizontalPosition].height += widget.height;
-				
-				if (widget.width > dimensions[widget.verticalPosition][widget.horizontalPosition].width) {
-					dimensions[widget.verticalPosition][widget.horizontalPosition].width = widget.width;
+		getPlaceholder: function(placeholder) {
+			if (!placeholder) {
+				return document.body; // append to end of document if no placeholder
+			}
+			for (var i in this.placeholders) {
+				console.log(this.placeholders[i]);
+				if (this.placeholders[i].getAttribute("itemid") == placeholder) {
+					this.placeholders[i].innerHTML = '';
+					return this.placeholders[i];
 				}
 			}
-			
-			for (var v in dimensions) {
-				for (var h in dimensions[v]) {
-					// TODO: temporary because of publish data button, remove
-					if (v == "top") {
-						dimensions[v][h].height += 40;
-					}
-					
-					this.grid.setDimensions({vertical: v, horizontal: h}
-						, dimensions[v][h].width +"px", dimensions[v][h].height +"px");
-				}
-			}
+			return document.body;
 		}
 	})
 });

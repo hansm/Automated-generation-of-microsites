@@ -1,0 +1,8 @@
+<Query>
+		<Atom>
+			<Rel iri="http://automicrosite.maesalu.com/#widgetPlace"/>
+			<slot><Ind>widget</Ind><Ind>{$widget}</Ind></slot>
+			<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+			<slot><Ind>template</Ind><Ind>{$template}</Ind></slot>
+		</Atom>
+</Query>

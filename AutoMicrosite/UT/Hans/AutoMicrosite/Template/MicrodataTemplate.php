@@ -4,6 +4,7 @@ namespace UT\Hans\AutoMicrosite\Template;
 use Lib\MicrodataPhp\MicrodataPhpDOMDocument;
 use Lib\MicrodataPhp\MicrodataPhpDOMElement;
 use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
+use UT\Hans\AutoMicrosite\RuleMl\MicrodataTemplateToRuleMl;
 
 /**
  * Template handling class
@@ -106,10 +107,10 @@ class MicrodataTemplate {
 	/**
 	 * Get RuleML facts for RuleML engine
 	 * 
-	 * @return ??? 
+	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl
 	 */
 	public function toRuleMl() {
-		$transformer = new \UT\Hans\AutoMicrosite\RuleMl\MicrodataToRuleMl();
+		$transformer = new MicrodataTemplateToRuleMl();
 		$result = $transformer->transformTemplate($this->dom, $this->fileUrl);
 		return $result;
 	}

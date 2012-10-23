@@ -80,7 +80,7 @@ class RuleMl {
 		if (!$otherRuleMl->getDom()->hasChildNodes()) {
 			return;
 		}
-		if (!$this->getDom()->hasChildNodes()
+		if (!$this->getDom() || !$this->getDom()->hasChildNodes()
 				|| ($parentElement = $this->getDom()->getElementsByTagNameNS(self::RULEML_NS, 'Assert')->item(0)) === null) {
 			// this document is empty, so take the other
 			$this->setFromDom($otherRuleMl->getDom()->cloneNode(true));

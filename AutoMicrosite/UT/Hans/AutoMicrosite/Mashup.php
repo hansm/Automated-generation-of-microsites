@@ -51,6 +51,7 @@ class Mashup {
 
 	public function applyRules() {
 		$rulesetId = $this->hub->createRuleset();
+
 		$templateUrl = $this->hub->selectTemplate($rulesetId);
 		if (!isset($templateUrl)) {
 			throw new \RuntimeException('Template not found.');
