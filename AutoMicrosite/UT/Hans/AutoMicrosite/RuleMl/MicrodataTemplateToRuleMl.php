@@ -6,7 +6,12 @@ use DOMDocument;
 use DOMElement;
 use Lib\MicrodataPhp\MicrodataPhpDOMDocument;
 use Lib\MicrodataPhp\MicrodataPhpDOMElement;
-use UT\Hans\AutoMicrosite\Util\KeyValue;
+
+use UT\Hans\AutoMicrosite\RuleMl\Element\Slot;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Ind;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Rel;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Atom;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Variable;
 
 /**
  * Create RuleML facts from template
@@ -18,6 +23,8 @@ class MicrodataTemplateToRuleMl {
 	const RULML_NS = 'http://ruleml.org/spec';
 	
 	const PLACEHOLDER_ITEMTYPE = 'http://automicrosite.maesalu.com/TemplatePlaceholder';
+	
+	private $dimensionVariables = array('min-height', 'min-width', 'max-height', 'max-height');
 	
 	public function __construct() {
 		//
@@ -70,59 +77,76 @@ class MicrodataTemplateToRuleMl {
 		$templateImpliesElement->appendChild($templateThenElement);
 		
 		$this->createAtom($templateThenElement, 'http://automicrosite.maesalu.com/#template', array(
-			new KeyValue('template', new KeyValue('Ind', $templateId))
+			new Slot(new Ind('template'), new Ind($templateId))
 		));
 		
 		foreach ($properties as $placeholderId => $templateProp) {
 			$isOptional = isset($templateProp['optional']) && isset($templateProp['optional'][0])
 							&& strcasecmp($templateProp['optional'][0], 'true') == 0;
 			
+			// Category limits
 			if (!empty($templateProp['category'])) {
-				foreach ($templateProp['category'] as $categoryValue) {
-					$this->createAtom($assertElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
-						new KeyValue('template', new KeyValue('Ind', $templateId)),
-						new KeyValue('placeholder', new KeyValue('Ind', $placeholderId)),
-						new KeyValue('category', new KeyValue('Ind', $categoryValue)),
+				$this->createCategoryFacts($templateProp['category'], $assertElement, $templateId, $placeholderId);
+			}
+			
+			// Dimension limits
+			foreach ($this->dimensionVariables as $dimensionVar) {
+				if (!empty($templateProp[$dimensionVar])) {
+					$this->createAtom($assertElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#'. $dimensionVar, array(
+						new Slot(new Ind('template'), new Ind($templateId)),
+						new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+						new Slot(
+							new Ind($dimensionVar),
+							new Ind($templateProp[$dimensionVar][0], null, Element\Type::INTEGER)
+						)
 					));
 				}
 			}
+			
+			// Allows multiple widgets
+			if (isset($templateProp['multiple']) && isset($templateProp['multiple'][0])
+					&& strcasecmp($templateProp['multiple'][0], 'true') == 0) {
+				$this->createAtom($assertElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#multiple', array(
+					new Slot(new Ind('template'), new Ind($templateId)),
+					new Slot(new Ind('placeholder'), new Ind($placeholderId))
+				));
+			}
+			
+			// Check that there is a widget for this placeholders
+			$impliesElement = $document->createElementNS(self::RULML_NS, 'Implies');
+			$assertElement->appendChild($impliesElement);
 
-			// check that there is a widget for this placeholders
+			$ifElement = $document->createElementNS(self::RULML_NS, 'if');
+			$impliesElement->appendChild($ifElement);
+			$andElement = $document->createElementNS(self::RULML_NS, 'And');
+			$ifElement->appendChild($andElement);
+
+			$this->createAtom($andElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+				new Slot(new Ind('template'), new Ind($templateId)),
+				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+				new Slot(new Ind('category'), new Variable('category'))
+			));
+			
+			$this->createAtom($andElement, 'http://openajax.org/metadata#category', array(
+				new Slot(new Ind('widget'), new Variable('widget')),
+				new Slot(new Ind('category'), new Variable('category'))
+			));
+			
+			$thenElement = $document->createElementNS(self::RULML_NS, 'then');
+			$impliesElement->appendChild($thenElement);
+			
+			$relName = 'http://automicrosite.maesalu.com/#widgetPlace';
+			$this->createAtom($thenElement, $relName, array(
+				new Slot(new Ind('widget'), new Variable('widget')),
+				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+				new Slot(new Ind('template'), new Ind($templateId))
+			));
+			
 			if (!$isOptional) {
-				$impliesElement = $document->createElementNS(self::RULML_NS, 'Implies');
-				$assertElement->appendChild($impliesElement);
-				
-				$ifElement = $document->createElementNS(self::RULML_NS, 'if');
-				$impliesElement->appendChild($ifElement);
-				$andElement = $document->createElementNS(self::RULML_NS, 'And');
-				$ifElement->appendChild($andElement);
-				
-				$this->createAtom($andElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
-					new KeyValue('template', new KeyValue('Ind', $templateId)),
-					new KeyValue('placeholder', new KeyValue('Ind', $placeholderId)),
-					new KeyValue('category', new KeyValue('Var', 'category')),
-				));
-
-				$this->createAtom($andElement, 'http://openajax.org/metadata#category', array(
-					new KeyValue('widget', new KeyValue('Var', 'widget')),
-					new KeyValue('category', new KeyValue('Var', 'category')),
-				));
-				
-				$thenElement = $document->createElementNS(self::RULML_NS, 'then');
-				$impliesElement->appendChild($thenElement);
-				
-				//$relName = 'Rel_'. $templateId .'_'. $placeholderId;
-				$relName = 'http://automicrosite.maesalu.com/#widgetPlace';
-				$this->createAtom($thenElement, $relName, array(
-					new KeyValue('widget', new KeyValue('Var', 'widget')),
-					new KeyValue('placeholder', new KeyValue('Ind', $placeholderId)),
-					new KeyValue('template', new KeyValue('Ind', $templateId))
-				));
-				
 				$this->createAtom($templateIfAndElement, $relName, array(
-					new KeyValue('widget', new KeyValue('Var', $placeholderId .'_widget')),
-					new KeyValue('placeholder', new KeyValue('Ind', $placeholderId)),
-					new KeyValue('template', new KeyValue('Ind', $templateId))
+					new Slot(new Ind('widget'), new Variable($placeholderId .'_widget')),
+					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+					new Slot(new Ind('template'), new Ind($templateId))
 				));
 			}
 		}
@@ -130,33 +154,33 @@ class MicrodataTemplateToRuleMl {
 		return RuleMl::createFromDom($document);
 	}
 	
+	private function createCategoryFacts($categories, $parent, $templateId, $placeholderId) {
+		foreach ($categories as $categoryValue) {
+			$this->createAtom($parent, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+				new Slot(new Ind('template'), new Ind($templateId)),
+				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+				new Slot(new Ind('category'), new Ind($categoryValue))
+			));
+		}
+	}
+	
 	private function createAtom(DOMElement $parentElement, $rel, array $slots = array()) {
-		$document = $parentElement->ownerDocument;
+		$atom = new Atom();
 		
-		$atomElement = $document->createElementNS(self::RULML_NS, 'Atom');
-		$parentElement->appendChild($atomElement);
-		
-		// rel
-		$relElement = $document->createElementNS(self::RULML_NS, 'Rel');
+		$relElement = new Rel();
 		if (stripos($rel, 'http:') === 0) {
-			$relElement->setAttribute('iri', $rel);
+			$relElement->setIri($rel);
 		} else {
-			$relElement->appendChild($document->createTextNode($rel));
+			$relElement->setValue($rel);
 		}
-		$atomElement->appendChild($relElement);
+		$atom->appendChild($relElement);
 		
-		// slots
 		foreach ($slots as $slot) {
-			$slotElement = $document->createElementNS(self::RULML_NS, 'slot');
-			$atomElement->appendChild($slotElement);
-			
-			$slotElement->appendChild(
-				$document->createElementNS(self::RULML_NS, 'Ind', $slot->key)
-			);
-			$slotElement->appendChild(
-				$document->createElementNS(self::RULML_NS, $slot->value->key, $slot->value->value)
-			);
+			$atom->appendChild($slot);
 		}
+		
+		$document = $parentElement->ownerDocument;
+		$parentElement->appendChild($atom->getDom($document));
 	}
 	
 }

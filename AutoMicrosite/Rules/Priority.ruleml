@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RuleML xmlns="http://ruleml.org/spec">
+	<Assert>
+
+		<Implies>
+			<if>
+				<Atom>
+					<Rel iri="http://openajax.org/metadata#category"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://schema.org/MediaObject</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<Implies>
+			<if>
+				<Atom>
+					<Rel iri="http://openajax.org/metadata#category"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://schema.org/Map</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<Implies>
+			<if>
+				<Atom>
+					<Rel iri="http://openajax.org/metadata#category"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://schema.org/Table</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Ind>1</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+	</Assert>
+	
+</RuleML>

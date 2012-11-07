@@ -4,9 +4,16 @@
  * @author Hans
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
-	, "dojo/window", "dojo/on"]
-	, function(declare, dom, domConstruct, domStyle, win, on) {
+		, "dojo/window", "dojo/on", "dojo/query", "dojo/dom-attr"
+		, "UT/Hans/AutoMicrosite/Size", "UT/Hans/AutoMicrosite/Log"
+		, "UT/Hans/AutoMicrosite/WidgetLoader"]
+	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr, SizeHandler, log, Loader) {
 	return declare(null, {
+		
+		/**
+		 * Template placeholder itemtype
+		 */
+		TEMPLATE_PLACEHOLDER: "http://automicrosite.maesalu.com/TemplatePlaceholder",
 
 		widgetData: [],
 		
@@ -15,9 +22,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		divMashup: null,
 
 		/**
-		 * Widget loader object
+		 * OpenAjax widget loader object
 		 */
-		loader: null,
+		openAjaxLoader: null,
 
 		/**
 		 * OpenAjax hub object
@@ -35,25 +42,72 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		placeholders: [],
 		
 		/**
+		 * Widget resize handler
+		 */
+		size: null,
+		
+		loader: null,
+		
+		loadingMessage: null,
+		
+		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
-		constructor: function(divMashupId) {
-			// create loader and a hub
-			this.loader = new OpenAjax.widget.Loader({ManagedHub: {
+		constructor: function(divMashupId, widgetData) {
+			this.divMashup = dom.byId(divMashupId);
+			this.widgetData = widgetData;
+
+			// Create hub with loader object
+			this.openAjaxLoader = new OpenAjax.widget.Loader({ManagedHub: {
 				onPublish:			this.onPublish.bind(this),
 				onSubscribe:		this.onSubscribe.bind(this),
 				onUnsubscribe:		this.onUnsubscribe.bind(this),
 				onSecurityAlert:	this.onSecurityAlert.bind(this),
 				scope: window
 			}});
-			this.hub = this.loader.hub;
-			this.divMashup = dom.byId(divMashupId);
-			this.widgetData = [];
+			this.hub = this.openAjaxLoader.hub;
+
+			// Find template placeholders
+			this.placeholders = domQuery("[itemtype='"+ this.TEMPLATE_PLACEHOLDER +"']");
+			log("Placeholders found", this.placeholders.length);
+			if (this.placeholders.length == 0) {
+				this.handleError("No placeholders found on the template.");
+				return;
+			}
 			
-			// TODO: find a cross-browser way to do this
-			this.placeholders = document.querySelectorAll("[itemtype='http://automicrosite.maesalu.com/TemplatePlaceholder']");
+			this.size = new SizeHandler(this.widgetData, this.placeholders);
+			
+			this.loader = new Loader(this.openAjaxLoader, this.widgetData, this.placeholders, this.visualWidgetsLoaded.bind(this),
+				this.allWidgetsLoaded.bind(this));
+			
+			// Loading mashup message
+			var dimensions = win.getBox();
+			this.loadingMessage = domConstruct.create("div", {
+				id: "loadingMashup",
+				innerHTML: "Loading mashup...",
+				style: {
+					background: "rgba(0, 0, 0, 0.5)",
+					color: "#FFFFFF",
+					position: "absolute",
+					top: 0,
+					left: 0,
+					width: "100%",
+					height: "100%",
+					padding: "0",
+					textAlign: "center",
+					lineHeight: dimensions.h +"px",
+					zIndex: 100000
+				}
+			}, document.body);
+		},
+		
+		/**
+		 * Handle error message
+		 */
+		handleError: function(errorMessage) {
+			alert(errorMessage);
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
@@ -73,28 +127,37 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		*/
 		onSecurityAlert: function(source, alertType) {
 			// TODO: do something about it
+			this.handleError(source +" "+ alertType);
+		},
+		
+		/**
+		 * Actions to perform once visual widgets have finished loading
+		 */
+		visualWidgetsLoaded: function() {
+			this.size.run();
+		},
+		
+		allWidgetsLoaded: function() {
+			this.loadingMessage.style.display = "none";
 		},
 
 		/**
 		 * Load all widgets into mashup
 		 */
-		loadWidgets: function(widgets) {
-			this.widgetData = widgets;
+		start: function() {
+			try {
+				this.loader.load();
+			} catch (e) {
+				this.handleError(e);
+			}
 			
-			// reorder in priority order
-			this.widgetData.sort(function(a, b) {
-				return a.priority - b.priority;
-			});
-			
-			// TODO: remove
-			this.loadWidget(100,
-				{metadataFile: "data/data.oam.xml", placeholder: null});
-
+/*
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
 			}
 			
 			// remove empty placeholders (optional)
+			/*
 			for (var k = 0; k < this.placeholders.length; k++) {
 				var removeItem = true;
 				for (var j in this.widgetData) {
@@ -107,45 +170,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					this.placeholders[k].parentNode.removeChild(this.placeholders[k]);
 				}
 			}
-		},
-		
-		/**
-		 * Load widget into mashup
-		 */
-		loadWidget: function(index, widget) {
-			// create element for widget
-			var divWidget = domConstruct.create("div", {
-				id: this.widgetIdPrefix +"_"+ index
-			}, this.getPlaceholder(widget.placeholder));
-
-			// load widget
-			this.widgets[index] = this.loader.create({
-				spec: widget.metadataFile,
-				target: divWidget,
-				properties: widget.properties ? widget.properties : {},
-				onComplete: function(metadata) {
-					console.log("Loaded:");
-					console.log(metadata);
-				},
-				onError: function(error) {
-					console.log(error);
-					alert(error);
-				}
-			});
-		},
-		
-		getPlaceholder: function(placeholder) {
-			if (!placeholder) {
-				return document.body; // append to end of document if no placeholder
-			}
-			for (var i in this.placeholders) {
-				console.log(this.placeholders[i]);
-				if (this.placeholders[i].getAttribute("itemid") == placeholder) {
-					this.placeholders[i].innerHTML = '';
-					return this.placeholders[i];
-				}
-			}
-			return document.body;
+			*/
 		}
+
 	})
 });

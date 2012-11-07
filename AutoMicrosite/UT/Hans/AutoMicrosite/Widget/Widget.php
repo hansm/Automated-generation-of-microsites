@@ -59,6 +59,13 @@ class Widget {
 	 * @var int
 	 */
 	public $priority;
+	
+	/**
+	 * Whether widget contains user interface
+	 * 
+	 * @var boolean 
+	 */
+	public $visual;
 
 	/**
 	 * Return widget order number in hub

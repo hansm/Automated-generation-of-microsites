@@ -38,8 +38,8 @@ oaaLoaderConfig = {
 <script type="text/javascript">
 require(["UT/Hans/AutoMicrosite/Mashup", "dojo/ready"], function(Mashup, ready){
 	ready(function() {
-		var mashup = new Mashup("mashup");
-		mashup.loadWidgets({$widgetData});
+		var mashup = new Mashup("mashup", {$widgetData});
+		mashup.start();
 	});
 });
 </script>';

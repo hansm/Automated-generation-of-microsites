@@ -21,7 +21,7 @@
 	AutoMicrosite.Manual.Data.prototype.onLoad = function() {
 		var thisWidget = this;
 		
-		$.get("data/data.txt", function(data) {
+		$.get("Widgets/Data/data.txt", function(data) {
 			data = data.split("\n");
 
 			var newData = [];
