@@ -27,10 +27,6 @@ AutoMicrosite.Manual.DataManager.prototype = {
 				thisWidget.data.push(receivedData[i]);
 			}
 
-			console.log("Received data:");
-			console.log(thisWidget.columns);
-			console.log(thisWidget.data);
-			
 			thisWidget.publishSummary();
 			thisWidget.publishTable();
 			thisWidget.publish2D("1997");
@@ -90,7 +86,6 @@ AutoMicrosite.Manual.DataManager.prototype = {
 		for (var i = 0; i < this.data.length; i++) {
 			data.push({id: this.data[i][0], value: this.data[i][column]});
 		}
-		console.log(data);
 		this.OpenAjax.hub.publish("AutoMicrosite.Data.2D", {data: data});
 		
 		this.publishSummary(column);

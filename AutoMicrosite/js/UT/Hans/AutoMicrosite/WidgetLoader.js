@@ -39,6 +39,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		dataWidgets: [],
 		dataWidgetsLoaded: [],
 		
+		/**
+		 * Loaded widgets management objects
+		 */
+		visualWidgetsLoadedObjects: [],
+		dataWidgetsLoadedObjects: [],
+		
 		constructor: function(openAjaxLoader, widgetData, placeholders, visualDone, allDone) {
 			log("WidgetLoader", "constructor");
 			this.loader = openAjaxLoader;
@@ -54,12 +60,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		load: function() {
 			log("WidgetLoader", "Start loading visual widgets");
 			
+			this.emptyPlaceholders();
+			
 			// Reorder in priority order
-			/*
 			this.data.sort(function(a, b) {
-				return a.priority - b.priority;
+				return b.priority - a.priority;
 			});
-			*/
+			
 			
 			// TODO: this should also come from server
 			//this.data.push({metadataFile: "data/data.oam.xml?v="+ Math.random(), placeholder: null, orderNumber: 1000});
@@ -78,6 +85,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			log("dataWidgets", this.dataWidgets);
 			
 			// Load visual widgets
+			if (this.visualWidgets.length == 0) {
+				this.visualDone();
+				return;
+			}
 			for (i in this.data) {
 				if (this.visualWidgets.indexOf(this.data[i].orderNumber) != -1) {
 					this.loadVisualWidget(this.data[i]);
@@ -86,8 +97,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 		
 		loadVisualWidget: function(widget) {
-			var callback = (function(widgetId) {
+			var callback = (function(widgetId, widgetObject) {
 				this.visualWidgetsLoaded.push(widgetId);
+				this.visualWidgetsLoadedObjects.push(widgetObject);
 				if (this.visualWidgetsLoaded.length == this.visualWidgets.length) {
 					this.visualDone();
 				}
@@ -96,8 +108,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 		
 		loadDataWidget: function(widget) {
-			var callback = (function(widgetId) {
+			var callback = (function(widgetId, widgetObject) {
 				this.dataWidgetsLoaded.push(widgetId);
+				this.dataWidgetsLoadedObjects.push(widgetObject);
 				if (this.dataWidgetsLoaded.length == this.dataWidgets.length) {
 					this.done();
 				}
@@ -107,7 +120,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		
 		loadWidget: function(widget, callback) {
 			var widgetId = widget.orderNumber;
-			
+
 			// Create element for widget
 			var divWidget = domConstruct.create("div", {
 				id: this.WIDGET_ELEMENT_ID_PREFIX +"_"+ widgetId
@@ -115,12 +128,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 			// Load widget
 			this.loader.create({
-				spec: widget.metadataFile,
+				spec: widget.metadataFile +"?v="+ Math.random(), // TODO: remove random, needed for dev
 				target: divWidget,
 				properties: widget.properties ? widget.properties : {},
-				onComplete: function(metadata) {
+				onComplete: function(widgetObject) {
 					log("Widget loaded", widgetId);
-					callback();
+					widgetObject.widgetId2 = widgetId;
+					callback(widgetObject);
 				},
 				onError: function(error) {
 					console.log(error);
@@ -135,7 +149,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		visualDone: function() {
 			log("WidgetLoader", "Finished loading visual widgets");
 			if (typeof this.visualDone == "function") {
-				this.visualDoneCallback();
+				this.visualDoneCallback(this.visualWidgetsLoadedObjects
+					, this.dataWidgetsLoadedObjects);
 			}
 			this.loadDataWidgets();
 		},
@@ -145,6 +160,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		loadDataWidgets: function() {
 			log("WidgetLoader", "Start loading data widgets");
+			if (this.dataWidgets.length == 0) {
+				this.done();
+				return;
+			}
 			for (i in this.data) {
 				if (this.dataWidgets.indexOf(this.data[i].orderNumber) != -1) {
 					this.loadDataWidget(this.data[i]);
@@ -154,7 +173,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		
 		done: function() {
 			if (typeof this.allDoneCallback == "function") {
-				this.allDoneCallback();
+				this.allDoneCallback(this.visualWidgetsLoadedObjects
+					, this.dataWidgetsLoadedObjects);
 			}
 			log("WidgetLoader", "Done");
 		},
@@ -163,13 +183,20 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			if (!placeholder) {
 				return document.body; // append to end of document if no placeholder, e.g. data widgets
 			}
+		
 			for (var i in this.placeholders) {
 				if (this.placeholders[i].getAttribute("itemid") == placeholder) {
-					this.placeholders[i].innerHTML = "";
 					return this.placeholders[i];
 				}
 			}
+
 			return document.body;
+		},
+			
+		emptyPlaceholders: function() {
+			for (var i in this.placeholders) {
+				this.placeholders[i].innerHTML = "";
+			}
 		}
 		
 	});

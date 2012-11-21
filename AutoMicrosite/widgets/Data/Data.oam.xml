@@ -44,7 +44,52 @@
 				newData.push(dataRow);
 			}
 
+/*
+			[
+				{
+					"country": "Estonia",
+					"values":
+						[
+							{"year": 1995, "value": 10},
+							{"year": 1996, "value": 11},
+							{"year": 1997, "value": 12},
+						]
+				}
+			]
+*/
+
+			// Parse data
+			for (var i in data) {
+				data[i] = $.map(data[i].split("\t"), $.trim);
+			}
+
+			var columns = data[0];
+			var mapData = [];
+			var row, values, dataRow, val;
+			for (var i = 1; i < data.length; i++) {
+				dataRow = data[i];
+				values = [];
+				for (var j = 1; j < dataRow.length; j++) {
+					val = dataRow[j] == ":" ? null : dataRow[j];
+					if (val != null && !isNaN(val)) {
+						val = parseFloat(val);
+					}
+					values.push({
+						year: columns[j],
+						value: val
+					});
+				}
+				mapData.push({
+					country: dataRow[0],
+					values: values
+				});
+			}
+			
+
 			thisWidget.OpenAjax.hub.publish("AutoMicrosite.Data.Receive", newData);
+
+
+			thisWidget.OpenAjax.hub.publish("AutoMicrosite.Topic.Map.Data", mapData);
 		}, "text");
 	};
 	]]></require>

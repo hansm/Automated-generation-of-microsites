@@ -7,6 +7,10 @@ use DOMElement;
 use Lib\MicrodataPhp\MicrodataPhpDOMDocument;
 use Lib\MicrodataPhp\MicrodataPhpDOMElement;
 
+use UT\Hans\AutoMicrosite\RuleMl\Element\RuleMl AS RuleMlElement;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Assert;
+use UT\Hans\AutoMicrosite\RuleMl\Element\Implies;
+use UT\Hans\AutoMicrosite\RuleMl\Element\AndElement;
 use UT\Hans\AutoMicrosite\RuleMl\Element\Slot;
 use UT\Hans\AutoMicrosite\RuleMl\Element\Ind;
 use UT\Hans\AutoMicrosite\RuleMl\Element\Rel;
@@ -19,40 +23,36 @@ use UT\Hans\AutoMicrosite\RuleMl\Element\Variable;
  * @author Hans
  */
 class MicrodataTemplateToRuleMl {
-	
+
 	const RULML_NS = 'http://ruleml.org/spec';
-	
+
 	const PLACEHOLDER_ITEMTYPE = 'http://automicrosite.maesalu.com/TemplatePlaceholder';
-	
+
+	/**
+	 * Template fits facts relation
+	 */
+	const TEMPLATE_REL = 'http://automicrosite.maesalu.com/#template';
+
 	private $dimensionVariables = array('min-height', 'min-width', 'max-height', 'max-height');
-	
+
 	public function __construct() {
 		//
 	}
 	
 	/**
-	 *
-	 * @param MicrodataPhpDOMDocument $microdataDocument
-	 * @param type $templateId
-	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl
+	 * Get placeholder properties from DOM document
+	 * 
+	 * @param \Lib\MicrodataPhp\MicrodataPhpDOMDocument $microdataDocument
+	 * @return type
 	 */
-	public function transformTemplate(MicrodataPhpDOMDocument $microdataDocument, $templateId = null) {
-		$document = new DOMDocument('1.0', 'UTF-8');
-		
-		$ruleMlElement = $document->createElementNS(self::RULML_NS, 'RuleML');
-		$document->appendChild($ruleMlElement);
-		
-		$assertElement = $document->createElementNS(self::RULML_NS, 'Assert');
-		$ruleMlElement->appendChild($assertElement);
-		
+	public static function getPlaceholders(MicrodataPhpDOMDocument $microdataDocument) {
 		$nodeList = $microdataDocument->getItems(self::PLACEHOLDER_ITEMTYPE);
-		
 		$properties = array();
 		for ($i = 0; $i < $nodeList->length; $i++) {
 			$item = $nodeList->item($i);
 			$itemId = $item->itemId();
-			
-			// read properties
+
+			// Read properties
 			$properties[$itemId] = array();
 			foreach ($item->properties() as $property) {
 				foreach ($property->itemProp() as $propertyName) {
@@ -64,109 +64,147 @@ class MicrodataTemplateToRuleMl {
 			}
 		}
 
-		// create facts
-		$templateImpliesElement = $document->createElementNS(self::RULML_NS, 'Implies');
-		$assertElement->appendChild($templateImpliesElement);
+		return $properties;
+	}
+
+	/**
+	 *
+	 * @param MicrodataPhpDOMDocument $microdataDocument
+	 * @param type $templateId
+	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl
+	 */
+	public function transformTemplate(MicrodataPhpDOMDocument $microdataDocument, $templateId = null) {
+		$properties = self::getPlaceholders($microdataDocument);
+
+		$ruleMl = new RuleMlElement();
+		$assert = new Assert();
+		$ruleMl->appendChild($assert);
+
+		// Create facts
+		// Template matches widgets relation
+		$templateImplies = new Implies();
+		$assert->appendChild($templateImplies);
 		
-		$templateIfElement = $document->createElementNS(self::RULML_NS, 'if');
-		$templateImpliesElement->appendChild($templateIfElement);
-		$templateIfAndElement = $document->createElementNS(self::RULML_NS, 'And');
-		$templateIfElement->appendChild($templateIfAndElement);
+		$templateIfAnd = new AndElement();
+		$templateImplies->createIf(array($templateIfAnd));
 		
-		$templateThenElement = $document->createElementNS(self::RULML_NS, 'then');
-		$templateImpliesElement->appendChild($templateThenElement);
-		
-		$this->createAtom($templateThenElement, 'http://automicrosite.maesalu.com/#template', array(
-			new Slot(new Ind('template'), new Ind($templateId))
+		$templateImplies->createThen(array(
+			self::createAtom(self::TEMPLATE_REL, array(
+				new Slot(new Ind('template'), new Ind($templateId))
+			))
 		));
-		
+
 		foreach ($properties as $placeholderId => $templateProp) {
 			$isOptional = isset($templateProp['optional']) && isset($templateProp['optional'][0])
 							&& strcasecmp($templateProp['optional'][0], 'true') == 0;
-			
+
 			// Category limits
 			if (!empty($templateProp['category'])) {
-				$this->createCategoryFacts($templateProp['category'], $assertElement, $templateId, $placeholderId);
+				$assert->appendChildren(
+					self::createCategoryFacts($templateProp['category']
+						, $templateId, $placeholderId)
+				);
 			}
-			
+
 			// Dimension limits
 			foreach ($this->dimensionVariables as $dimensionVar) {
 				if (!empty($templateProp[$dimensionVar])) {
-					$this->createAtom($assertElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#'. $dimensionVar, array(
-						new Slot(new Ind('template'), new Ind($templateId)),
-						new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-						new Slot(
-							new Ind($dimensionVar),
-							new Ind($templateProp[$dimensionVar][0], null, Element\Type::INTEGER)
-						)
-					));
+					$assert->appendChild(
+						self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#'. $dimensionVar, array(
+							new Slot(new Ind('template'), new Ind($templateId)),
+							new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+							new Slot(
+								new Ind($dimensionVar),
+								new Ind($templateProp[$dimensionVar][0], null, Element\Type::INTEGER)
+							)
+						))
+					);
 				}
 			}
-			
+
 			// Allows multiple widgets
 			if (isset($templateProp['multiple']) && isset($templateProp['multiple'][0])
 					&& strcasecmp($templateProp['multiple'][0], 'true') == 0) {
-				$this->createAtom($assertElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#multiple', array(
-					new Slot(new Ind('template'), new Ind($templateId)),
-					new Slot(new Ind('placeholder'), new Ind($placeholderId))
-				));
+				$assert->appendChild(
+					self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#multiple', array(
+						new Slot(new Ind('template'), new Ind($templateId)),
+						new Slot(new Ind('placeholder'), new Ind($placeholderId))
+					))
+				);
 			}
-			
+
 			// Check that there is a widget for this placeholders
-			$impliesElement = $document->createElementNS(self::RULML_NS, 'Implies');
-			$assertElement->appendChild($impliesElement);
+			$implies = new Implies();
+			$assert->appendChild($implies);
 
-			$ifElement = $document->createElementNS(self::RULML_NS, 'if');
-			$impliesElement->appendChild($ifElement);
-			$andElement = $document->createElementNS(self::RULML_NS, 'And');
-			$ifElement->appendChild($andElement);
+			$ifAnd = new AndElement();
+			$ifAnd->appendChild(
+				self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+					new Slot(new Ind('template'), new Ind($templateId)),
+					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+					new Slot(new Ind('category'), new Variable('category'))
+				))
+			);
+			$ifAnd->appendChild(
+				self::createAtom('http://openajax.org/metadata#category', array(
+					new Slot(new Ind('widget'), new Variable('widget')),
+					new Slot(new Ind('category'), new Variable('category'))
+				))
+			);
+			$implies->createIf(array($ifAnd));
 
-			$this->createAtom($andElement, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
-				new Slot(new Ind('template'), new Ind($templateId)),
-				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-				new Slot(new Ind('category'), new Variable('category'))
-			));
-			
-			$this->createAtom($andElement, 'http://openajax.org/metadata#category', array(
-				new Slot(new Ind('widget'), new Variable('widget')),
-				new Slot(new Ind('category'), new Variable('category'))
-			));
-			
-			$thenElement = $document->createElementNS(self::RULML_NS, 'then');
-			$impliesElement->appendChild($thenElement);
-			
+			$implies->createThen();
 			$relName = 'http://automicrosite.maesalu.com/#widgetPlace';
-			$this->createAtom($thenElement, $relName, array(
-				new Slot(new Ind('widget'), new Variable('widget')),
-				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-				new Slot(new Ind('template'), new Ind($templateId))
-			));
-			
-			if (!$isOptional) {
-				$this->createAtom($templateIfAndElement, $relName, array(
-					new Slot(new Ind('widget'), new Variable($placeholderId .'_widget')),
+			$implies->getThen()->appendChild(
+				self::createAtom($relName, array(
+					new Slot(new Ind('widget'), new Variable('widget')),
 					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 					new Slot(new Ind('template'), new Ind($templateId))
-				));
+				))
+			);
+
+			if (!$isOptional) {
+				$templateIfAnd->appendChild(
+					self::createAtom($relName, array(
+						new Slot(new Ind('widget'), new Variable($placeholderId .'_widget')),
+						new Slot(new Ind('placeholder'), new Ind($placeholderId)),
+						new Slot(new Ind('template'), new Ind($templateId))
+					))
+				);
 			}
 		}
-		
-		return RuleMl::createFromDom($document);
+
+		return RuleMl::createFromDom($ruleMl->getDomDocument());
 	}
-	
-	private function createCategoryFacts($categories, $parent, $templateId, $placeholderId) {
+
+	/**
+	 * Create category facts
+	 * 
+	 * @param array $categories
+	 * @param string $templateId
+	 * @param string $placeholderId
+	 * @return array
+	 */
+	private static function createCategoryFacts(array $categories, $templateId, $placeholderId) {
+		$facts = array();
 		foreach ($categories as $categoryValue) {
-			$this->createAtom($parent, 'http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+			$facts[] = self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
 				new Slot(new Ind('template'), new Ind($templateId)),
 				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 				new Slot(new Ind('category'), new Ind($categoryValue))
 			));
 		}
+		return $facts;
 	}
-	
-	private function createAtom(DOMElement $parentElement, $rel, array $slots = array()) {
+
+	/**
+	 * Create Atom element
+	 *
+	 * @return \UT\Hans\AutoMicrosite\RuleMl\Element\Atom
+	 */
+	private static function createAtom($rel, array $slots = array()) {
 		$atom = new Atom();
-		
+
 		$relElement = new Rel();
 		if (stripos($rel, 'http:') === 0) {
 			$relElement->setIri($rel);
@@ -174,15 +212,14 @@ class MicrodataTemplateToRuleMl {
 			$relElement->setValue($rel);
 		}
 		$atom->appendChild($relElement);
-		
+
 		foreach ($slots as $slot) {
 			$atom->appendChild($slot);
 		}
-		
-		$document = $parentElement->ownerDocument;
-		$parentElement->appendChild($atom->getDom($document));
+
+		return $atom;
 	}
-	
+
 }
 
 ?>

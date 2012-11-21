@@ -50,15 +50,22 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		
 		loadingMessage: null,
 		
+		dataWidgets: [],
+		
+		visualWidgets: [],
+		
+		templateData: [],
+		
 		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
-		constructor: function(divMashupId, widgetData) {
+		constructor: function(divMashupId, widgetData, templateData) {
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetData = widgetData;
-
+			this.templateData = templateData;
+console.log(templateData);
 			// Create hub with loader object
 			this.openAjaxLoader = new OpenAjax.widget.Loader({ManagedHub: {
 				onPublish:			this.onPublish.bind(this),
@@ -76,9 +83,11 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.handleError("No placeholders found on the template.");
 				return;
 			}
-			
-			this.size = new SizeHandler(this.widgetData, this.placeholders);
-			
+
+			// Load widgets
+			this.size = null;
+			this.dataWidgets = [];
+			this.visualWidgets = [];
 			this.loader = new Loader(this.openAjaxLoader, this.widgetData, this.placeholders, this.visualWidgetsLoaded.bind(this),
 				this.allWidgetsLoaded.bind(this));
 			
@@ -133,7 +142,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * Actions to perform once visual widgets have finished loading
 		 */
-		visualWidgetsLoaded: function() {
+		visualWidgetsLoaded: function(visualWidgets, dataWidgets) {
+			this.size = new SizeHandler(this.widgetData, this.placeholders, visualWidgets);
 			this.size.run();
 		},
 		

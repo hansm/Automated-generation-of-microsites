@@ -1,24 +1,24 @@
 <?php
 namespace UT\Hans\AutoMicrosite\RuleMl\Element;
 
-class Atom extends RuleMl {
-	
+class Atom extends AbstractRuleMl {
+
 	protected $elementName = 'Atom';
-	
+
 	private $children = array();
-	
+
 	public function getChildren() {
 		return $this->children;
 	}
-	
+
 	public function __construct(array $children = array()) {
 		$this->children = $children;
 	}
-	
-	public function appendChild(RuleMl $element) {
+
+	public function appendChild(IRuleMl $element) {
 		$this->children[] = $element;
 	}
-	
+
 	public function getDom(\DOMDocument $document) {
 		$element = $document->createElementNS(RuleMl::RULML_NS, $this->getElementName());
 
@@ -28,7 +28,7 @@ class Atom extends RuleMl {
 
 		return $element;
 	}
-	
+
 }
 
 ?>

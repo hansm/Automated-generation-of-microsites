@@ -25,6 +25,8 @@ class Hub {
 	
 	const WIDGET_SELECT_RULES = 'Rules/WidgetSelectRules.ruleml';
 	
+	const PRIORITY_RULES = 'Rules/Priority.ruleml';
+	
 	const TEMPLATE_QUERY = 'Rules/TemplateQuery.ruleml';
 	
 	const WIDGET_PLACE_QUERY = 'Rules/WidgetPlaceQuery.ruleml';
@@ -128,10 +130,12 @@ class Hub {
 
 		$rulesFile = \file_get_contents(self::RULES_FILE);
 		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
+		$priorityRulesFile = \file_get_contents(self::PRIORITY_RULES);
 
 		// rules
 		$rules = RuleMl::createFromString($rulesFile);
 		$rules->merge(RuleMl::createFromString($rulesUtilFile));
+		$rules->merge(RuleMl::createFromString($priorityRulesFile));
 
 		// add widget facts
 		$transform = new OpenAjaxToRuleMl();
@@ -190,7 +194,7 @@ class Hub {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 		
 		foreach ($this->widgets as $widget) {
-			if (strpos($widget->metadataFile, 'DataManager') !== false) { // TODO: this is bad
+			if (strpos($widget->metadataFile, 'Data') !== false) { // TODO: this is bad
 				continue;
 			}
 			
@@ -212,6 +216,9 @@ class Hub {
 				switch (\trim($variables->item($i)->textContent)) {
 					case 'placeholder':
 						$widget->placeholder = trim($value, '"');
+						break;
+					case 'priority':
+						$widget->priority = (int) $value;
 						break;
 				}
 			}
@@ -289,11 +296,15 @@ class Hub {
 	 * @return string
 	 */
 	public function toHtml() {
-		global $openAjaxHub; // TODO: remove
+		$openAjaxHub = \file_get_contents('OpenAjaxHubHeaders.html');
+		if (!$openAjaxHub) {
+			throw new \RuntimeException('Could not load OpenAjax hub headers.');
+		}
 		
 		$this->template->setTitle($this->getTitle());
 		
 		$openAjaxHub = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHub);
+		$openAjaxHub = \str_replace('{$templateData}', $this->template->getJson(), $openAjaxHub);
 		
 		$this->template->appendToHead($openAjaxHub);
 		/*

@@ -54,6 +54,31 @@
 		<div id="__WID__map" style="width:100%;height:90%; position:relative;"></div>
 		]]>
     </content>
+
+	<topic name="AutoMicrosite.Topic.Map.Data" type="array" subscribe="true">
+		<example><![CDATA[
+			[
+				{
+					"country": "Estonia",
+					"values":
+						[
+							{"year": 1995, "value": 10},
+							{"year": 1996, "value": 11},
+							{"year": 1997, "value": 12},
+						]
+				}
+			]
+		]]></example>
+		<property name="*" datatype="object">
+			<property name="country" datatype="string" urlparam="http://schema.org/Country" />
+			<property name="values" datatype="array">
+				<property name="*" datatype="object">
+					<property name="year" datatype="number" urlparam="http://schema.org/Thing#year" />
+					<property name="value" datatype="number" urlparam="http://schema.org/Dataset#value" />
+				</property>
+			</property>
+		</property>
+	</topic>
 	
 	<topic name="AutoMicrosite.Data.2D" type="object" subscribe="true">
 		<example><![CDATA[

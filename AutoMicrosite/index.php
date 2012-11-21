@@ -9,40 +9,16 @@ mb_internal_encoding('UTF-8');
 
 date_default_timezone_set('Europe/Tallinn');
 
-// autoload classes
+// Autoload classes
 spl_autoload_register(function($className) {
 	require (ROOT . str_replace('\\', DIRECTORY_SEPARATOR, $className) .'.php');
 });
 
-// TODO: this needs a special place
-$openAjaxHub = '<script type="text/javascript" src="js/OpenAjaxManagedHub-all.js"></script>
-<script type="text/javascript">
-if (!console) {
-	var console = {log: function() {}};
+// Convert errors to ErrorExceptions
+function exception_error_handler($errno, $errstr, $errfile, $errline) {
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
 }
-
-var dojoConfig = {
-    baseUrl: "js/",
-    tlmSiblingOfDojo: false,
-    packages: [
-        { name: "dojo", location: "lib/dojo/" }
-    ]
-};
-oaaLoaderConfig = {
-		proxy: "proxy.php"
-};
-</script>
-<script type="text/javascript" data-dojo-config="async: true" src="js/lib/dojo/dojo.js"></script>
-<script type="text/javascript" src="js/loader.js"></script>
-<script type="text/javascript" src="js/PageManager.js"></script>
-<script type="text/javascript">
-require(["UT/Hans/AutoMicrosite/Mashup", "dojo/ready"], function(Mashup, ready){
-	ready(function() {
-		var mashup = new Mashup("mashup", {$widgetData});
-		mashup.start();
-	});
-});
-</script>';
+set_error_handler('exception_error_handler');
 
 new \UT\Hans\AutoMicrosite\Request();
 

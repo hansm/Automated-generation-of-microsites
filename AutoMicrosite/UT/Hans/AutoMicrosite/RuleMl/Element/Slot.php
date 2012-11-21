@@ -3,17 +3,7 @@ namespace UT\Hans\AutoMicrosite\RuleMl\Element;
 
 use UT\Hans\AutoMicrosite\RuleMl\RuleMlException;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Slot
- *
- * @author Hans
- */
-class Slot extends RuleMl {
+class Slot extends AbstractRuleMl {
 	
 	protected $elementName = 'slot';
 	
@@ -33,11 +23,11 @@ class Slot extends RuleMl {
 		$this->key = $key;
 	}
 	
-	public function setValue(Constant $value) {
+	public function setValue(AbstractConstant $value) {
 		$this->value = $value;
 	}
 	
-	public function __construct(Ind $key = null, Constant $value = null) {
+	public function __construct(Ind $key = null, AbstractConstant $value = null) {
 		$this->key = $key;
 		$this->value = $value;
 	}

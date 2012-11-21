@@ -1,21 +1,32 @@
 <?php
 namespace UT\Hans\AutoMicrosite\RuleMl\Element;
 
-abstract class RuleMl {
+use DOMDocument;
+use UT\Hans\AutoMicrosite\RuleMl\RuleMlException;
 
-	const RULML_NS = 'http://ruleml.org/spec';
-	
-	/**
-	 * RuleML element name
-	 * @var string 
-	 */
+/**
+ * Root RuleML element
+ */
+class RuleMl extends AbstractContainer {
+
 	protected $elementName = 'RuleML';
-	
-	public function getElementName() {
-		return $this->elementName;
+
+	public function appendChild(IRuleMl $element) {
+		if (!($element instanceof Assert)) {
+			throw new RuleMlException('\''. $this->getElementName() .'\' cannot contain \''. $element->getElementName() .'\'');
+		}
+		parent::appendChild($element);
 	}
-	
-	abstract function getDom(\DOMDocument $document);
+
+	/**
+	 *
+	 * @return \DOMDocument
+	 */
+	public function getDomDocument() {
+		$document = new DOMDocument('1.0', 'UTF-8');
+		$document->appendChild($this->getDom($document));
+		return $document;
+	}
 	
 }
 

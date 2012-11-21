@@ -1,6 +1,8 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Util;
 
+use \Exception;
+
 /**
  * Description of Log
  *
@@ -15,7 +17,9 @@ class Log {
 	 * @param string $logText text to log
 	 */
 	public static function custom($logFile, $logText) {
-		file_put_contents('log/'. $logFile, date('r') ." - ". $logText ."\n\n", FILE_APPEND);
+		try {
+			@file_put_contents('log/'. $logFile, date('r') ." - ". $logText ."\n\n", FILE_APPEND);
+		} catch (Exception $e) {}
 	}
 
 }

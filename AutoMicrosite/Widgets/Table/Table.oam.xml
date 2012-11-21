@@ -6,6 +6,8 @@
 
 	<require type="javascript" src="Table.js"></require>
 
+	<title>Table</title>
+
     <content>
 		<![CDATA[
 		<style type="text/css">

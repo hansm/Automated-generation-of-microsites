@@ -11,7 +11,7 @@ spl_autoload_register(function($className) {
 	require (ROOT . str_replace('\\', DIRECTORY_SEPARATOR, $className) .'.php');
 });
 
-header( "content-type: application/xml; charset=UTF-8" );
+if (empty($_GET['noheader'])) header( "content-type: application/xml; charset=UTF-8" );
 $template = new UT\Hans\AutoMicrosite\Template\MicrodataTemplate('Templates/Simple.html');
 $ruleMl = $template->toRuleMl();
 print_r($ruleMl->getString());

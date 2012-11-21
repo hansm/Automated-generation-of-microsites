@@ -52,10 +52,6 @@ class MicrodataTemplate {
 		}
 	}
 	
-	public function getSlots() {
-		return $this->dom->getItems(self::SLOT_ITEMTYPE);
-	}
-	
 	/**
 	 * TODO: this should be done with proper DOM
 	 * @var array 
@@ -113,6 +109,24 @@ class MicrodataTemplate {
 		$transformer = new MicrodataTemplateToRuleMl();
 		$result = $transformer->transformTemplate($this->dom, $this->fileUrl);
 		return $result;
+	}
+	
+	/**
+	 * Get JSON data about the template
+	 * TODO: possibly do this on client side since placeholder data is still available there
+	 */
+	public function getJson() {
+		$templateData = MicrodataTemplateToRuleMl::getPlaceholders($this->dom);
+		foreach ($templateData as &$placeHolder) {
+			$placeHolder['multiple'] = isset($placeHolder['multiple'])
+				&& isset($placeHolder['multiple'][0])
+				&& strcasecmp($placeHolder['multiple'][0], 'true') === 0;
+
+			$placeHolder['optional'] = isset($placeHolder['optional'])
+				&& isset($placeHolder['optional'][0])
+				&& strcasecmp($placeHolder['optional'][0], 'true') === 0;
+		}
+		return \json_encode($templateData);
 	}
 
 }

@@ -1,10 +1,19 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Widget;
 
+use ErrorException;
+
 /**
  * Widget class
  */
 class Widget {
+	
+	/**
+	 * Widget title, used for for example menu
+	 * 
+	 * @var string 
+	 */
+	public $title;
 
 	/**
 	 * Metadata file location
@@ -45,6 +54,8 @@ class Widget {
 	 * @var string
 	 */
 	public $width;
+	public $minWidth;
+	public $maxWidth;
 
 	/**
 	 * Height with units
@@ -52,6 +63,8 @@ class Widget {
 	 * @var string
 	 */
 	public $height;
+	public $minHeight;
+	public $maxHeight;
 
 	/**
 	 * Priority
@@ -87,7 +100,18 @@ class Widget {
 
 	public function __construct($fileUrl) {
 		$this->metadataFile = $fileUrl;
-		// TODO: check that file actually exists
+		
+		try {
+			$metadata = \file_get_contents($this->metadataFile);
+			if (\preg_match('#<title>(.+?)</title>#s', $metadata, $titleMatch)) {
+				$this->title = trim($titleMatch[1]);
+			}
+		} catch (ErrorException $e) {
+			throw new \RuntimeException('Could not load widget.');
+		}
+		
+		// TODO: this is done using rules
+		$this->priority = strpos($this->metadataFile, 'Table') !== false ? 1 : 2;
 	}
 
 	/**

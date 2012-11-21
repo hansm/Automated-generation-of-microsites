@@ -18,7 +18,7 @@ class Request {
 	public function __construct() {
 		$this->widgetsDir = ROOT .'Widgets/';
 
-		if (isset($_POST['build'])) {
+		if (isset($_REQUEST['build'])) {
 			$this->build();
 		} else {
 			$this->form();
@@ -46,7 +46,7 @@ class Request {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Create new mashup</title>
 <body>
-<form action="" method="post">
+<form action="" method="get">
   <p>Title: <input type="text" name="title" /></p>';
 		foreach ($widgets as $widget) {
 			echo '
@@ -64,10 +64,10 @@ class Request {
 	 */
 	public function build() {
 		$mashup = new Mashup();
-		$mashup->setTitle(htmlentities($_POST['title']));
+		$mashup->setTitle(htmlentities($_REQUEST['title']));
 
-		if (isset($_POST['widgets']) && is_array($_POST['widgets'])) {
-			foreach ($_POST['widgets'] as $widget) {
+		if (isset($_REQUEST['widgets']) && is_array($_REQUEST['widgets'])) {
+			foreach ($_REQUEST['widgets'] as $widget) {
 				$mashup->addWidget($widget);
 			}
 		}

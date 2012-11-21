@@ -1,3 +1,9 @@
+/**
+ * Map widget JavaScript
+ * 
+ * @author Hans
+ */
+
 if (typeof(AutoMicrosite) == "undefined") {
 	AutoMicrosite = {};
 }
@@ -6,15 +12,21 @@ if (typeof(AutoMicrosite.Widget) == "undefined") {
 }
 
 /**
-	* Widget constructor
-	*/
+ * Widget constructor
+ */
 AutoMicrosite.Widget.Map = function() {
+	this.data = [];
+	this.matrix = [];
+	this.columns = [];
 	this.map = null;
+	
+	
 	this.columnNames = {};
 	this.data = [];
 	this.dataTable = null;
 	this.widgetId = null;
 	this.divBubble = null;
+	this.divMenu = null;
 };
 
 AutoMicrosite.Widget.Map.prototype = {
@@ -32,27 +44,74 @@ AutoMicrosite.Widget.Map.prototype = {
 				thisWidget.mapLoaded();
 			}
 		});
-
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.2D", function(topic, receivedData) {
-			var data = receivedData.data;
-			thisWidget.columnNames = data[0];
-			thisWidget.data = [];
-			for (var i = 1; i < data.length; i++) {
-				thisWidget.data.push(data[i]);
-			}
+	
+		this.OpenAjax.hub.subscribe("AutoMicrosite.Topic.Map.Data", function(topic, receivedData) {
+			thisWidget.data = receivedData;
+			thisWidget.processData(thisWidget.data);
 
 			if (typeof(thisWidget.map) != "undefined") {
 				thisWidget.drawMap();
 			}
+			thisWidget.drawMenu();
 		});
-		
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.Row", function(topic, receivedData) {
-			thisWidget.bubbleText(receivedData.data);
-		});
-		
+	
+		//setInterval(function() { thisWidget.drawMap(); }, 1000);
+
 		this.drawMenu();
 	},
+	
+	/**
+	 * Widget dimensions change
+	 * @param object e
+	 */
+	onSizeChanged: function(e) {
+		console.log("Map.onSizeChanged");
+		this.drawMap();
+	},
+	
+	/**
+	 * Process data into more acceptable format
+	 * 
+	 * @param array data
+	 */
+	processData: function(data) {
+		// Columns
+		var columns = [];
+		var i, j, values;
+		for (i in data) {
+			values = data[i].values;
+			for (j in values) {
+				if (columns.indexOf(values[j].year) < 0) {
+					columns.push(values[j].year);
+				}
+			}
+		}
+		columns.sort();
+		
+		// Create full data matrix
+		var m = [];
+		var val, k;
+		for (i in data) {
+			m[i] = [];
+			values = data[i].values;
+			for (j = 0; j < columns.length; j++) {
+				val = 0;
+				for (k in values) {
+					if (values[k].year === columns[j]) {
+						val = values[k].value;
+						break;
+					}
+				}
+				m[i].push(val);
+			}
+		}
+		this.matrix = m;
+		this.columns = columns;
+	},
 
+	/**
+	 * Finished loading Google Map Graph API
+	 */
 	mapLoaded: function() {
 		var thisWidget = this;
 		this.map = new google.visualization.GeoChart(document.getElementById(this.widgetId +"map"));
@@ -60,7 +119,7 @@ AutoMicrosite.Widget.Map.prototype = {
 		this.drawMap();
 		google.visualization.events.addListener(this.map, "select", function() {
 			try {
-				var row = thisWidget.map.getSelection()[0].row
+				var row = thisWidget.map.getSelection()[0].row;
 				var id = thisWidget.dataTable.getValue(row, 0);
 				thisWidget.mapClick(id);
 			} catch (e) {
@@ -69,21 +128,36 @@ AutoMicrosite.Widget.Map.prototype = {
 		});
 	},
 
-	drawMap: function() {
+	/**
+	 * Draw map widget
+	 */
+	drawMap: function(columnNumber) {
+		if (!this.map) {
+			return;
+		}
+
+		if (!columnNumber || !this.columns[columnNumber]) {
+			columnNumber = 0;
+		}
+		var columnName = this.columns[columnNumber];
+
 		var widgetDimensions = this.OpenAjax.getDimensions();
+		console.log(widgetDimensions);
 		var options = {
 			width: widgetDimensions.width, height: widgetDimensions.height,
-			enableRegionInteractivity: true
+			enableRegionInteractivity: true,
+			region: 150
 		};
 
-		//var processedData = this.processData('2002')
-
 		this.dataTable = new google.visualization.DataTable();
-		this.dataTable.addColumn("string", this.columnNames.id);
-		this.dataTable.addColumn("number", this.columnNames.value);
-
-		for (var i = 0; i < this.data.length; i++) {
-			this.dataTable.addRow([this.data[i].id, (this.data[i].value == null ? 0 : this.data[i].value)]);
+		this.dataTable.addColumn("string", "Country");
+		this.dataTable.addColumn("number", "Salary");
+		
+		var dataRow, matrixRow;
+		for (var i in this.data) {
+			dataRow = this.data[i];
+			matrixRow = this.matrix[i];
+			this.dataTable.addRow([dataRow.country, matrixRow[columnNumber]]);
 		}
 
 		try {
@@ -94,14 +168,19 @@ AutoMicrosite.Widget.Map.prototype = {
 	},
 	
 	mapClick: function(id) {
-		console.log("Loading: "+ id);
-		
+		console.log("Showing: "+ id);
 		this.showBubble();
-		
-		// query for country full info
-		this.OpenAjax.hub.publish("AutoMicrosite.Data.Select", {id: id});
+
+		for (var i in this.data) {
+			if (this.data[i].country == id) {
+				this.bubbleText(this.data[i]);
+			}
+		}
 	},
 	
+	/**
+	 * Show bubble with country info
+	 */
 	showBubble: function() {
 		if (this.divBubble == null) {
 			this.divBubble = document.createElement("div");
@@ -128,6 +207,7 @@ AutoMicrosite.Widget.Map.prototype = {
 		aClose.className = "close";
 		aClose.title = "Close";
 		aClose.innerHTML = "X";
+		aClose.style.textDecoration = "none";
 		aClose.onclick = function() {
 			aClose.onclick = null;
 			thisWidget.divBubble.style.display = "none";
@@ -137,34 +217,49 @@ AutoMicrosite.Widget.Map.prototype = {
 		
 		// data
 		var p;
-		for (var i in data) {
+		p = document.createElement("div");
+		p.style.fontWeight = "bold";
+		p.appendChild(document.createTextNode(data.country));
+		this.divBubble.appendChild(p);
+			
+		for (var i in data.values) {
 			p = document.createElement("div");
-			p.appendChild(document.createTextNode(data[i].label +": "+ data[i].value));
+			p.appendChild(
+				document.createTextNode(data.values[i].year +": "
+					+ (data.values[i].value ? data.values[i].value : "-"))
+			);
 			this.divBubble.appendChild(p);
 		}
 	},
-	
+
+	/**
+	 * Draw menu for selecting year
+	 */
 	drawMenu: function() {
 		var thisWidget = this;
-		var divMenu = document.getElementById(this.widgetId +"mapMenu");
-		var buttons = this.OpenAjax.getPropertyValue("buttons");
-		divMenu.innerHTML = "";
+
+		if (!this.divMenu) {
+			this.divMenu = document.getElementById(this.widgetId +"mapMenu");
+		}
+		this.divMenu.innerHTML = "";
+
+		if (!this.columns) {
+			return;
+		}
 
 		var a;
-		for (var i in buttons) {
+		for (var i in this.columns) {
 			a = document.createElement("a");
-			a.innerHTML = buttons[i];
-			a.href = "#"+ buttons[i];
+			a.innerHTML = this.columns[i];
+			a.href = "#"+ this.columns[i];
+			a.columnNumber = i;
 			a.onclick = function() {
-				thisWidget.requestData(this.innerHTML);
+				console.log("Loading year "+ thisWidget.columns[this.columnNumber]);
+				thisWidget.drawMap(this.columnNumber);
 				return false;
 			};
-			divMenu.appendChild(a);
+			this.divMenu.appendChild(a);
 		}
-	},
-	
-	requestData: function(column) {
-		this.OpenAjax.hub.publish("AutoMicrosite.Data.Select", {column: column});
 	}
-	
+
 };
