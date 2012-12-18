@@ -75,7 +75,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			var i;
 			for (i in this.data) {
 				// TODO: server should return whether widget is data widget
-				if (this.data[i].placeholder !== null) {
+				if (this.data[i].isDataWidget) {
 					this.visualWidgets.push(this.data[i].orderNumber);
 				} else {
 					this.dataWidgets.push(this.data[i].orderNumber);

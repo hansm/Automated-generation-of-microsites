@@ -12,7 +12,7 @@ class Mashup {
 
 	/**
 	 * Hub object
-	 * 
+	 *
 	 * @var  \UT\Hans\AutoMicrosite\Hub
 	 */
 	private $hub;
@@ -41,12 +41,18 @@ class Mashup {
 	 * Add widget into mashup
 	 *
 	 * @param string $widgetFile
-	 * @throws \UT\Hans\AutoMicrosite\Widget\WidgetException
+	 * @throws \RuntimeException
 	 */
 	public function addWidget($widgetFile) {
 		$widget = new Widget($widgetFile);
 		// $widget->loadWidgetData();
 		$this->hub->attachWidget($widget);
+	}
+
+	public function addWidgets(array $widgets) {
+		foreach ($widgets as $widget) {
+			$this->addWidget($widget);
+		}
 	}
 
 	public function applyRules() {
@@ -57,9 +63,9 @@ class Mashup {
 			throw new \RuntimeException('Template not found.');
 			// TODO: someone should probably catch this exception
 		}
-		
+
 		$this->hub->selectWidgetPositions($rulesetId, $templateUrl);
-		
+
 		//$this->hub->applyRules();
 	}
 

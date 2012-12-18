@@ -2,6 +2,7 @@
 namespace UT\Hans\AutoMicrosite\Widget;
 
 use ErrorException;
+use RuntimeException;
 
 /**
  * Widget class
@@ -37,18 +38,6 @@ class Widget {
 	public $orderNumber;
 
 	/**
-	 *
-	 * @var string
-	 */
-	public $horizontalPosition;
-
-	/**
-	 *
-	 * @var string
-	 */
-	public $verticalPosition;
-
-	/**
 	 * Width with units
 	 *
 	 * @var string
@@ -79,6 +68,13 @@ class Widget {
 	 * @var boolean 
 	 */
 	public $visual;
+	
+	/**
+	 * Whether the widget is data widget (non-visual)
+	 * 
+	 * @var boolean 
+	 */
+	public $isDataWidget;
 
 	/**
 	 * Return widget order number in hub
@@ -103,15 +99,13 @@ class Widget {
 		
 		try {
 			$metadata = \file_get_contents($this->metadataFile);
+			$titleMatch = '';
 			if (\preg_match('#<title>(.+?)</title>#s', $metadata, $titleMatch)) {
 				$this->title = trim($titleMatch[1]);
 			}
 		} catch (ErrorException $e) {
-			throw new \RuntimeException('Could not load widget.');
+			throw new RuntimeException('Could not load widget.');
 		}
-		
-		// TODO: this is done using rules
-		$this->priority = strpos($this->metadataFile, 'Table') !== false ? 1 : 2;
 	}
 
 	/**

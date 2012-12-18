@@ -31,7 +31,7 @@ AutoMicrosite.Widget.Menu.prototype = {
 		console.log(this.OpenAjax.getPropertyValue("buttons"));
 		this.drawMenu();
 
-		this.OpenAjax.hub.subscribe("AutoMicrosite.SwitchPage", function(topic, data) {
+		this.OpenAjax.hub.subscribe("AutoMicrosite.MenuClick", function(topic, data) {
 				console.log("Menu received:");
 				console.log(topic);
 				console.log(data);
@@ -53,7 +53,7 @@ AutoMicrosite.Widget.Menu.prototype = {
 	buttonClick: function(button) {
 		var link = button.href;
 		var page = link.match(/#(.+)$/)[1];
-		this.OpenAjax.hub.publish("AutoMicrosite.SwitchPage", page);
+		this.OpenAjax.hub.publish("AutoMicrosite.MenuClick", page);
 	},
 
 	/**

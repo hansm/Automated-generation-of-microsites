@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RuleML xmlns="http://ruleml.org/spec">
 	<Assert>
+		
+		<!-- Default -->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#widget" />
+					<Var>widget</Var>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Ind>0</Ind></slot>
+					<slot><Ind>x</Ind><Ind type="Integer">0</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>priority</Ind><Var>priority</Var></slot>
+						<slot><Ind>x</Ind><Var>x</Var></slot>
+					</Atom>
+					<Naf>
+						<And>
+						<Atom>
+							<Rel iri="http://automicrosite.maesalu.com/#priority"/>
+							<slot><Ind>widget</Ind><Var>widget2</Var></slot>
+							<slot><Ind>priority</Ind><Var>priority2</Var></slot>
+							<slot><Ind>x</Ind><Var>x2</Var></slot>
+						</Atom>
+						<Atom>
+							<Rel>notEqual</Rel>
+							<Var>widget</Var>
+							<Var>widget2</Var>
+						</Atom>
+						<Atom>
+							<Rel>greaterThan</Rel>
+							<Var>x2</Var>
+							<Var>x</Var>
+						</Atom>
+						</And>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#priority2"/>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>priority</Ind><Var>priority</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
 
 		<Implies>
 			<if>
@@ -15,6 +73,7 @@
 					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
+					<slot><Ind>x</Ind><Ind type="Integer">2</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
@@ -32,6 +91,7 @@
 					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
+					<slot><Ind>x</Ind><Ind type="Integer">2</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
@@ -49,26 +109,7 @@
 					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>1</Ind></slot>
-				</Atom>
-			</then>
-		</Implies>
-
-		<!-- Default -->
-		<Implies>
-			<if>
-				<Naf>
-					<Atom>
-						<Rel iri="http://automicrosite.maesalu.com/#priority"/>
-						<slot><Ind>widget</Ind><Var>widget</Var></slot>
-						<slot><Ind>priority</Ind><Var>priority</Var></slot>
-					</Atom>
-				</Naf>
-			</if>
-			<then>
-				<Atom>
-					<Rel iri="http://automicrosite.maesalu.com/#priority"/>
-					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>priority</Ind><Ind>2</Ind></slot>
+					<slot><Ind>x</Ind><Ind type="Integer">1</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>

@@ -27,6 +27,8 @@ class Hub {
 	
 	const PRIORITY_RULES = 'Rules/Priority.ruleml';
 	
+	const GENERALIZATION_RULES = 'Rules/Generalization.ruleml';
+	
 	const TEMPLATE_QUERY = 'Rules/TemplateQuery.ruleml';
 	
 	const WIDGET_PLACE_QUERY = 'Rules/WidgetPlaceQuery.ruleml';
@@ -128,27 +130,24 @@ class Hub {
 	public function createRuleset() {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 
-		$rulesFile = \file_get_contents(self::RULES_FILE);
 		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
 		$priorityRulesFile = \file_get_contents(self::PRIORITY_RULES);
+		$generalizationRulesFile = \file_get_contents(self::GENERALIZATION_RULES);
 
 		// rules
-		$rules = RuleMl::createFromString($rulesFile);
-		$rules->merge(RuleMl::createFromString($rulesUtilFile));
+		$rules = RuleMl::createFromString($rulesUtilFile);
 		$rules->merge(RuleMl::createFromString($priorityRulesFile));
+		$rules->merge(RuleMl::createFromString($generalizationRulesFile));
 
 		// add widget facts
 		$transform = new OpenAjaxToRuleMl();
 		foreach ($this->widgets as $widget) {
-			if (strpos($widget->metadataFile, 'DataManager') !== false) { // TODO: this is bad
-				continue;
-			}
 			$rules->merge($transform->transformString(\file_get_contents($widget->metadataFile), $widget->getOrderNumber()));
 		}
 
 		// add templates facts
 		$rules->merge($this->templates->getRuleMl());
-
+print_r($rules->getString());exit();
 		$this->rulesetId = $client->create($rules);
 		
 		return $this->rulesetId;
@@ -163,14 +162,17 @@ class Hub {
 	 */
 	public function selectTemplate($rulesetId) {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-		
+
 		// create query
 		$queryString = \file_get_contents('Rules/TemplateQuery.ruleml');
 		$query = RuleMlQuery::createFromString($queryString);
-		
+
 		// query ruleserver
 		$result = $client->query($rulesetId, $query);
 		
+print_r($queryString);
+print_r($result->getString());
+
 		// get result value
 		$templateUrl = null;
 		$variables = $result->getDom()->getElementsByTagName('Var');
@@ -219,6 +221,9 @@ class Hub {
 						break;
 					case 'priority':
 						$widget->priority = (int) $value;
+						break;
+					case 'isDataWidget':
+						$widget->isDataWidget = strcasecmp(trim($value, '"'), 'true') == 0;
 						break;
 				}
 			}

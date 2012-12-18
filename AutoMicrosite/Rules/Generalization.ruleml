@@ -6,7 +6,7 @@
 		<Atom>
 			<Rel iri="http://openajax.org/metadata#category"/>
 			<slot><Ind>widget</Ind><Var>widget</Var></slot>
-			<slot><Ind>category</Ind><Ind>http://schema.org/Map</Ind></slot>
+			<slot><Ind>category</Ind><Ind>http://www.schema.org/Thing</Ind></slot>
 		</Atom>
 		
 		<Implies>

@@ -32,6 +32,8 @@ class MicrodataTemplateToRuleMl {
 	 * Template fits facts relation
 	 */
 	const TEMPLATE_REL = 'http://automicrosite.maesalu.com/#template';
+	
+	const WIDGET_PLACE_REL = 'http://automicrosite.maesalu.com/#widgetPlace';
 
 	private $dimensionVariables = array('min-height', 'min-width', 'max-height', 'max-height');
 
@@ -151,21 +153,34 @@ class MicrodataTemplateToRuleMl {
 					new Slot(new Ind('category'), new Variable('category'))
 				))
 			);
+			$ifAnd->appendChild(
+				self::createAtom('http://automicrosite.maesalu.com/#isDataWidget', array(
+					new Slot(new Ind('widget'), new Variable('widget')),
+					new Slot(new Ind('value'), new Variable('isDataWidget'))
+				))
+			);
+			$ifAnd->appendChild(
+				self::createAtom('http://automicrosite.maesalu.com/#priority', array(
+					new Slot(new Ind('widget'), new Variable('widget')),
+					new Slot(new Ind('priority'), new Variable('priority'))
+				))
+			);
 			$implies->createIf(array($ifAnd));
 
 			$implies->createThen();
-			$relName = 'http://automicrosite.maesalu.com/#widgetPlace';
 			$implies->getThen()->appendChild(
-				self::createAtom($relName, array(
+				self::createAtom(self::WIDGET_PLACE_REL, array(
 					new Slot(new Ind('widget'), new Variable('widget')),
 					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-					new Slot(new Ind('template'), new Ind($templateId))
+					new Slot(new Ind('template'), new Ind($templateId)),
+					new Slot(new Ind('isDataWidget'), new Variable('isDataWidget')),
+					new Slot(new Ind('priority'), new Variable('priority'))
 				))
 			);
 
 			if (!$isOptional) {
 				$templateIfAnd->appendChild(
-					self::createAtom($relName, array(
+					self::createAtom(self::WIDGET_PLACE_REL, array(
 						new Slot(new Ind('widget'), new Variable($placeholderId .'_widget')),
 						new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 						new Slot(new Ind('template'), new Ind($templateId))

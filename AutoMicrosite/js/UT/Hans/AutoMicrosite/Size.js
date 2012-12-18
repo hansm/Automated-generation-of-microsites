@@ -135,6 +135,10 @@ console.log(visualWidgets);
 					return this.visualWidgets[i];
 				}
 			}
+		},
+				
+		menuClick: function(widgetId) {
+			console.log("opening widget "+ widgetId);
 		}
 
 	});

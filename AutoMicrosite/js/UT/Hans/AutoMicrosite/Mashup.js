@@ -120,6 +120,10 @@ console.log(templateData);
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
+			// Listen on the MenuClick topic to track clicking on menu items
+			if (topic == "AutoMicrosite.MenuClick") {
+				this.size.menuClick(data);
+			}
 			return true;
 		},
 

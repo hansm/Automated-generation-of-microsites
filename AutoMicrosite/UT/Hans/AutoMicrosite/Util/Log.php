@@ -1,14 +1,65 @@
 <?php
 namespace UT\Hans\AutoMicrosite\Util;
 
-use \Exception;
+use Exception;
+use str_replace;
+use file_put_contents;
+use get_class;
 
 /**
- * Description of Log
+ * Log error messages
  *
  * @author Hans
  */
 class Log {
+	
+	/**
+	 * Log file name
+	 * 
+	 * @var string 
+	 */
+	private $file;
+	
+	/**
+	 * @param string $logFile 
+	 */
+	public function __construct($logFile) {
+		$this->file = $logFile;
+	}
+
+	/**
+	 * Log exception
+	 * 
+	 * @param Exception $e 
+	 */
+	public function exception(Exception $e) {
+		$this->write(get_class($e) ."\t"
+			. $e->getCode() ."\t"
+			. $e->getMessage() ."\t"
+			. str_replace("\n", " ", $e->getTraceAsString()) );
+	}
+	
+	/**
+	 * Log general info
+	 * 
+	 * @param string $logText 
+	 */
+	public function info($logText) {
+		$this->write($logText);
+	}
+	
+	/**
+	 * Write log into file
+	 *
+	 * @param string $logText 
+	 */
+	private function write($logText) {
+		try {
+			file_put_contents('log/'. $this->file
+				, date('r') . $logText ."\n\n"
+				, FILE_APPEND);
+		} catch (Exception $e) {}
+	}
 
 	/**
 	 * Write custom log to file
@@ -17,9 +68,8 @@ class Log {
 	 * @param string $logText text to log
 	 */
 	public static function custom($logFile, $logText) {
-		try {
-			@file_put_contents('log/'. $logFile, date('r') ." - ". $logText ."\n\n", FILE_APPEND);
-		} catch (Exception $e) {}
+		$log = new self();
+		$log->info($logText);
 	}
 
 }

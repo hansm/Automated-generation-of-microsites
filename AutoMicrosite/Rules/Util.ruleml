@@ -95,33 +95,49 @@
 		<slot><Ind>widget</Ind><Var>widget</Var></slot>
 		<slot><Ind>priority</Ind><Ind>0</Ind></slot>
 	</Atom>
+
 	
-	<!--
-	Category
-	-->
+	<!-- Check whether the widget is data widget -->
 	<Implies>
 		<if>
 			<Atom>
-				<Rel iri="http://openajax.org/metadata#category" />
+				<Rel iri="http://openajax.org/metadata#category"/>
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>category</Ind><Var>category</Var></slot>
+				<slot><Ind>category</Ind><Ind>http://schema.org/Dataset</Ind></slot>
 			</Atom>
 		</if>
 		<then>
 			<Atom>
-				<Rel>Category</Rel>
+				<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>category</Ind><Var>category</Var></slot>
+				<slot><Ind>value</Ind><Ind>true</Ind></slot>
 			</Atom>
 		</then>
 	</Implies>
-	
-	<!-- All widgets are Things  -->
-	<Atom>
-		<Rel>Category</Rel>
-		<slot><Ind>widget</Ind><Var>widget</Var></slot>
-		<slot><Ind>category</Ind><Var iri="http://www.schema.org/Thing" /></slot>
-	</Atom>
+	<Implies>
+		<if>
+			<And>
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#widget" />
+					<Var>widget</Var>
+				</Atom>
+				<Naf>
+					<Atom>
+						<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Ind>true</Ind></slot>
+					</Atom>
+				</Naf>
+			</And>
+		</if>
+		<then>
+			<Atom>
+				<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
+				<slot><Ind>widget</Ind><Var>widget</Var></slot>
+				<slot><Ind>value</Ind><Ind>false</Ind></slot>
+			</Atom>
+		</then>
+	</Implies>
 
 	</Assert>
 	

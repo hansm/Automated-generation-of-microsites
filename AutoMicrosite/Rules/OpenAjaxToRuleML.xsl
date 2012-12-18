@@ -13,10 +13,15 @@
 				<xsl:for-each select="//oa:category">
 					<Atom>
 						<Rel iri="http://openajax.org/metadata#category" />
-						<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
+						<slot><Ind>widget</Ind><Ind type="Integer"><xsl:value-of select="$widget" /></Ind></slot>
 						<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
 					</Atom>
 				</xsl:for-each>
+			
+				<Atom>
+					<Rel iri="http://automicrosite.maesalu.com/#widget" />
+					<Ind type="Integer"><xsl:value-of select="$widget" /></Ind>
+				</Atom>
 
 				<Atom>
 					<Rel iri="http://openajax.org/metadata#id" />
