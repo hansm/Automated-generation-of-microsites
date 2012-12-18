@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="OrganizationInfoWidget" id="AutoMicrosite/OrganizationInfoWidget"
+		spec="1.0" width="640" height="480" jsClass="AutoMicrosite.Widget.OrganizationInfo"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns="http://openajax.org/metadata"
+		x:min-width="100" x:max-width="9999"
+		x:min-height="100" x:max-height="9999"
+	>
+
+	<require type="javascript" src="OrganizationInfo.js"></require>
+
+	<content>
+		<style type="text/css">
+			#__WID__table {
+				width: 100%;
+			}
+			#__WID__table .label {
+				font-weight: bold;
+			}
+		</style>
+		<div style="width:100%;height:100%;overflow: auto;">
+			<table id="__WID__table">
+				<tbody>
+					<tr>
+						<td class="label">Legal name</td>
+						<td class="value" id="__WID__legalName"></td>
+					</tr>
+					<tr>
+						<td class="label">Registration code</td>
+						<td class="value" id="__WID__taxID"></td>
+					</tr>
+					<tr>
+						<td class="label">Address</td>
+						<td class="value" id="__WID__address"></td>
+					</tr>
+					<tr>
+						<td class="label">Telephone</td>
+						<td class="value" id="__WID__telephone"></td>
+					</tr>
+					<tr>
+						<td class="label">Email</td>
+						<td class="value" id="__WID__email"></td>
+					</tr>
+					<tr>
+						<td class="label">Number of employees</td>
+						<td class="value" id="__WID__employees"></td>
+					</tr>
+					<tr>
+						<td class="label">Annual turnover</td>
+						<td class="value" id="__WID__annualTurnover"></td>
+					</tr>
+					<tr>
+						<td class="label">Description of field</td>
+						<td class="value" id="__WID__description"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</content>
+
+	<topic name="AutoMicrosite.Table.OrganizationData" type="object" subscribe="true">
+		<description>
+			Show organization data in a table
+		</description>
+		<property name="legalName" datatype="string" urlparam="http://schema.org/Organization#legalName" />
+		<property name="taxID" datatype="string" urlparam="http://schema.org/Organization#taxID" />
+		<property name="address" datatype="string" urlparam="http://schema.org/Organization#address" />
+		<property name="telephone" datatype="string" urlparam="http://schema.org/Organization#telephone" />
+		<property name="email" datatype="string" urlparam="http://schema.org/Organization#email" />
+		<property name="employees" datatype="string" urlparam="http://schema.org/Organization#employees" />
+		<property name="annualTurnover" datatype="string" urlparam="http://schema.org/Organization#annualTurnover" />
+		<property name="description" datatype="string" urlparam="http://schema.org/Organization#description" />
+	</topic>
+
+	<categories>
+		<category x:iri="http://schema.org/Table" />
+		<category x:iri="http://schema.org/AboutPage" />
+    </categories>
+
+</widget>

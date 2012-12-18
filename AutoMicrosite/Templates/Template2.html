@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MASHUP TITLE HERE</title>
+	<style type="text/css">
+		html {
+			height: 100%;
+		}
+		body {
+			font-family: sans-serif;
+			font-size: 1em;
+			color: #000;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+		}
+		#header {
+			width: 100%;
+			height: 20%;
+		}
+		.contentLine {
+			width: 100%;
+			height: 40%;
+			overflow: auto;
+		}
+		#contentLeft, #contentRight {
+			float: left;
+			width: 50%;
+			height: 100%;
+		}
+		#contentMain {
+			width: 100%;
+			height: 100%;
+		}
+		
+		@media all and (max-width: 600px) {
+			#contentLeft {
+				width: 100%;
+			}
+			#contentRight {
+				display: none;
+			}
+		}
+	</style>
+	<!-- Mashup files are automatically appended to the end of head element -->
+</head>
+<body>
+	<div id="header">
+		<div itemscope itemtype="http://automicrosite.maesalu.com/TemplatePlaceholder" itemid="headerWidget">
+			<span>Loading header...</span>
+			<meta itemprop="optional" content="true" />
+			<meta itemprop="category" content="http://schema.org/SiteNavigationElement" />
+			<meta itemprop="category" content="http://schema.org/WPHeader" />
+		</div>
+	</div>
+	<div class="contentLine">
+		<div id="contentLeft">
+			<div itemscope itemtype="http://automicrosite.maesalu.com/TemplatePlaceholder" itemid="contentLeft">
+				<span>Loading left content...</span>
+				<meta itemprop="category" content="http://schema.org/Table" />
+			</div>
+		</div>
+		<div id="contentRight">
+			<div itemscope itemtype="http://automicrosite.maesalu.com/TemplatePlaceholder" itemid="contentRight">
+				<span>Loading right content...</span>
+				<meta itemprop="category" content="http://schema.org/Map" />
+				<meta itemprop="category" content="http://schema.org/MediaObject" />
+			</div>
+		</div>
+	</div>
+	<div class="contentLine">
+		<div class="contentMain">
+			<div itemscope itemtype="http://automicrosite.maesalu.com/TemplatePlaceholder" itemid="contentMain">
+				<span>Loading main content...</span>
+				<meta itemprop="category" content="http://schema.org/Table" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>
