@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="BusinessRegisterQueryWidget" id="AutoMicrosite/BusinessRegisterQueryWidget"
+		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.BusinessRegisterQuery"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns="http://openajax.org/metadata">
+
+	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
+		<require type="javascript" src="jquery.min.js"/>
+	</library>
+
+	<require type="javascript" src="BusinessRegisterQuery.js"></require>
+
+	<!-- Empty content element is required by the widget loader, somehow it does not work without -->
+	<content><![CDATA[ ]]></content>
+
+	<topic name="AutoMicrosite.BusinessRegister.QueryResponse" type="object" publish="true">
+		<description>
+			Return company code and name in response to a query.
+		</description>
+		<example><![CDATA[
+			{"name": "EVETERM OÜ",
+				"code": 11375683}
+		]]></example>
+		<property name="name" datatype="string" urlparam="http://schema.org/Organization#legalName" />
+		<property name="code" datatype="number" urlparam="http://schema.org/Organization#taxID" />
+	</topic>
+
+	<property name="name" datatype="string" urlparam="http://schema.org/Organization#name" required="true" defaultValue="EVETERM OÜ"/>
+
+	<categories>
+		<category x:iri="http://schema.org/Dataset" />
+    </categories>
+
+</widget>
