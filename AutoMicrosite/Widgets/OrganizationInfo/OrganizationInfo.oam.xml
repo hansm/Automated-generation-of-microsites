@@ -62,14 +62,21 @@
 		<description>
 			Show organization data in a table
 		</description>
-		<property name="legalName" datatype="string" urlparam="http://schema.org/Organization#legalName" />
-		<property name="taxID" datatype="string" urlparam="http://schema.org/Organization#taxID" />
-		<property name="address" datatype="string" urlparam="http://schema.org/Organization#address" />
-		<property name="telephone" datatype="string" urlparam="http://schema.org/Organization#telephone" />
-		<property name="email" datatype="string" urlparam="http://schema.org/Organization#email" />
-		<property name="employees" datatype="string" urlparam="http://schema.org/Organization#employees" />
-		<property name="annualTurnover" datatype="string" urlparam="http://schema.org/Organization#annualTurnover" />
-		<property name="description" datatype="string" urlparam="http://schema.org/Organization#description" />
+		<property name="legalName" datatype="string" required="true" urlparam="http://schema.org/legalName" /><!-- organizationName -->
+		<property name="taxID" datatype="string" required="true" urlparam="http://schema.org/taxID" /><!-- registrationCode -->
+		<property name="address" datatype="string">
+			<property name="addressCountry" datatype="string" required="true" urlparam="http://schema.org/addressCountry" /><!-- officeAddress.countryCode -->
+			<property name="addressRegion" datatype="string" required="true" urlparam="http://schema.org/addressRegion" /><!-- officeAddress.countyName -->
+			<property name="postalCode" datatype="string" required="true" urlparam="http://schema.org/postalCode" /><!-- officeAddress.postalCode -->
+			<property name="addressLocality" datatype="string" required="true" urlparam="http://schema.org/addressLocality" /><!-- officeAddress.cityName -->
+			<property name="streetAddress" datatype="string" required="true" urlparam="http://schema.org/streetAddress" /><!-- officeAddress.streetPart -->
+		</property>
+		<property name="telephone" datatype="string" required="true" urlparam="http://schema.org/telephone" /><!-- phoneNumber -->
+		<property name="email" datatype="string" required="true" urlparam="http://schema.org/email" /><!-- emailAddress -->
+		<property name="employees" datatype="string" required="true" urlparam="http://schema.org/employees" /><!-- numberOfEmployees.upperBound -->
+		<property name="annualTurnover" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/annualTurnover" /><!-- annualTurnover.upperBound -->
+		<property name="foundingDate" datatype="string" required="true" urlparam="http://schema.org/foundingDate" /><!-- registrationDate -->
+		<property name="description" datatype="string" required="true" urlparam="http://schema.org/description" /><!-- organizationDescription -->
 	</topic>
 
 	<categories>

@@ -46,11 +46,11 @@
 		<description>
 			Show organization dept data in a table
 		</description>
-		<property name="taxDebtSum" datatype="string" urlparam="http://schema.org/Organization/Finances/Dept#taxDebtSum" />
-		<property name="taxDebtCurrency" datatype="string" urlparam="http://schema.org/Organization/Finances/Dept#taxDebtCurrency" />
-		<property name="taxDebtUpdateDate" datatype="string" urlparam="http://schema.org/Organization/Finances/Dept#taxDebtUpdateDate" />
-		<property name="krdxDebtSum" datatype="string" urlparam="http://schema.org/Organization/Finances/Dept#krdxDebtSum" />
-		<property name="krdxDebtCurrency" datatype="string" urlparam="http://schema.org/Organization/Finances/Dept#krdxDebtCurrency" />
+		<property name="taxDebtSum" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtSum" />
+		<property name="taxDebtCurrency" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtCurrency" />
+		<property name="taxDebtUpdateDate" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtUpdateDate" />
+		<property name="krdxDebtSum" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/krdxDebtSum" />
+		<property name="krdxDebtCurrency" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/krdxDebtCurrency" />
 	</topic>
 
 	<categories>

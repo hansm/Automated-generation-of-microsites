@@ -124,6 +124,6 @@
 	</topic>
     
 	<categories>
-		<category x:iri="http://schema.org/Dataset" />
+		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
     </categories>
 </widget>

@@ -73,8 +73,8 @@
 			<property name="country" datatype="string" urlparam="http://schema.org/Country" />
 			<property name="values" datatype="array">
 				<property name="*" datatype="object">
-					<property name="year" datatype="number" urlparam="http://schema.org/Thing#year" />
-					<property name="value" datatype="number" urlparam="http://schema.org/Dataset#value" />
+					<property name="year" datatype="number" urlparam="http://schema.org/year" />
+					<property name="value" datatype="number" urlparam="http://schema.org/value" />
 				</property>
 			</property>
 		</property>

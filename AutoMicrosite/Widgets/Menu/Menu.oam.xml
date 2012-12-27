@@ -41,6 +41,6 @@
 
 	<property name="buttons" datatype="Array" />
 
-	<topic name="AutoMicrosite.SwitchPage" type="String" publish="true" />
+	<topic name="AutoMicrosite.MenuClick" type="String" publish="true" />
 	
 </widget>
