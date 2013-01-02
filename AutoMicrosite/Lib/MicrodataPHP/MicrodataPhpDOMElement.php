@@ -177,7 +177,7 @@ class MicrodataPhpDOMElement extends DOMElement {
 
 	/**
 	 * Traverse the tree.
-	 * 
+	 *
 	 * In MicrodataJS, this is handled using a closure.
 	 * See comment for MicrodataPhp:getObject() for an explanation of closure use
 	 * in this library.
@@ -210,5 +210,3 @@ class MicrodataPhpDOMElement extends DOMElement {
 	}
 
 }
-
-?>

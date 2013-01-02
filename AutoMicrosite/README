@@ -2,3 +2,4 @@ This is the "Automated generation of microsites from collection of widgets" appl
 
 REQUIREMENTS:
 PHP 5.3+
+cURL

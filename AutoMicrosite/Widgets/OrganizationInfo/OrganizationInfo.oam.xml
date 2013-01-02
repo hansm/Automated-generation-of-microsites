@@ -64,7 +64,7 @@
 		</description>
 		<property name="legalName" datatype="string" required="true" urlparam="http://schema.org/legalName" /><!-- organizationName -->
 		<property name="taxID" datatype="string" required="true" urlparam="http://schema.org/taxID" /><!-- registrationCode -->
-		<property name="address" datatype="string">
+		<property name="address" datatype="object">
 			<property name="addressCountry" datatype="string" required="true" urlparam="http://schema.org/addressCountry" /><!-- officeAddress.countryCode -->
 			<property name="addressRegion" datatype="string" required="true" urlparam="http://schema.org/addressRegion" /><!-- officeAddress.countyName -->
 			<property name="postalCode" datatype="string" required="true" urlparam="http://schema.org/postalCode" /><!-- officeAddress.postalCode -->
@@ -77,6 +77,12 @@
 		<property name="annualTurnover" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/annualTurnover" /><!-- annualTurnover.upperBound -->
 		<property name="foundingDate" datatype="string" required="true" urlparam="http://schema.org/foundingDate" /><!-- registrationDate -->
 		<property name="description" datatype="string" required="true" urlparam="http://schema.org/description" /><!-- organizationDescription -->
+	</topic>
+
+	<topic name="AutoMicrosite.Table.OrganizationData2" type="array" publish="true">
+<property name="address" datatype="object">
+			<property name="addressCountry" datatype="string" required="true" urlparam="http://schema.org/elevant" /><!-- officeAddress.countryCode -->
+</property>
 	</topic>
 
 	<categories>

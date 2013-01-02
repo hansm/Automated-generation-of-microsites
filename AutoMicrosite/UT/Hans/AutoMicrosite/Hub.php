@@ -2,7 +2,7 @@
 namespace UT\Hans\AutoMicrosite;
 
 use UT\Hans\AutoMicrosite\Widget\Widget;
-use UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient;
+use UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient; // TODO: remove
 use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
 use UT\Hans\AutoMicrosite\RuleMl\OpenAjaxToRuleMl;
 use UT\Hans\AutoMicrosite\RuleMl\RuleMlQuery;
@@ -22,15 +22,15 @@ class Hub {
 	const RULES_FILE = 'Rules/Rules.ruleml';
 
 	const RULES_FILE_UTIL = 'Rules/Util.ruleml';
-	
+
 	const WIDGET_SELECT_RULES = 'Rules/WidgetSelectRules.ruleml';
-	
+
 	const PRIORITY_RULES = 'Rules/Priority.ruleml';
-	
+
 	const GENERALIZATION_RULES = 'Rules/Generalization.ruleml';
-	
+
 	const TEMPLATE_QUERY = 'Rules/TemplateQuery.ruleml';
-	
+
 	const WIDGET_PLACE_QUERY = 'Rules/WidgetPlaceQuery.ruleml';
 
 	/**
@@ -46,20 +46,20 @@ class Hub {
 	 * @var int
 	 */
 	private $widgetsNumber = 0;
-	
+
 	/**
 	 * Templates management object
-	 * 
-	 * @var \UT\Hans\AutoMicrosite\Template\Templates 
+	 *
+	 * @var \UT\Hans\AutoMicrosite\Template\Templates
 	 */
 	private $templates;
-	
+
 	/**
 	 *
-	 * @var \UT\Hans\AutoMicrosite\Template\MicrodataTemplate 
+	 * @var \UT\Hans\AutoMicrosite\Template\MicrodataTemplate
 	 */
 	private $template;
-	
+
 	private $rulesetId;
 
 	/**
@@ -90,10 +90,19 @@ class Hub {
 	/**
 	 * Get hub widgets
 	 *
-	 * @return array
+	 * @return \UT\Hans\AutoMicrosite\Widget\Widget[]
 	 */
 	public function getWidgets() {
 		return $this->widgets;
+	}
+
+	/**
+	 * Set template value
+	 *
+	 * @param string $template
+	 */
+	public function setTemplate($template) {
+		// TODO: implement
 	}
 
 	public function __construct() {
@@ -121,11 +130,17 @@ class Hub {
 		$widget->setOrderNumber($widgetNumber);
 		$this->widgets[$widgetNumber] = $widget;
 	}
-	
+
+	public function attachWidgets(array $widgets) {
+		foreach ($widgets as $widget) {
+			$this->attachWidget($widget);
+		}
+	}
+
 	/**
 	 * Create ruleset and send to RuleML service
-	 * 
-	 * @return int 
+	 *
+	 * @return int
 	 */
 	public function createRuleset() {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
@@ -135,8 +150,8 @@ class Hub {
 		$generalizationRulesFile = \file_get_contents(self::GENERALIZATION_RULES);
 
 		// rules
-		$rules = RuleMl::createFromString($rulesUtilFile);
-		$rules->merge(RuleMl::createFromString($priorityRulesFile));
+		$rules = RuleMl::createFromString($priorityRulesFile);
+		$rules->merge(RuleMl::createFromString($rulesUtilFile));
 		$rules->merge(RuleMl::createFromString($generalizationRulesFile));
 
 		// add widget facts
@@ -146,18 +161,19 @@ class Hub {
 		}
 
 		// add templates facts
-		$rules->merge($this->templates->getRuleMl());
+		//$rules->merge($this->templates->getRuleMl());
+		
 print_r($rules->getString());exit();
 		$this->rulesetId = $client->create($rules);
-		
+
 		return $this->rulesetId;
 	}
-	
+
 	/**
 	 * Select template for mashup
-	 * 
+	 *
 	 * @param int $rulesetId
-	 * @return type 
+	 * @return type
 	 * @throws \Exception
 	 */
 	public function selectTemplate($rulesetId) {
@@ -169,7 +185,7 @@ print_r($rules->getString());exit();
 
 		// query ruleserver
 		$result = $client->query($rulesetId, $query);
-		
+
 print_r($queryString);
 print_r($result->getString());
 
@@ -186,30 +202,30 @@ print_r($result->getString());
 					break;
 			}
 		}
-		
+
 		$this->template = $this->templates->getTemplate($templateUrl);
 
 		return $templateUrl;
 	}
-	
+
 	public function selectWidgetPositions($rulesetId, $templateUrl) {
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-		
+
 		foreach ($this->widgets as $widget) {
 			if (strpos($widget->metadataFile, 'Data') !== false) { // TODO: this is bad
 				continue;
 			}
-			
+
 			// create query
 			$queryString = \file_get_contents(self::WIDGET_PLACE_QUERY);
 			$queryString = \str_replace(
 				array('{$widget}', '{$template}'),
 				array($widget->getOrderNumber(), $templateUrl),
 				$queryString); // TODO: this should probably be done using DOM
-			
+
 			$query = RuleMlQuery::createFromString($queryString);
 			$result = $client->query($rulesetId, $query);
-			
+
 			$variables = $result->getDom()->getElementsByTagName('Var');
 			for ($i = 0; $i < $variables->length; $i++) {
 				$value = \explode(':', $variables->item($i)->nextSibling->textContent);
@@ -305,12 +321,12 @@ print_r($result->getString());
 		if (!$openAjaxHub) {
 			throw new \RuntimeException('Could not load OpenAjax hub headers.');
 		}
-		
+
 		$this->template->setTitle($this->getTitle());
-		
+
 		$openAjaxHub = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHub);
 		$openAjaxHub = \str_replace('{$templateData}', $this->template->getJson(), $openAjaxHub);
-		
+
 		$this->template->appendToHead($openAjaxHub);
 		/*
 		$content = \file_get_contents(self::TEMPLATE_DIR .'Hub.html');

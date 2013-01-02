@@ -18,7 +18,7 @@ use DOMXPath;
  * Extend the DOMDocument class with the Microdata API functions.
  */
 class MicrodataPhpDOMDocument extends DOMDocument {
-	
+
 	public function __construct($version = '1.0', $encoding = 'UTF-8') {
 		parent::__construct($version, $encoding);
 		$this->registerNodeClass('DOMDocument', '\Lib\MicrodataPhp\MicrodataPhpDOMDocument');
@@ -42,12 +42,10 @@ class MicrodataPhpDOMDocument extends DOMDocument {
 	 * Creates a DOMXPath to query this document.
 	 *
 	 * @return
-	 *   DOMXPath object.
+	 *   \DOMXPath object.
 	 */
 	public function xpath() {
 		return new DOMXPath($this);
 	}
 
 }
-
-?>

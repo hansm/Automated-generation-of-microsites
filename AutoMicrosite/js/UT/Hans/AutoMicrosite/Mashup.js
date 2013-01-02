@@ -1,6 +1,6 @@
 /**
  * Mashup handling class
- * 
+ *
  * @author Hans
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
@@ -9,14 +9,14 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "UT/Hans/AutoMicrosite/WidgetLoader"]
 	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr, SizeHandler, log, Loader) {
 	return declare(null, {
-		
+
 		/**
 		 * Template placeholder itemtype
 		 */
 		TEMPLATE_PLACEHOLDER: "http://automicrosite.maesalu.com/TemplatePlaceholder",
 
 		widgetData: [],
-		
+
 		widgetIdPrefix: "widget",
 
 		divMashup: null,
@@ -35,37 +35,42 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Widget objects
 		 */
 		widgets: [],
-		
+
 		/**
 		 * Template placeholders for the widgets
 		 */
 		placeholders: [],
-		
+
 		/**
 		 * Widget resize handler
 		 */
 		size: null,
-		
+
 		loader: null,
-		
+
 		loadingMessage: null,
-		
+
 		dataWidgets: [],
-		
+
 		visualWidgets: [],
-		
+
 		templateData: [],
-		
+
 		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
 		constructor: function(divMashupId, widgetData, templateData) {
+			console.log("widgetData");
+			console.log(widgetData);
+			console.log("templateData");
+			console.log(templateData);
+
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetData = widgetData;
 			this.templateData = templateData;
-console.log(templateData);
+
 			// Create hub with loader object
 			this.openAjaxLoader = new OpenAjax.widget.Loader({ManagedHub: {
 				onPublish:			this.onPublish.bind(this),
@@ -78,7 +83,7 @@ console.log(templateData);
 
 			// Find template placeholders
 			this.placeholders = domQuery("[itemtype='"+ this.TEMPLATE_PLACEHOLDER +"']");
-			log("Placeholders found", this.placeholders.length);
+			console.log("Placeholders found: "+ this.placeholders.length);
 			if (this.placeholders.length == 0) {
 				this.handleError("No placeholders found on the template.");
 				return;
@@ -90,7 +95,7 @@ console.log(templateData);
 			this.visualWidgets = [];
 			this.loader = new Loader(this.openAjaxLoader, this.widgetData, this.placeholders, this.visualWidgetsLoaded.bind(this),
 				this.allWidgetsLoaded.bind(this));
-			
+
 			// Loading mashup message
 			var dimensions = win.getBox();
 			this.loadingMessage = domConstruct.create("div", {
@@ -111,7 +116,7 @@ console.log(templateData);
 				}
 			}, document.body);
 		},
-		
+
 		/**
 		 * Handle error message
 		 */
@@ -142,7 +147,7 @@ console.log(templateData);
 			// TODO: do something about it
 			this.handleError(source +" "+ alertType);
 		},
-		
+
 		/**
 		 * Actions to perform once visual widgets have finished loading
 		 */
@@ -150,7 +155,7 @@ console.log(templateData);
 			this.size = new SizeHandler(this.widgetData, this.placeholders, visualWidgets);
 			this.size.run();
 		},
-		
+
 		allWidgetsLoaded: function() {
 			this.loadingMessage.style.display = "none";
 		},
@@ -164,12 +169,12 @@ console.log(templateData);
 			} catch (e) {
 				this.handleError(e);
 			}
-			
+
 /*
 			for (var i in this.widgetData) {
 				this.loadWidget(i, this.widgetData[i]);
 			}
-			
+
 			// remove empty placeholders (optional)
 			/*
 			for (var k = 0; k < this.placeholders.length; k++) {

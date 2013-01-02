@@ -1,6 +1,6 @@
 /**
  * Widget loading class
- * 
+ *
  * @author Hans
  */
 // TODO: load visual first and only then add data widgets. so far show "Loading..." message (probably overlay would be a good idea)
@@ -9,68 +9,68 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "UT/Hans/AutoMicrosite/Log"]
 	, function(declare, dom, domConstruct, domStyle, win, on, query, log) {
 	return declare(null, {
-		
+
 		WIDGET_ELEMENT_ID_PREFIX: "widgetElement",
 
 		/**
 		 * Widget data
 		 */
 		data: [],
-		
+
 		/**
 		 * Widget placeholder elements
 		 */
 		placeholders: [],
-		
+
 		/**
 		 * Event to run when all visual widgets have finished loading
 		 */
 		visualDoneCallback: null,
 		allDoneCallback: null,
-		
+
 		/**
 		 * OpenAjax loader
 		 */
 		loader: null,
-		
+
 		visualWidgets: [],
 		visualWidgetsLoaded: [],
-		
+
 		dataWidgets: [],
 		dataWidgetsLoaded: [],
-		
+
 		/**
 		 * Loaded widgets management objects
 		 */
 		visualWidgetsLoadedObjects: [],
 		dataWidgetsLoadedObjects: [],
-		
+
 		constructor: function(openAjaxLoader, widgetData, placeholders, visualDone, allDone) {
-			log("WidgetLoader", "constructor");
+			console.log("WidgetLoader.constructor");
 			this.loader = openAjaxLoader;
 			this.data = widgetData;
 			this.placeholders = placeholders;
 			this.visualDoneCallback = visualDone;
 			this.allDoneCallback = allDone;
 		},
-		
+
 		/**
 		 * Start loading widgets
 		 */
 		load: function() {
-			log("WidgetLoader", "Start loading visual widgets");
-			
+			console.log("WidgetLoader.Start loading visual widgets");
+
 			this.emptyPlaceholders();
-			
+
 			// Reorder in priority order
 			this.data.sort(function(a, b) {
 				return b.priority - a.priority;
 			});
-			
-			
+
+
 			// TODO: this should also come from server
 			//this.data.push({metadataFile: "data/data.oam.xml?v="+ Math.random(), placeholder: null, orderNumber: 1000});
-			
+
 			// Distribute widgets
 			var i;
 			for (i in this.data) {
@@ -83,7 +83,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 			log("visualWidgets", this.visualWidgets);
 			log("dataWidgets", this.dataWidgets);
-			
+
 			// Load visual widgets
 			if (this.visualWidgets.length == 0) {
 				this.visualDone();
@@ -95,7 +95,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			}
 		},
-		
+
 		loadVisualWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
 				this.visualWidgetsLoaded.push(widgetId);
@@ -106,7 +106,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}).bind(this, widget.orderNumber);
 			this.loadWidget(widget, callback);
 		},
-		
+
 		loadDataWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
 				this.dataWidgetsLoaded.push(widgetId);
@@ -117,7 +117,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}).bind(this, widget.orderNumber);
 			this.loadWidget(widget, callback);
 		},
-		
+
 		loadWidget: function(widget, callback) {
 			var widgetId = widget.orderNumber;
 
@@ -142,7 +142,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			});
 		},
-		
+
 		/**
 		 * All widgets finished loading
 		 */
@@ -154,7 +154,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 			this.loadDataWidgets();
 		},
-		
+
 		/**
 		 * Load data widgets once visual widgets are done
 		 */
@@ -170,7 +170,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			}
 		},
-		
+
 		done: function() {
 			if (typeof this.allDoneCallback == "function") {
 				this.allDoneCallback(this.visualWidgetsLoadedObjects
@@ -178,12 +178,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 			log("WidgetLoader", "Done");
 		},
-		
+
 		getPlaceholder: function(placeholder) {
 			if (!placeholder) {
 				return document.body; // append to end of document if no placeholder, e.g. data widgets
 			}
-		
+
 			for (var i in this.placeholders) {
 				if (this.placeholders[i].getAttribute("itemid") == placeholder) {
 					return this.placeholders[i];
@@ -192,12 +192,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 			return document.body;
 		},
-			
+
 		emptyPlaceholders: function() {
 			for (var i in this.placeholders) {
 				this.placeholders[i].innerHTML = "";
 			}
 		}
-		
+
 	});
 });

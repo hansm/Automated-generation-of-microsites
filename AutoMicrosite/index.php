@@ -8,5 +8,3 @@
 require './Environment.php';
 
 \UT\Hans\AutoMicrosite\Request\Factory::build('GET');
-
-?>

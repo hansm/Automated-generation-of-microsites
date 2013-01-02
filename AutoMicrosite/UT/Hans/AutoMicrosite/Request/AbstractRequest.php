@@ -28,7 +28,7 @@ abstract class AbstractRequest {
 	/**
 	 * Configuration options read from conf.ini file
 	 *
-	 * @var array
+	 * @var string[][]
 	 */
 	protected $conf;
 
@@ -68,22 +68,6 @@ abstract class AbstractRequest {
 		$this->title = $title;
 	}
 
-	/**
-	 * Get configuration value
-	 *
-	 * @param string $sectionName
-	 * @param string $confName
-	 * @return string|NULL
-	 */
-	public function getConf($sectionName = null, $confName = null) {
-		if (isset($sectionName) && isset($confName)) {
-			return isset($this->conf[$sectionName][$confName]) ? $this->conf[$sectionName][$confName] : null;
-		} elseif (isset($sectionName)) {
-			return isset($this->conf[$sectionName]) ? $this->conf[$sectionName] : null;
-		}
-		return $this->conf;
-	}
-
 	public function __construct() {
 		try {
 			$this->loadConf();
@@ -113,11 +97,27 @@ abstract class AbstractRequest {
 	abstract protected function response($result);
 
 	protected function buildMashup() {
-		$mashup = new Mashup();
-		$mashup->setTitle(htmlentities($this->getTitle()));
+		$mashup = new Mashup($this->getConf());
+		$mashup->setTitle(\htmlentities($this->getTitle()));
 		$mashup->addWidgets($this->getWidgets());
 		$mashup->applyRules();
 		$mashup->output();
+	}
+
+	/**
+	 * Get configuration value
+	 *
+	 * @param string $sectionName
+	 * @param string $confName
+	 * @return array|string|NULL
+	 */
+	public function getConf($sectionName = null, $confName = null) {
+		if (isset($sectionName) && isset($confName)) {
+			return isset($this->conf[$sectionName][$confName]) ? $this->conf[$sectionName][$confName] : null;
+		} elseif (isset($sectionName)) {
+			return isset($this->conf[$sectionName]) ? $this->conf[$sectionName] : null;
+		}
+		return $this->conf;
 	}
 
 	/**
@@ -138,5 +138,3 @@ abstract class AbstractRequest {
 	}
 
 }
-
-?>

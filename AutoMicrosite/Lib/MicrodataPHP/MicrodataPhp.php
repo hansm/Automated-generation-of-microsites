@@ -92,7 +92,7 @@ class MicrodataPhp {
 		if ($itemtype = $item->itemType()) {
 			$result->type = $itemtype;
 		}
-		// Add itemid. 
+		// Add itemid.
 		if ($itemid = $item->itemid()) {
 			$result->id = $itemid;
 		}
@@ -118,5 +118,3 @@ class MicrodataPhp {
 	}
 
 }
-
-?>

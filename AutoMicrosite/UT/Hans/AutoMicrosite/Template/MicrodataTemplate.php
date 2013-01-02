@@ -5,6 +5,7 @@ use Lib\MicrodataPhp\MicrodataPhpDOMDocument;
 use Lib\MicrodataPhp\MicrodataPhpDOMElement;
 use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
 use UT\Hans\AutoMicrosite\RuleMl\MicrodataTemplateToRuleMl;
+use RuntimeException;
 
 /**
  * Template handling class
@@ -23,25 +24,25 @@ class MicrodataTemplate {
 	 * @var string
 	 */
 	private $fileUrl;
-	
+
 	/**
 	 * Template DOM object
-	 * 
-	 * @var \Lib\MicrodataPhp\MicrodataPhpDOMDocument 
+	 *
+	 * @var \Lib\MicrodataPhp\MicrodataPhpDOMDocument
 	 */
 	private $dom;
-	
+
 	/**
 	 * Template file URL
-	 * 
-	 * @return string 
+	 *
+	 * @return string
 	 */
 	public function getFileUrl() {
 		return $this->fileUrl;
 	}
-	
+
 	/**
-	 * @param string $templateFileUrl 
+	 * @param string $templateFileUrl
 	 * @throws \ErrorException
 	 */
 	public function __construct($templateFileUrl) {
@@ -51,10 +52,10 @@ class MicrodataTemplate {
 			throw new \ErrorException('Could not load template file.');
 		}
 	}
-	
+
 	/**
 	 * TODO: this should be done with proper DOM
-	 * @var array 
+	 * @var array
 	 */
 	public $headHtml = array();
 
@@ -68,8 +69,8 @@ class MicrodataTemplate {
 
 	/**
 	 * Set template title tag
-	 * 
-	 * @param string $title 
+	 *
+	 * @param string $title
 	 * @throws \RuntimeException
 	 */
 	public function setTitle($title) {
@@ -79,7 +80,7 @@ class MicrodataTemplate {
 		}
 		$titleElement->nodeValue = $title;
 	}
-	
+
 	public function setSlot(MicrodataPhpDOMElement $element, $newContents) {
 		$newElement = DomHtml::stringToDomElement($newContents, $element->ownerDocument);
 		$element->parentNode->replaceChild($newElement, $element);
@@ -87,22 +88,22 @@ class MicrodataTemplate {
 
 	/**
 	 * Get template HTML
-	 * 
-	 * @return string 
+	 *
+	 * @return string
 	 */
 	public function toHtml() {
 		$html = $this->dom->saveHTML();
-		
+
 		// TODO: this should be done using DOM
 		$headHtml = \implode("\n", $this->headHtml);
 		$html = \str_replace('</head>', "\n". $headHtml ."\n</head>", $html);
-		
+
 		return $html;
 	}
 
 	/**
 	 * Get RuleML facts for RuleML engine
-	 * 
+	 *
 	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl
 	 */
 	public function toRuleMl() {
@@ -110,7 +111,7 @@ class MicrodataTemplate {
 		$result = $transformer->transformTemplate($this->dom, $this->fileUrl);
 		return $result;
 	}
-	
+
 	/**
 	 * Get JSON data about the template
 	 * TODO: possibly do this on client side since placeholder data is still available there
@@ -129,6 +130,31 @@ class MicrodataTemplate {
 		return \json_encode($templateData);
 	}
 
-}
+	/**
+	 * Get list of template files
+	 *
+	 * @param string[] $directory
+	 * @throws \RuntimeException
+	 */
+	public static function getAllTemplateFiles($directory) {
+		if (\substr($directory, -1) != '/') {
+			$directory .= '/';
+		}
 
-?>
+		$templates = array();
+		$templatesDir = \dir($directory);
+		if (!$templatesDir) {
+			throw new RuntimeException('Could not load templates.');
+		}
+		while ($file = $templatesDir->read()) {
+			$a = \explode('.', $file);
+			$fileType = \end($a);
+			if (!empty($fileType) && \strcasecmp($fileType, 'html') == 0) {
+				$templates[] = $directory . $file;
+			}
+		}
+		$templatesDir->close();
+		return $templates;
+	}
+
+}

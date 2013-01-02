@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RuleML xmlns="http://ruleml.org/spec">
-	<Assert>
+	<Assert mapClosure="universal">
 
 	<!--
 	Response to widget query
@@ -103,7 +103,7 @@
 			<Atom>
 				<Rel iri="http://openajax.org/metadata#category"/>
 				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>category</Ind><Ind>http://schema.org/Dataset</Ind></slot>
+				<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Dataset</Ind></slot>
 			</Atom>
 		</if>
 		<then>

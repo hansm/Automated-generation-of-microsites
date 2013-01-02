@@ -40,5 +40,3 @@ class GET extends AbstractRequest {
 	}
 
 }
-
-?>

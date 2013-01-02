@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RuleML xmlns="http://ruleml.org/spec">
-	<Assert>
+	<Assert mapClosure="universal">
 	
 		<!-- All widgets are Things  -->
 		<Atom>

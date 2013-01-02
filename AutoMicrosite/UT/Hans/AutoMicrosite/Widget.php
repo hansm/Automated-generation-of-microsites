@@ -1,5 +1,5 @@
 <?php
-namespace UT\Hans\AutoMicrosite\Widget;
+namespace UT\Hans\AutoMicrosite;
 
 use ErrorException;
 use RuntimeException;
@@ -122,7 +122,7 @@ class Widget {
 
 		try {
 			$metadata = \file_get_contents($this->metadataFile);
-			$titleMatch = null;
+			$titleMatch = '';
 			if (\preg_match('#<title>(.+?)</title>#s', $metadata, $titleMatch)) {
 				$this->title = trim($titleMatch[1]);
 			}
