@@ -14,12 +14,51 @@ class RuleMlGenerator implements IRuleGenerator {
 	 */
 	const RULEML_NS = 'http://ruleml.org/spec';
 
-	public function fromTemplates(array $templateUrls) {
-		;
+	/**
+	 * @var \UT\Hans\AutoMicrosite\RuleGenerator\OpenAjaxToRuleMl
+	 */
+	private $openAjaxToRuleMl;
+
+	/**
+	 * @var \UT\Hans\AutoMicrosite\RuleGenerator\MicrodataTemplateToRuleMl
+	 */
+	private $microdataTemplateToRuleMl;
+
+	public function __construct() {
+		$this->openAjaxToRuleMl = new OpenAjaxToRuleMl();
+		$this->microdataTemplateToRuleMl = new MicrodataTemplateToRuleMl();
 	}
 
-	public function fromWidgets(array $widgetUrls) {
-		;
+	public function fromTemplates(array $templates) {
+		$ruleset = null;
+		foreach ($templates as $template) {
+			$templateRuleset = $this->microdataTemplateToRuleMl->transformFile(
+								$template->getUrl(),
+								$template->getId());
+			if (isset($ruleset)) {
+				$ruleset = $this->combine($ruleset, $templateRuleset);
+			} else {
+				$ruleset = $templateRuleset;
+			}
+		}
+
+		return $ruleset;
+	}
+
+	public function fromWidgets(array $widgets) {
+		$ruleset = null;
+		foreach ($widgets as $widget) {
+			$widgetRuleset = $this->openAjaxToRuleMl->transformFile(
+								$widget->getUrl(),
+								$widget->getId());
+			if (isset($ruleset)) {
+				$ruleset = $this->combine($ruleset, $widgetRuleset);
+			} else {
+				$ruleset = $widgetRuleset;
+			}
+		}
+
+		return $ruleset;
 	}
 
 	public function combine($ruleset1, $ruleset2) {

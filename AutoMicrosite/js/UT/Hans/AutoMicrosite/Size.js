@@ -7,7 +7,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Log"
 		, "dojo/query", "dojo/dom-geometry"
 		, "dojo/NodeList-traverse"]
-	, function(declare, dom, domConstruct, domStyle, win, on, log, query, domGeom) {
+	, function(declare, dom, domConstruct, domStyle, win, on, log, query, domGeom, nodeListTraverse) {
 	return declare(null, {
 		
 		/**
@@ -84,7 +84,9 @@ console.log(visualWidgets);
 				if (widgets === 0) {
 					showWidget = widgetManager;
 				}
-				widgetManager.OpenAjax._rootElement.style.display = "none";
+				//widgetManager.OpenAjax._rootElement.style.display = "none";
+				
+				this.calculateWidgetDimensions(showWidget);
 			
 				menuItems.push({
 					label: row.title ? row.title : "123",
@@ -92,19 +94,19 @@ console.log(visualWidgets);
 				});
 				widgets++;
 			}
-		
+		/*
 			if (showWidget) {
 				showWidget.OpenAjax._rootElement.style.display = "block";
 				this.calculateWidgetDimensions(showWidget);
-			}
- 
+			}*/
+ /*
 			if (widgets > 1) {
 				var menuWidget = this.getMenuWidget();
 				if (menuWidget) {
 					log("processPlaceholder", "Writing buttons property.");
 					this.getMenuWidget().OpenAjax.setPropertyValue("buttons", menuItems);
 				}
-			}
+			}*/
 		},
 			
 			
@@ -115,7 +117,9 @@ console.log(visualWidgets);
 
 			var widgetRootElement = query.NodeList();
 			widgetRootElement.push(widgetManager.OpenAjax._rootElement);
+			//widgetManager.OpenAjax._rootElement.style.display = "none";
 			var placeholderDimensions = domGeom.getContentBox(widgetRootElement.parent()[0]);
+			//widgetManager.OpenAjax._rootElement.style.display = "block";
 			
 			// TODO: shouldn't it be 'requestSizeChange'?
 			widgetManager.OpenAjax.adjustDimensions({
@@ -139,6 +143,7 @@ console.log(visualWidgets);
 				
 		menuClick: function(widgetId) {
 			console.log("opening widget "+ widgetId);
+			
 		}
 
 	});

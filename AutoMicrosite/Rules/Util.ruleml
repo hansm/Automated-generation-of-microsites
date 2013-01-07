@@ -2,143 +2,297 @@
 <RuleML xmlns="http://ruleml.org/spec">
 	<Assert mapClosure="universal">
 
-	<!--
-	Response to widget query
-	-->
-	<Implies>
-		<if>
-			<And>
+		<!--
+		Response to widget query
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>Location</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
+						<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
+					</Atom>
+
+					<Atom>
+						<Rel>Width</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>width</Ind><Var>width</Var></slot>
+					</Atom>
+
+					<Atom>
+						<Rel>Height</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>height</Ind><Var>height</Var></slot>
+					</Atom>
+
+					<Atom>
+						<Rel>Priority</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>priority</Ind><Var>priority</Var></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
 				<Atom>
-					<Rel>Location</Rel>
+					<Rel>WidgetResponse</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
 					<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
-				</Atom>
-				
-				<Atom>
-					<Rel>Width</Rel>
-					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>width</Ind><Var>width</Var></slot>
-				</Atom>
-				
-				<Atom>
-					<Rel>Height</Rel>
-					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>height</Ind><Var>height</Var></slot>
-				</Atom>
-				
-				<Atom>
-					<Rel>Priority</Rel>
-					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 				</Atom>
-			</And>
-		</if>
-		<then>
-			<Atom>
-				<Rel>WidgetResponse</Rel>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
-				<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
-				<slot><Ind>width</Ind><Var>width</Var></slot>
-				<slot><Ind>height</Ind><Var>height</Var></slot>
-				<slot><Ind>priority</Ind><Var>priority</Var></slot>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	Width
-	-->
-	<Implies>
-		<if>
-			<Atom>
-				<Rel iri="http://openajax.org/metadata#width" />
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>width</Ind><Var>width</Var></slot>
-			</Atom>
-		</if>
-		<then>
-			<Atom>
-				<Rel>Width</Rel>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>width</Ind><Var>width</Var></slot>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	Height
-	-->
-	<Implies>
-		<if>
-			<Atom>
-				<Rel iri="http://openajax.org/metadata#height" />
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>height</Ind><Var>height</Var></slot>
-			</Atom>
-		</if>
-		<then>
-			<Atom>
-				<Rel>Height</Rel>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>height</Ind><Var>height</Var></slot>
-			</Atom>
-		</then>
-	</Implies>
-	
-	<!--
-	Default priority
-	-->
-	<Atom>
-		<Rel>Priority</Rel>
-		<slot><Ind>widget</Ind><Var>widget</Var></slot>
-		<slot><Ind>priority</Ind><Ind>0</Ind></slot>
-	</Atom>
+			</then>
+		</Implies>
 
-	
-	<!-- Check whether the widget is data widget -->
-	<Implies>
-		<if>
-			<Atom>
-				<Rel iri="http://openajax.org/metadata#category"/>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Dataset</Ind></slot>
-			</Atom>
-		</if>
-		<then>
-			<Atom>
-				<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>value</Ind><Ind>true</Ind></slot>
-			</Atom>
-		</then>
-	</Implies>
-	<Implies>
-		<if>
-			<And>
+		<!-- Check whether the widget is a data widget -->
+		<Implies>
+			<if>
 				<Atom>
-					<Rel iri="http://automicrosite.maesalu.com/#widget" />
-					<Var>widget</Var>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Dataset</Ind></slot>
 				</Atom>
-				<Naf>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>true</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<And>
 					<Atom>
-						<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
+						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>value</Ind><Ind>true</Ind></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>false</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Whether widget has to be on a separate page -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#separatePage</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>value</Ind><Ind>true</Ind></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#separatePage</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>false</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Combine widget query response -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+						<slot><Ind>template</Ind><Var>template</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Var>isDataWidget</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#priority2</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>priority</Ind><Var>priority</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Var>separatePage</Var></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#widgetQuery</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+					<slot><Ind>isDataWidget</Ind><Var>isDataWidget</Var></slot>
+					<slot><Ind>priority</Ind><Var>priority</Var></slot>
+					<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Data widgets do not have a placeholder -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#templateExists</Rel>
+						<Var>template</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Ind>true</Ind></slot>
 					</Atom>
-				</Naf>
-			</And>
-		</if>
-		<then>
-			<Atom>
-				<Rel iri="http://automicrosite.maesalu.com/#isDataWidget"/>
-				<slot><Ind>widget</Ind><Var>widget</Var></slot>
-				<slot><Ind>value</Ind><Ind>false</Ind></slot>
-			</Atom>
-		</then>
-	</Implies>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Ind>NULL</Ind></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+			When there are several widgets in a placeholder and there is a menu
+			widget and one of the serveral is a table widget, then place this
+			table widget on a separate page
+	     -->
+		 <Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://openajax.org/metadata#category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Ind>http://schema.org/Table</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://openajax.org/metadata#category</Rel>
+						<slot><Ind>widget</Ind><Var>widget2</Var></slot>
+						<slot><Ind>category</Ind><Ind>http://schema.org/SiteNavigationElement</Ind></slot>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>true</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>value</Ind><Ind>true</Ind></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>false</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Combine template response -->
+		<!-- TODO: consider all possibilities -->
+		<Implies>
+			<if>
+				<And>
+					
+					<Atom>
+						<Rel>http://automicrosite.maesalu.com/#template</Rel>
+						<slot><Ind>template</Ind><Var>template</Var></slot>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#widgetsMissPlace</Rel>
+							<slot><Ind>template</Ind><Var>template</Var></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#templateQuery</Rel>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Some widget does not have a place in the layout -->
+		<Implies>
+			<if>
+				<And>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#templateExists</Rel>
+							<Var>template</Var>
+						</Atom>
+						<Atom>
+							<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+							<Var>widget</Var>
+						</Atom>
+						<Naf>
+							<Atom>
+								<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+								<slot><Ind>widget</Ind><Var>widget</Var></slot>
+								<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+								<slot><Ind>template</Ind><Var>template</Var></slot>
+							</Atom>
+						</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://automicrosite.maesalu.com/#widgetsMissPlace</Rel>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
 
 	</Assert>
-	
+
 </RuleML>

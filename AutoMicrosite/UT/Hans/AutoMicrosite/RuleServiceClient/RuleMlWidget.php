@@ -25,7 +25,7 @@ class RuleMlWidget implements IWidget {
 	 *
 	 * @var string[]
 	 */
-	private $booleanVars = array('isDataWidget');
+	private $booleanVars = array('isDataWidget', 'separatePage');
 
 	public function __construct($response) {
 		$variables = RuleMlService::getResponseVarNodes($response);
@@ -33,7 +33,9 @@ class RuleMlWidget implements IWidget {
 			$var = $variables->item($i);
 			$varName = RuleMlService::getResponseVarName($var);
 			$varValue = RuleMlService::getResponseVarValue($var);
-			if (\in_array($varName, $this->intVars)) {
+			if ($varValue === 'NULL') { // no value
+				$this->data[$varName] = null;
+			} elseif (\in_array($varName, $this->intVars)) {
 				$this->data[$varName] = (int) $varValue;
 			} elseif (\in_array($varName, $this->booleanVars)) {
 				$this->data[$varName] = strcasecmp($varValue, 'true') == 0;
@@ -70,7 +72,23 @@ class RuleMlWidget implements IWidget {
 	}
 
 	public function separatePage() {
-		;
+		return $this->getValue('separatePage');
+	}
+
+	public function getMaxHeight() {
+
+	}
+
+	public function getMaxWidth() {
+
+	}
+
+	public function getMinHeight() {
+
+	}
+
+	public function getMinWidth() {
+
 	}
 
 }

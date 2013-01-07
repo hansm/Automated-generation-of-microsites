@@ -4,11 +4,20 @@ namespace UT\Hans\AutoMicrosite;
 use ErrorException;
 use RuntimeException;
 use UT\Hans\AutoMicrosite\RuleServiceClient\IWidget as RuleServiceClientWidget;
+use UT\Hans\AutoMicrosite\RuleGenerator\IWidget as RuleGeneratorWidget;
+use UT\Hans\AutoMicrosite\Request\IRequestWidget;
 
 /**
  * Widget class
  */
-class Widget {
+class Widget implements RuleGeneratorWidget {
+
+	/**
+	 * Unique ID of the widget
+	 *
+	 * @var string
+	 */
+	public $id;
 
 	/**
 	 * Widget title, used for for example menu
@@ -117,8 +126,18 @@ class Widget {
 		$this->orderNumber = $number;
 	}
 
-	public function __construct($fileUrl) {
+	public function getId() {
+		return $this->id;
+	}
+
+	public function getUrl() {
+		return $this->metadataFile;
+	}
+
+	public function __construct($fileUrl, array $properties = array()) {
+		$this->id = self::generateId();
 		$this->metadataFile = $fileUrl;
+		$this->properties = empty($properties) ? null : $properties;
 
 		try {
 			$metadata = \file_get_contents($this->metadataFile);
@@ -140,6 +159,7 @@ class Widget {
 		$this->placeholder = $widget->getPlaceholder();
 		$this->priority = $widget->getPriority();
 		$this->isDataWidget = $widget->isDataWidget();
+		$this->separatePage = $widget->separatePage();
 	}
 
 	/**
@@ -147,7 +167,33 @@ class Widget {
 	 * @return string
 	 */
 	public function toJson() {
-		return json_encode($this);
+		return \json_encode($this);
+	}
+
+	/**
+	 * Generate ID for the widget
+	 *
+	 * @staticvar int $widget
+	 * @return int
+	 */
+	public static function generateId() {
+		static $widget = 0;
+		$widget++;
+		return $widget;
+	}
+
+	/**
+	 * Create widget objects from request widgets
+	 *
+	 * @param \UT\Hans\AutoMicrosite\Request\IRequestWidget[] $requestWidgets
+	 * @return array
+	 */
+	public static function createFromRequestWidgets(array $requestWidgets) {
+		$widgets = array();
+		foreach ($requestWidgets as $widget) {
+			$widgets[] = new Widget($widget->getUrl(), $widget->getProperties());
+		}
+		return $widgets;
 	}
 
 }

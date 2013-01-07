@@ -9,20 +9,20 @@ interface IRuleGenerator {
 	/**
 	 * Create RuleML from template files
 	 *
-	 * @param string[] $templateUrls
+	 * @param \UT\Hans\AutoMicrosite\RuleGenerator\ITemplate[] $templates
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	public function fromTemplates(array $templateUrls);
+	public function fromTemplates(array $templates);
 
 	/**
 	 * Create RuleML from widget files
 	 *
-	 * @param string[] $widgetUrls
+	 * @param \UT\Hans\AutoMicrosite\RuleGenerator\IWidget[] $widgets
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	public function fromWidgets(array $widgetUrls);
+	public function fromWidgets(array $widgets);
 
 	/**
 	 * Combine 2 rulesets into 1

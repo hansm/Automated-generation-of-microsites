@@ -7,18 +7,34 @@ use \Exception;
  * Simple GET request handler
  *
  * INPUT:
- *	widgets[]	URLs of widget metadata files
- *	title		title of the mashup
+ *	widget[WIDGET_ID]					URLs of widget metadata files
+ *  property[WIDGET_ID][PROPERTY_NAME]	properties
+ *	title								title of the mashup
  *
- * @author Hans
+ * Sample:
+ * http://localhost/Automated-generation-of-microsites/AutoMicrosite/?widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FData%2FData.oam.xml&widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FDataManager%2FDataManager.oam.xml&widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FMap%2FMap.oam.xml&widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FMenu%2FMenu.oam.xml&widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FSummary%2FSummary.oam.xml&widget%5B%5D=http%3A%2F%2Flocalhost%2FAutomated-generation-of-microsites%2FAutoMicrosite%2FWidgets%2FTable%2FTable.oam.xml&title=My+Mashup
  */
 class GET extends AbstractRequest {
 
 	protected function setInput() {
-		if (empty($_REQUEST['widgets']) || !\is_array($_REQUEST['widgets'])) {
+		if (empty($_REQUEST['widget']) || !\is_array($_REQUEST['widget'])) {
 			throw new Exception('No widgets given as input.');
 		}
-		$this->setWidgets($_REQUEST['widgets']);
+
+		$widgets = array();
+		foreach ($_REQUEST['widget'] as $widgetNumber => $widgetUrl) {
+			$widget = new RequestWidget($widgetUrl);
+			if (isset($_REQUEST['property'])
+					&& !empty($_REQUEST['property'][$widgetNumber])
+					&& \is_array($_REQUEST['property'][$widgetNumber])) {
+				foreach ($_REQUEST['property'][$widgetNumber] as $propName => $propValue) {
+					$widget->addProperty($propName, $propValue);
+				}
+			}
+			$widgets[] = $widget;
+		}
+
+		$this->setWidgets($widgets);
 		$this->setTitle(isset($_REQUEST['title']) ? $_REQUEST['title'] : 'My mashup');
 	}
 
@@ -36,7 +52,11 @@ class GET extends AbstractRequest {
 	}
 
 	protected function response($result) {
-		//
+		echo $result;
+		/*
+			$url = $this->saveToFile($result);
+			header('Location: '. $url);
+		*/
 	}
 
 }

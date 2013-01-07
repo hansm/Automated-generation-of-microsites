@@ -41,4 +41,13 @@ interface IWidget {
 	 */
 	public function separatePage();
 
+	
+	public function getMaxWidth();
+
+	public function getMinWidth();
+
+	public function getMinHeight();
+
+	public function getMaxHeight();
+
 }

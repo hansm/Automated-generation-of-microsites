@@ -127,7 +127,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
 			// Listen on the MenuClick topic to track clicking on menu items
 			if (topic == "AutoMicrosite.MenuClick") {
-				this.size.menuClick(data);
+				this.loader.menuClick(data);
 			}
 			return true;
 		},

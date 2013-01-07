@@ -1,7 +1,6 @@
 <?php
 namespace UT\Hans\AutoMicrosite;
 
-use UT\Hans\AutoMicrosite\Widget\Widget;
 use UT\Hans\AutoMicrosite\RuleServiceClient\Factory as RuleServiceFactory;
 use UT\Hans\AutoMicrosite\RuleGenerator\Factory as RuleGeneratorFactory;
 use UT\Hans\AutoMicrosite\MappingsGenerator\Factory as MappingsGeneratorFactory;
@@ -14,37 +13,13 @@ use RuntimeException;
 class Mashup {
 
 	/**
-	 * Hub object
-	 *
-	 * @var  \UT\Hans\AutoMicrosite\Hub
-	 */
-	private $hub;
-
-	/**
-	 * Mashup title
-	 *
-	 * @var string
-	 */
-	private $title;
-
-	/**
 	 * Application configurations
 	 *
 	 * @var string[][]
 	 */
 	private $conf;
 
-	/**
-	 * Set mashup title
-	 * @param string $title
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-		$this->hub->setTitle($title);
-	}
-
 	public function __construct(array $conf) {
-		$this->hub = new Hub();
 		$this->conf = $conf;
 	}
 
@@ -65,58 +40,40 @@ class Mashup {
 	}
 
 	/**
-	 * Add widget into mashup
-	 *
-	 * @param string $widgetFile
-	 * @throws \RuntimeException
-	 */
-	public function addWidget($widgetFile) {
-		$widget = new Widget($widgetFile);
-		// $widget->loadWidgetData();
-		$this->hub->attachWidget($widget);
-	}
-
-	public function addWidgets(array $widgets) {
-		foreach ($widgets as $widget) {
-			$this->addWidget($widget);
-		}
-	}
-
-	/**
 	 *
 	 * @param string $title
-	 * @param \UT\Hans\AutoMicrosite\Widget[] $widgets
+	 * @param \UT\Hans\AutoMicrosite\Widget[] $requestWidgets
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	public function process($title, array $widgets) {
-		$hub = new Hub();
-		$hub->setTitle($title);
-		$hub->attachWidgets($widgets);
+	public function process($title, array $requestWidgets) {
+		$widgets = Widget::createFromRequestWidgets($requestWidgets);
+		$hub = new Hub($title, $widgets);
 
 		try {
 			$generalizationRules = \file_get_contents($this->getConf('rules', 'generalization'));
 			$priorityRules = \file_get_contents($this->getConf('rules', 'priority'));
 			$utilRules = \file_get_contents($this->getConf('rules', 'other'));
 
-			$templateQuery = \file_get_contents($this->getConf('rules', 'template_query'));
-			$widgetQuery = \file_get_contents($this->getConf('rules', 'widget_info_query'));
+			$templateQueryFile = $this->getConf('rules', 'template_query');
+			$templateQuery = !empty($templateQueryFile) ?
+				\file_get_contents($templateQueryFile) : null;
+
+			$widgetQueryFile = $this->getConf('rules', 'widget_info_query');
+			$widgetQuery = !empty($widgetQueryFile) ?
+				\file_get_contents($widgetQueryFile) : null;
 		} catch (ErrorException $e) {
-			throw new RuntimeException('Could not read query files.');
+			throw new RuntimeException('Could not read rule files.');
 		}
 
 		$ruleGenerator = RuleGeneratorFactory::build($this->getConf('general', 'rule_generator'));
 
-		$widgetUrls = array();
-		foreach ($widgets as $widget) {
-			$widgetUrls[] = $widget->metadataFile;
-		}
-		$widgetRules = $ruleGenerator->fromWidgets($widgetUrls);
+		$widgetRules = $ruleGenerator->fromWidgets($widgets);
 
-		$templateUrls = Template\MicrodataTemplate::getAllTemplateFiles(
+		$templates = Template::getAllTemplateFiles(
 			$this->getConf('general', 'templates_dir')
 		);
-		$templateRules = $ruleGenerator->fromTemplates($templateUrls);
+		$templateRules = $ruleGenerator->fromTemplates($templates);
 
 		$ruleset = $ruleGenerator->combine($generalizationRules, $priorityRules);
 		$ruleset = $ruleGenerator->combine($ruleset, $utilRules);
@@ -124,19 +81,29 @@ class Mashup {
 		$ruleset = $ruleGenerator->combine($ruleset, $templateRules);
 
 		$ruleService = RuleServiceFactory::build(
-				$this->getConf('rule_service', 'url'),
-				$this->getConf('rule_service', 'type'),
-				$ruleset,
-				$templateQuery,
-				$widgetQuery);
+						$this->getConf('rule_service', 'type'),
+						$this->getConf('rule_service', 'url'),
+						$ruleset,
+						$templateQuery,
+						$widgetQuery);
 
 		// Query for template
-		$template = $ruleService->getTemplate();
+		$templateId = $ruleService->getTemplate();
+		foreach ($templates as $t) {
+			if ($t->getId() == $templateId) {
+				$template = $t;
+				break;
+			}
+		}
+		if (!isset($template)) {
+			throw new RuntimeException('Invalid template.');
+		}
+
 		$hub->setTemplate($template);
 
 		// Query all widgets' info
 		foreach ($widgets as $widget) {
-			$widget->setData($ruleService->getWidgetInfo($widget->orderNumber, $template));
+			$widget->setData($ruleService->getWidgetInfo($widget->getId(), $templateId));
 		}
 
 		// Generate widgets' message mappings
@@ -146,27 +113,6 @@ class Mashup {
 		}
 
 		return $hub->toHtml();
-	}
-
-	public function applyRules() {
-		$rulesetId = $this->hub->createRuleset();
-
-		$templateUrl = $this->hub->selectTemplate($rulesetId);
-		if (!isset($templateUrl)) {
-			throw new \RuntimeException('Template not found.');
-			// TODO: someone should probably catch this exception
-		}
-
-		$this->hub->selectWidgetPositions($rulesetId, $templateUrl);
-
-		//$this->hub->applyRules();
-	}
-
-	/**
-	 * Output mashup HTML code
-	 */
-	public function output() {
-		echo $this->hub->toHtml();
 	}
 
 }

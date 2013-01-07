@@ -6,57 +6,42 @@
 	version="1.0">
 
 	<xsl:param name="widget" select="999" />
-	
+
 	<xsl:template match="/">
 		<RuleML>
 			<Assert>
 
 				<xsl:for-each select="//oa:category">
 					<Atom>
-						<Rel>WidgetCategory</Rel>
-						<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
-						<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
-					</Atom>
-				</xsl:for-each>
-
-
-				<Atom>
-					<Rel>WidgetId</Rel>
-					<Ind><xsl:value-of select="$widget" /></Ind>
-				</Atom>
-
-<!--
-				<xsl:for-each select="//oa:category">
-					<Atom>
-						<Rel iri="http://openajax.org/metadata#category" />
+						<Rel>http://openajax.org/metadata#category</Rel>
 						<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 						<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
 					</Atom>
 				</xsl:for-each>
 
 				<Atom>
-					<Rel iri="http://automicrosite.maesalu.com/#widget" />
+					<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
 					<Ind><xsl:value-of select="$widget" /></Ind>
 				</Atom>
 
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#id" />
+					<Rel>http://openajax.org/metadata#id</Rel>
 					<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 					<slot><Ind>id</Ind><Ind><xsl:value-of select="//@id" /></Ind></slot>
 				</Atom>
 
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#width" />
+					<Rel>http://openajax.org/metadata#width</Rel>
 					<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 					<slot><Ind>width</Ind><Ind type="Integer"><xsl:value-of select="//@width" /></Ind></slot>
 				</Atom>
 
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#height" />
+					<Rel>http://openajax.org/metadata#height</Rel>
 					<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 					<slot><Ind>height</Ind><Ind type="Integer"><xsl:value-of select="//@height" /></Ind></slot>
 				</Atom>
--->
+
 			</Assert>
 		</RuleML>
 

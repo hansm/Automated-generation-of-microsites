@@ -1,7 +1,8 @@
 <?php
 namespace UT\Hans\AutoMicrosite;
 
-use UT\Hans\AutoMicrosite\Widget\Widget;
+use RuntimeException;
+use ErrorException;
 use UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient; // TODO: remove
 use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
 use UT\Hans\AutoMicrosite\RuleMl\OpenAjaxToRuleMl;
@@ -48,19 +49,17 @@ class Hub {
 	private $widgetsNumber = 0;
 
 	/**
-	 * Templates management object
 	 *
-	 * @var \UT\Hans\AutoMicrosite\Template\Templates
-	 */
-	private $templates;
-
-	/**
-	 *
-	 * @var \UT\Hans\AutoMicrosite\Template\MicrodataTemplate
+	 * @var \UT\Hans\AutoMicrosite\Template
 	 */
 	private $template;
 
-	private $rulesetId;
+	/**
+	 * Widgets to the hub
+	 *
+	 * @var array
+	 */
+	private $widgets;
 
 	/**
 	 * Return mashup title
@@ -81,16 +80,9 @@ class Hub {
 	}
 
 	/**
-	 * Widgets to the hub
-	 *
-	 * @var array
-	 */
-	private $widgets = array();
-
-	/**
 	 * Get hub widgets
 	 *
-	 * @return \UT\Hans\AutoMicrosite\Widget\Widget[]
+	 * @return \UT\Hans\AutoMicrosite\Widget[]
 	 */
 	public function getWidgets() {
 		return $this->widgets;
@@ -99,14 +91,16 @@ class Hub {
 	/**
 	 * Set template value
 	 *
-	 * @param string $template
+	 * @param UT\Hans\AutoMicrosite\Template $template
 	 */
-	public function setTemplate($template) {
-		// TODO: implement
+	public function setTemplate(Template $template) {
+		$this->template = $template;
 	}
 
-	public function __construct() {
-		$this->templates = new Templates();
+	public function __construct($title, array $widgets) {
+		$this->widgets = array();
+		$this->setTitle($title);
+		$this->attachWidgets($widgets);
 	}
 
 	/**
@@ -115,6 +109,7 @@ class Hub {
 	 * @return int
 	 */
 	public function getNextWidgetOrderNumber() {
+		// TODO: remove this stuff
 		$nextWidgetNumber = $this->widgetsNumber;
 		$this->widgetsNumber++;
 		return $nextWidgetNumber;
@@ -123,7 +118,7 @@ class Hub {
 	/**
 	 * Attach widget to hub
 	 *
-	 * @param \UT\Hans\AutoMicrosite\Widget\Widget $widget
+	 * @param \UT\Hans\AutoMicrosite\Widget $widget
 	 */
 	public function attachWidget(Widget $widget) {
 		$widgetNumber = $this->getNextWidgetOrderNumber();
@@ -143,6 +138,7 @@ class Hub {
 	 * @return int
 	 */
 	public function createRuleset() {
+		// TODO: remove this
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 
 		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
@@ -162,7 +158,7 @@ class Hub {
 
 		// add templates facts
 		//$rules->merge($this->templates->getRuleMl());
-		
+
 print_r($rules->getString());exit();
 		$this->rulesetId = $client->create($rules);
 
@@ -177,6 +173,7 @@ print_r($rules->getString());exit();
 	 * @throws \Exception
 	 */
 	public function selectTemplate($rulesetId) {
+		// TODO: remove this
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 
 		// create query
@@ -209,6 +206,7 @@ print_r($result->getString());
 	}
 
 	public function selectWidgetPositions($rulesetId, $templateUrl) {
+		// TODO: remove this
 		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
 
 		foreach ($this->widgets as $widget) {
@@ -317,23 +315,16 @@ print_r($result->getString());
 	 * @return string
 	 */
 	public function toHtml() {
-		$openAjaxHub = \file_get_contents('OpenAjaxHubHeaders.html');
-		if (!$openAjaxHub) {
-			throw new \RuntimeException('Could not load OpenAjax hub headers.');
+		try {
+			$openAjaxHubHeaders = \file_get_contents('Template/OpenAjaxHubHeaders.html');
+		} catch (ErrorException $e) {
+			throw new RuntimeException('Could not load OpenAjax hub headers.');
 		}
-
 		$this->template->setTitle($this->getTitle());
+		$openAjaxHubHeaders = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHubHeaders);
+		$openAjaxHubHeaders = \str_replace('{$templateData}', $this->template->getJson(), $openAjaxHubHeaders);
+		$this->template->appendToHead($openAjaxHubHeaders);
 
-		$openAjaxHub = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHub);
-		$openAjaxHub = \str_replace('{$templateData}', $this->template->getJson(), $openAjaxHub);
-
-		$this->template->appendToHead($openAjaxHub);
-		/*
-		$content = \file_get_contents(self::TEMPLATE_DIR .'Hub.html');
-		$content = \str_replace(
-			array('{$title}', '{$widgetData}'),
-			array($this->getTitle(), $this->widgetsJson()),
-			$content);*/
 		return $this->template->toHtml();
 	}
 

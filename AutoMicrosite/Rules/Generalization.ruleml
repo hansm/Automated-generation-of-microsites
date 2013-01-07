@@ -1,161 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RuleML xmlns="http://ruleml.org/spec">
 	<Assert mapClosure="universal">
-	
+
 		<!-- All widgets are Things  -->
 		<Atom>
-			<Rel iri="http://openajax.org/metadata#category"/>
+			<Rel>http://openajax.org/metadata#category</Rel>
 			<slot><Ind>widget</Ind><Var>widget</Var></slot>
 			<slot><Ind>category</Ind><Ind>http://www.schema.org/Thing</Ind></slot>
 		</Atom>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Article</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Blog</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Book</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Comment</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Diet</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/ExercisePlan</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/ItemList</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/Map</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/MediaObject</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel iri="http://openajax.org/metadata#category"/>
+					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://schema.org/CreativeWork</Ind></slot>
 				</Atom>
@@ -163,5 +163,5 @@
 		</Implies>
 
 	</Assert>
-	
+
 </RuleML>

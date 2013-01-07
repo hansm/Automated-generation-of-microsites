@@ -81,10 +81,10 @@
 		<property name="column" datatype="string" />
 	</topic>
 	<topic name="AutoMicrosite.Data.Receive" type="array" subscribe="true" />
-	
+
 	<!-- Dataset is currently just a proposal -->
 	<categories>
-		<category x:iri="http://schema.org/Dataset" />
+		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
     </categories>
 
 </widget>

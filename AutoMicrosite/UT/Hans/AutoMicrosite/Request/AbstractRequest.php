@@ -2,7 +2,9 @@
 namespace UT\Hans\AutoMicrosite\Request;
 
 use Exception;
+use ErrorException;
 use UT\Hans\AutoMicrosite\Mashup;
+use UT\Hans\AutoMicrosite\Util\Log;
 
 /**
  * Abstract request base class
@@ -31,6 +33,13 @@ abstract class AbstractRequest {
 	 * @var string[][]
 	 */
 	protected $conf;
+
+	/**
+	 * Log writter
+	 *
+	 * @var \UT\Hans\AutoMicrosite\Util\Log
+	 */
+	protected $log;
 
 	/**
 	 * Set widget files
@@ -69,12 +78,14 @@ abstract class AbstractRequest {
 	}
 
 	public function __construct() {
+		$this->log = new Log('request_handler');
 		try {
 			$this->loadConf();
 			$this->setInput();
 			$result = $this->buildMashup();
 			$this->response($result);
 		} catch (Exception $e) {
+			$this->log->exception($e);
 			$this->handleException($e);
 		}
 	}
@@ -96,12 +107,21 @@ abstract class AbstractRequest {
 	 */
 	abstract protected function response($result);
 
-	protected function buildMashup() {
+	/**
+	 * Construct mashup
+	 *
+	 * @throws \RuntimeException
+	 */
+/*	protected function buildMashup() {
 		$mashup = new Mashup($this->getConf());
 		$mashup->setTitle(\htmlentities($this->getTitle()));
 		$mashup->addWidgets($this->getWidgets());
 		$mashup->applyRules();
 		$mashup->output();
+	}*/
+	protected function buildMashup() {
+		$mashup = new Mashup($this->getConf());
+		return $mashup->process($this->getTitle(), $this->getWidgets());
 	}
 
 	/**
@@ -133,8 +153,29 @@ abstract class AbstractRequest {
 		$this->conf = $conf;
 	}
 
-	protected function saveToFile() {
-		$this->getConf('general', 'mashup_dir');
+	/**
+	 * Save response to file
+	 *
+	 * @param string $contents
+	 * @return string URL of the file
+	 * @throws \Exception
+	 */
+	protected function saveToFile($contents) {
+		$mashupDir = $this->getConf('general', 'mashup_dir');
+		$fileName = \str_replace(' ', '-', $this->getTitle())
+						.'-'. \time() .'.html';
+		while (\file_exists($mashupDir . $fileName)) {
+			$fileName = \mt_rand(0, 9) . $fileName;
+		}
+
+		try {
+			\file_put_contents($mashupDir . $fileName, $contents);
+		} catch (ErrorException $e) {
+			$this->log->exception($e);
+			throw new Exception('Could not save mashup.');
+		}
+
+		return $this->getConf('general', 'mashup_dir_url') . \urlencode($fileName);
 	}
 
 }
