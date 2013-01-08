@@ -96,7 +96,7 @@ AutoMicrosite.Widget.Table.prototype = {
 		// TODO: request parent width / height change
 		console.log(this.OpenAjax.getDimensions());
 		console.log(this.table.offsetHeight);
-		this.table.parentNode.style.height = this.OpenAjax.getDimensions().height +"px";
+		this.table.parentNode.style.height = "100%";//this.OpenAjax.getDimensions().height +"px";
 		//this.table.parentNode.style.width = this.OpenAjax.getDimensions().width +"px";
 	},
 

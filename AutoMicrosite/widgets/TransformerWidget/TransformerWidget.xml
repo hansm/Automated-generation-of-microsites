@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="TransformerWidget" id="AutoMicrosite/TransformerWidget"
+		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Widget.TransformerWidget"
+		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns="http://openajax.org/metadata"
+	>
+
+	<require type="javascript" src="OrganizationDeptInfo.js"></require>
+
+	<content><![CDATA[ ]]></content>
+
+	<categories>
+		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
+    </categories>
+
+</widget>

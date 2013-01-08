@@ -39,14 +39,6 @@ class Widget implements RuleGeneratorWidget {
 	 */
 	public $placeholder;
 
-
-	/**
-	 * Widget number in hub
-	 *
-	 * @var int
-	 */
-	public $orderNumber;
-
 	/**
 	 * Width with units
 	 *
@@ -107,24 +99,6 @@ class Widget implements RuleGeneratorWidget {
 	 * @var array
 	 */
 	public $properties;
-
-	/**
-	 * Return widget order number in hub
-	 *
-	 * @return int
-	 */
-	public function getOrderNumber() {
-		return $this->orderNumber;
-	}
-
-	/**
-	 * Set widget number in hub
-	 *
-	 * @param int $number
-	 */
-	public function setOrderNumber($number) {
-		$this->orderNumber = $number;
-	}
 
 	public function getId() {
 		return $this->id;

@@ -51,9 +51,7 @@ AutoMicrosite.Widget.Menu.prototype = {
 	 * Click on a button in menu
 	 */
 	buttonClick: function(button) {
-		var link = button.href;
-		var page = link.match(/#(.+)$/)[1];
-		this.OpenAjax.hub.publish("AutoMicrosite.MenuClick", page);
+		this.OpenAjax.hub.publish("AutoMicrosite.MenuClick", button);
 	},
 
 	/**
@@ -75,15 +73,16 @@ AutoMicrosite.Widget.Menu.prototype = {
 			a = document.createElement("a");
 			a.innerHTML = button.label;
 			
-			if (button.href.match(/^http:\/\//i)) {
+			if (typeof button.href == "string" && button.href.match(/^http:\/\//i)) {
 				a.href = button.href;
 				a.target = "_blank";
-			} else {
-				a.href = "#"+ button.href;
-				a.onclick = function() {
-					thisWidget.buttonClick(this);
+			} else if (typeof button.href == "object") {
+				a.href = "#"+ button.href.widget;
+				a.mashupAction = button.href;
+				a.onclick = function(data) {
+					thisWidget.buttonClick(data);
 					return false;
-				};
+				}.bind(a, button.href);
 			}
 			
 			this.divMenu.appendChild(a);

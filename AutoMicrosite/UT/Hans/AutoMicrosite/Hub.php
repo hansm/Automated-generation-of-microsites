@@ -42,13 +42,6 @@ class Hub {
 	private $title;
 
 	/**
-	 * Number of widgets added to the hub
-	 *
-	 * @var int
-	 */
-	private $widgetsNumber = 0;
-
-	/**
 	 *
 	 * @var \UT\Hans\AutoMicrosite\Template
 	 */
@@ -104,26 +97,12 @@ class Hub {
 	}
 
 	/**
-	 * Generate widget order number (needed for rule engine)
-	 *
-	 * @return int
-	 */
-	public function getNextWidgetOrderNumber() {
-		// TODO: remove this stuff
-		$nextWidgetNumber = $this->widgetsNumber;
-		$this->widgetsNumber++;
-		return $nextWidgetNumber;
-	}
-
-	/**
 	 * Attach widget to hub
 	 *
 	 * @param \UT\Hans\AutoMicrosite\Widget $widget
 	 */
 	public function attachWidget(Widget $widget) {
-		$widgetNumber = $this->getNextWidgetOrderNumber();
-		$widget->setOrderNumber($widgetNumber);
-		$this->widgets[$widgetNumber] = $widget;
+		$this->widgets[] = $widget;
 	}
 
 	public function attachWidgets(array $widgets) {
@@ -131,183 +110,6 @@ class Hub {
 			$this->attachWidget($widget);
 		}
 	}
-
-	/**
-	 * Create ruleset and send to RuleML service
-	 *
-	 * @return int
-	 */
-	public function createRuleset() {
-		// TODO: remove this
-		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-
-		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
-		$priorityRulesFile = \file_get_contents(self::PRIORITY_RULES);
-		$generalizationRulesFile = \file_get_contents(self::GENERALIZATION_RULES);
-
-		// rules
-		$rules = RuleMl::createFromString($priorityRulesFile);
-		$rules->merge(RuleMl::createFromString($rulesUtilFile));
-		$rules->merge(RuleMl::createFromString($generalizationRulesFile));
-
-		// add widget facts
-		$transform = new OpenAjaxToRuleMl();
-		foreach ($this->widgets as $widget) {
-			$rules->merge($transform->transformString(\file_get_contents($widget->metadataFile), $widget->getOrderNumber()));
-		}
-
-		// add templates facts
-		//$rules->merge($this->templates->getRuleMl());
-
-print_r($rules->getString());exit();
-		$this->rulesetId = $client->create($rules);
-
-		return $this->rulesetId;
-	}
-
-	/**
-	 * Select template for mashup
-	 *
-	 * @param int $rulesetId
-	 * @return type
-	 * @throws \Exception
-	 */
-	public function selectTemplate($rulesetId) {
-		// TODO: remove this
-		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-
-		// create query
-		$queryString = \file_get_contents('Rules/TemplateQuery.ruleml');
-		$query = RuleMlQuery::createFromString($queryString);
-
-		// query ruleserver
-		$result = $client->query($rulesetId, $query);
-
-print_r($queryString);
-print_r($result->getString());
-
-		// get result value
-		$templateUrl = null;
-		$variables = $result->getDom()->getElementsByTagName('Var');
-		for ($i = 0; $i < $variables->length; $i++) {
-			$value = \explode(':', $variables->item($i)->nextSibling->textContent);
-			$value = \trim(\reset($value));
-
-			switch (\trim($variables->item($i)->textContent)) {
-				case 'template':
-					$templateUrl = trim($value, '"'); // RuleML service adds " to the end and beginning
-					break;
-			}
-		}
-
-		$this->template = $this->templates->getTemplate($templateUrl);
-
-		return $templateUrl;
-	}
-
-	public function selectWidgetPositions($rulesetId, $templateUrl) {
-		// TODO: remove this
-		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-
-		foreach ($this->widgets as $widget) {
-			if (strpos($widget->metadataFile, 'Data') !== false) { // TODO: this is bad
-				continue;
-			}
-
-			// create query
-			$queryString = \file_get_contents(self::WIDGET_PLACE_QUERY);
-			$queryString = \str_replace(
-				array('{$widget}', '{$template}'),
-				array($widget->getOrderNumber(), $templateUrl),
-				$queryString); // TODO: this should probably be done using DOM
-
-			$query = RuleMlQuery::createFromString($queryString);
-			$result = $client->query($rulesetId, $query);
-
-			$variables = $result->getDom()->getElementsByTagName('Var');
-			for ($i = 0; $i < $variables->length; $i++) {
-				$value = \explode(':', $variables->item($i)->nextSibling->textContent);
-				$value = \trim(\reset($value));
-
-				switch (\trim($variables->item($i)->textContent)) {
-					case 'placeholder':
-						$widget->placeholder = trim($value, '"');
-						break;
-					case 'priority':
-						$widget->priority = (int) $value;
-						break;
-					case 'isDataWidget':
-						$widget->isDataWidget = strcasecmp(trim($value, '"'), 'true') == 0;
-						break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Apply rules to get widget information
-	 *
-	 * @throws \Exception
-	 */
-	/*
-	public function applyRules() {
-		$client = new RuleMlServiceClient(self::RULEML_SERVICE_URL);
-
-		$rulesFile = \file_get_contents(self::RULES_FILE);
-		$rulesUtilFile = \file_get_contents(self::RULES_FILE_UTIL);
-
-		$rules = RuleMl::createFromString($rulesFile);
-		$rules->merge(RuleMl::createFromString($rulesUtilFile));
-
-		// add widget facts
-		$transform = new OpenAjaxToRuleMl();
-		foreach ($this->widgets as $widget) {
-			$rules->merge($transform->transformString(\file_get_contents($widget->metadataFile), $widget->getOrderNumber()));
-		}
-
-		$rulesetId = $client->create($rules);
-
-		// query rules engine
-		foreach ($this->widgets as $widget) {
-			$queryRuleMl = RuleMlQuery::createQuery($widget->getOrderNumber());
-			$queryResult = $client->query($rulesetId, $queryRuleMl);
-
-			$variables = $queryResult->getDom()->getElementsByTagName('Var');
-			for ($i = 0; $i < $variables->length; $i++) {
-				$value = \trim(\reset(\explode(':', $variables->item($i)->nextSibling->textContent)));
-				switch (\trim($variables->item($i)->textContent)) {
-					case 'locationVertical':
-						$widget->verticalPosition = $value;
-						break;
-					case 'locationHorizontal':
-						$widget->horizontalPosition = $value;
-						break;
-					case 'height':
-						$widget->height = (int) $value;
-						break;
-						break;
-					case 'width':
-						$widget->width = (int) $value;
-						break;
-					case 'priority':
-						$widget->priority = (int) $value;
-						break;
-				}
-			}
-
-			// TODO: this part has to be automated
-			if (\stripos($widget->metadataFile, 'map') !== false) {
-				$widget->properties = array(
-					'buttons' => array(1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008)
-				);
-			} else if (\stripos($widget->metadataFile, 'menu') !== false) {
-				$widget->properties = array(
-					'buttons' => array(array('label' => 'Map', 'href' => 'map'),
-						array('label' => 'Google', 'href' => 'http://www.google.com'))
-				);
-			}
-		}
-	}*/
 
 	/**
 	 * Return hub HTML code

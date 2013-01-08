@@ -5,7 +5,7 @@
 		xmlns="http://openajax.org/metadata"
 		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
 
-	<require type="javascript" src="Menu.js" />
+	<require type="javascript" src="Menu.js?v=3" />
 
     <content>
 		<![CDATA[

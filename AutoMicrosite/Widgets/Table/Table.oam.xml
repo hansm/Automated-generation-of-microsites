@@ -4,7 +4,7 @@
 		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
-	<require type="javascript" src="Table.js"></require>
+	<require type="javascript" src="Table.js?v=2"></require>
 
 	<title>Table</title>
 

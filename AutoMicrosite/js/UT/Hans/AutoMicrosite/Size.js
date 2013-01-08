@@ -1,5 +1,5 @@
 /**
- * Widget resizing
+ * Widget resizing component. Keeps the widgets appropriate for screen size.
  *
  * @author Hans
  */
@@ -56,6 +56,22 @@ console.log(visualWidgets);
 			}*/
 		},
 		
+		getWidgetsInPlaceholder: function(placeholder) {
+			var widgets = [];
+			for (var i = 0; i < this.data.length; i++) {
+				if (this.data[i].placeholder == placeholder) {
+					widgets.push(this.data[i]);
+				}
+			}
+			return widgets;
+		},
+		
+		forEach: function(array, callback) {
+			for (var i in array) {
+				callback(array[i]);
+			}
+		},
+		
 		/**
 		 * Process all placeholders
 		 */
@@ -64,21 +80,13 @@ console.log(visualWidgets);
 			
 			var widgets = 0;
 			var row;
-			var menuItems = [];
-			var showWidget = null;
 			for (var i in this.data) {
 				row = this.data[i];
 				if (row.placeholder != placeholderId) continue;
 				
 				// Find widget manager element
-				var widgetManager = null;
-				for (var j in this.visualWidgets) {
-					if (this.visualWidgets[j].widgetId2 == row.orderNumber) {
-						widgetManager = this.visualWidgets[j];
-						break;
-					}
-				}
-				if (!widgetManager) continue;
+				console.log(row);
+				var widgetManager = row.openAjax;
 				
 				// TODO: some fancier logic, so it would be possible to have several widgets on the same page
 				if (widgets === 0) {
@@ -86,12 +94,9 @@ console.log(visualWidgets);
 				}
 				//widgetManager.OpenAjax._rootElement.style.display = "none";
 				
-				this.calculateWidgetDimensions(showWidget);
-			
-				menuItems.push({
-					label: row.title ? row.title : "123",
-					href: widgetManager.OpenAjax._rootElement.id
-				});
+				if (row.enabled) {
+					this.calculateWidgetDimensions(row);
+				}
 				widgets++;
 			}
 		/*
@@ -111,16 +116,31 @@ console.log(visualWidgets);
 			
 			
 			
-		calculateWidgetDimensions: function(widgetManager) {
+		calculateWidgetDimensions: function(widget) {
+			var widgetManager = widget.openAjax;
+			console.log("calculateWidgetDimensions");
 			console.log(widgetManager);
 			//widgetManager.OpenAjax._rootElement.style.width = win.getBox().w +"px";
+			
+			var placeholderWidgets = this.getWidgetsInPlaceholder(widget.placeholder);
+			this.forEach(placeholderWidgets, function(w) {
+				w.div.style.display = "none";
+			});
 
 			var widgetRootElement = query.NodeList();
 			widgetRootElement.push(widgetManager.OpenAjax._rootElement);
 			//widgetManager.OpenAjax._rootElement.style.display = "none";
+			console.log(widgetRootElement.parent()[0]);
 			var placeholderDimensions = domGeom.getContentBox(widgetRootElement.parent()[0]);
 			//widgetManager.OpenAjax._rootElement.style.display = "block";
-			
+console.log(placeholderDimensions);
+
+			this.forEach(placeholderWidgets, function(w) {
+				if (w.enabled) {
+					w.div.style.display = "block";
+				}
+			});
+
 			// TODO: shouldn't it be 'requestSizeChange'?
 			widgetManager.OpenAjax.adjustDimensions({
 				width: placeholderDimensions.w,

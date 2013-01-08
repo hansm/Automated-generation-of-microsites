@@ -8,7 +8,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query"
 		, "UT/Hans/AutoMicrosite/Log"
 		, "dojo/NodeList-traverse"]
-	, function(declare, dom, domConstruct, domStyle, win, on, query, log, NodeListT) {
+	, function(declare, dom, domConstruct, domStyle, win, on, query, log, nodeListTraverse) {
 	return declare(null, {
 
 		WIDGET_ELEMENT_ID_PREFIX: "widgetElement",
@@ -48,6 +48,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 		constructor: function(openAjaxLoader, widgetData, placeholders, visualDone, allDone) {
 			console.log("WidgetLoader.constructor");
+
 			this.loader = openAjaxLoader;
 			this.data = widgetData;
 			this.placeholders = placeholders;
@@ -59,30 +60,24 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Start loading widgets
 		 */
 		load: function() {
-			console.log("WidgetLoader.Start loading visual widgets");
+			console.log("WidgetLoader.load loading visual widgets");
 
+			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
 
 			// Reorder in priority order
 			this.data.sort(function(a, b) {
 				return b.priority - a.priority;
 			});
-
-
-			// TODO: this should also come from server
-			//this.data.push({metadataFile: "data/data.oam.xml?v="+ Math.random(), placeholder: null, orderNumber: 1000});
-
-			// Distribute widgets
-			var i;
-			for (i in this.data) {
+			
+			// Distribute widgets to data and visual
+			for (var i in this.data) {
 				if (this.data[i].isDataWidget) {
 					this.dataWidgets.push(this.data[i]);
 				} else {
 					this.visualWidgets.push(this.data[i]);
 				}
 			}
-			log("visualWidgets", this.visualWidgets);
-			log("dataWidgets", this.dataWidgets);
 
 			// Load visual widgets
 			if (this.visualWidgets.length == 0) {
@@ -94,45 +89,66 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 		},
 
+		/**
+		 * Load visual widget
+		 */
 		loadVisualWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
+				widget.openAjax = widgetObject;
+				
 				this.visualWidgetsLoaded.push(widgetId);
-				this.visualWidgetsLoadedObjects.push(widgetObject);
+				
+				this.visualWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
+				
+				// All visual widgets done
 				if (this.visualWidgetsLoaded.length == this.visualWidgets.length) {
 					this.visualDone();
 				}
-			}).bind(this, widget.orderNumber);
+			}).bind(this, widget.id);
 			this.loadWidget(widget, callback);
 		},
 
+		/**
+		 * Load data (non-visual) widget
+		 */
 		loadDataWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
+				widget.openAjax = widgetObject;
+				
 				this.dataWidgetsLoaded.push(widgetId);
-				this.dataWidgetsLoadedObjects.push(widgetObject);
+				this.dataWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
+				
+				// All data widgets done
 				if (this.dataWidgetsLoaded.length == this.dataWidgets.length) {
 					this.done();
 				}
-			}).bind(this, widget.orderNumber);
+			}).bind(this, widget.id);
 			this.loadWidget(widget, callback);
 		},
 
+		/**
+		 * Load OpenAjax Metadata 1.0 widget
+		 */
 		loadWidget: function(widget, callback) {
-			var widgetId = widget.orderNumber;
-
+			widget.enabled = true;
+			
 			// Create element for widget
-			var divWidget = domConstruct.create("div", {
-				id: this.WIDGET_ELEMENT_ID_PREFIX +"_"+ widgetId
+			widget.div = domConstruct.create("div", {
+				id: this.WIDGET_ELEMENT_ID_PREFIX + "_" + widget.id
 			}, this.getPlaceholder(widget.placeholder));
 			
 			// Load widget
 			this.loader.create({
-				spec: widget.metadataFile +"?v="+ Math.random(), // TODO: remove random, needed for dev
-				target: divWidget,
+				spec: widget.metadataFile + (AM_DEBUG ? "?v="+ Math.random() : ""),
+				target: widget.div,
 				properties: widget.properties ? widget.properties : {},
 				onComplete: function(widgetObject) {
-					log("Widget loaded", widgetId);
-					widgetObject.widgetId2 = widgetId;
+					console.log("Widget loaded: "+ widget.id);
+					
+					widgetObject.widgetId2 = widget.id;
 					callback(widgetObject);
+					
+					// TODO: publish mappings
 				},
 				onError: function(error) {
 					console.log(error);
@@ -167,6 +183,22 @@ console.log(widget);
 				}
 			}
 		},
+		
+		getWidgetsInPlaceholder: function(placeholder) {
+			var widgets = [];
+			for (var i = 0; i < this.visualWidgets.length; i++) {
+				if (this.visualWidgets[i].placeholder == placeholder) {
+					widgets.push(this.visualWidgets[i]);
+				}
+			}
+			return widgets;
+		},
+		
+		forEach: function(array, callback) {
+			for (var i in array) {
+				callback(array[i]);
+			}
+		},
 
 		/**
 		 * All widgets finished loading
@@ -177,9 +209,8 @@ console.log(widget);
 			for (var i = 0; i < this.visualWidgets.length; i++) {
 				if (this.visualWidgets[i].separatePage) {
 					widget = this.visualWidgets[i];
-					widgetId = widget.orderNumber; // TODO: use widget.id instead
-					widgetDiv = document.getElementById(this.WIDGET_ELEMENT_ID_PREFIX +"_"+ widgetId);
-					widgetDiv.style.display = "none";
+					widget.enabled = false;
+					widget.div.style.display = "none";
 
 					menuWidget = this.getMenuWidget();
 					if (menuWidget) {
@@ -187,13 +218,13 @@ console.log(widget);
 						if (!menuItems) {
 							menuItems = [];
 							menuItems.push({
-								label: "Main page",
-								href: "back_index"
+								label: "Main", // TODO: maybe combine from rest of the widget titles
+								href: {widget: null, placeholder: widget.placeholder}
 							});
 						}
 						menuItems.push({
 							label: widget.title ? widget.title : "123",
-							href: this.WIDGET_ELEMENT_ID_PREFIX +"_"+ widgetId
+							href: {widget: widget.id, placeholder: widget.placeholder}
 						});
 
 						menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
@@ -201,8 +232,7 @@ console.log(widget);
 				}
 			}
 			
-			
-			log("WidgetLoader", "Finished loading visual widgets");
+			console.log("WidgetLoader Finished loading visual widgets");
 			if (typeof this.visualDone == "function") {
 				this.visualDoneCallback(this.visualWidgetsLoadedObjects
 					, this.dataWidgetsLoadedObjects);
@@ -210,17 +240,23 @@ console.log(widget);
 			this.loadDataWidgets();
 		},
 		
-		menuClick: function(widgetId) {
+		menuClick: function(widgetInfo, size) {
 			console.log("loader 123");
-			console.log("opening widget "+ widgetId);
-			var widgetToShow = document.getElementById(widgetId);
-			console.log(widgetToShow);
-			var hide = widgetToShow.parentNode.childNodes;
-			for (var i = 0; i < hide.length; i++) {
-				hide[i].style.display = "none";
-			}
-			widgetToShow.style.display = "block";
-			this.visualDoneCallback(); // TODO: this be bad-bad
+			console.log("opening widget "+ widgetInfo);
+			var widgetId = widgetInfo.widget;
+			var placeholderWidgets = this.getWidgetsInPlaceholder(widgetInfo.placeholder);
+			this.forEach(placeholderWidgets, function(w) {
+				// TODO: instead of w.separatePage use w.firstPage
+				if (w.id == widgetId || widgetId == null && w.separatePage == false) {
+					w.div.style.display = "block";
+					w.enabled = true;
+				} else {
+					w.div.style.display = "none";
+					w.enabled = false;
+				}
+			});
+
+			size.run();
 		},
 
 		/**
