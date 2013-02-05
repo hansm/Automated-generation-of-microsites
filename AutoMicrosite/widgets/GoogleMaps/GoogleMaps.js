@@ -28,7 +28,24 @@ AutoMicrosite.Widget.GoogleMaps.prototype = {
 	onLoad: function() {
 		this.widgetId = this.OpenAjax.getId();
 		var thisWidget = this;
+		
+		google.load("maps", "3", {
+			other_params: "sensor=false",
+			callback: function() {
+				thisWidget.apiLoaded();
+			}
+		});
 
+
+
+		this.OpenAjax.hub.subscribe("AutoMicrosite.GoogleMaps",
+			(function(topic, receivedData) {
+				this.addMarker(receivedData);
+			}).bind(this)
+		);
+	},
+	
+	apiLoaded: function() {
 		this.geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng(26.7, 58.3);
 		var mapOptions = {
@@ -38,18 +55,17 @@ AutoMicrosite.Widget.GoogleMaps.prototype = {
 		}
 		this.map = new google.maps.Map(
 					document.getElementById(this.widgetId +"map"), mapOptions);
-
-		this.OpenAjax.hub.subscribe("AutoMicrosite.GoogleMaps",
-			(function(topic, receivedData) {
-				this.addMarker(receivedData);
-			}).bind(this)
-		);
 	},
 	
 	/**
 	 * Add marker to map and center to marker
 	 */
 	addMarker: function(data) {
+		if (!this.map) {
+			// TODO: handle this situation
+			return;
+		}
+		
 		var geocoderRequest = {
 			"address": data.countryCode +", "+ data.city +" "+ data.postalCode +", "+ data.street,
 			"region": data.countryCode

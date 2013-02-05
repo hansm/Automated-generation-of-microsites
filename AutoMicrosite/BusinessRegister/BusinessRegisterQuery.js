@@ -30,15 +30,19 @@ AutoMicrosite.BusinessRegisterQuery.prototype = {
 	query: function() {
 		var name = this.OpenAjax.getPropertyValue("name");
 		if (!name) return;
-		$.getJSON("BusinessRegisterQuery.php", {name: name}, function(data) {
+		var thisWidget = this;
+		var serviceUrl = this.OpenAjax.rewriteURI("http://automicrosite.maesalu.com/BusinessRegister/BusinessRegisterQuery.php");
+		$.post(serviceUrl, {name: name}, function(data) {
 			if (data.error && data.error > 0) {
-				// TODO: error
+				console.log(data.message);
+				alert("Error:\n" + data.message);
 				return;
 			}
 			for (var i in data.businesses) {
-				this.OpenAjax.hub.publish("AutoMicrosite.BusinessRegister.QueryResponse", data.businesses[i]);
+				thisWidget.OpenAjax.hub.publish("AutoMicrosite.BusinessRegister.QueryResponse",
+					data.businesses[i]);
 			}
-		});
+		}, "json");
 	}
 
 };

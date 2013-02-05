@@ -73,7 +73,8 @@ class OpenAjaxMetadataMappingsGenerator implements IMappingsGenerator {
 			throw new RuntimeException('Topic name not found.');
 		}
 
-		$frameTopic = $frame->appendChild($document->createElement('topic', $topicName->nodeValue));
+		$frameTopic = $frame->appendChild($document->createElement('topic',
+						$topicName->nodeValue));
 
 		// Outgoing topic only
 		if (!$topic->attributes->getNamedItem('subscribe')
@@ -125,7 +126,8 @@ class OpenAjaxMetadataMappingsGenerator implements IMappingsGenerator {
 					throw new RuntimeException('Property name not found.');
 				}
 				$jsonSchema['properties'][$childName] =
-					$this->processProperty($childProperty, $mappings, $path .'/'. $childName);
+					$this->processProperty($childProperty, $mappings,
+							$path .'/'. $childName);
 			}
 		} elseif ($type == 'array') {
 			for ($i = 0; $i < $property->childNodes->length; $i++) {
@@ -152,9 +154,15 @@ class OpenAjaxMetadataMappingsGenerator implements IMappingsGenerator {
 			if (!empty($urlParam)) {
 				// Create mapping
 				$document = $mappings->ownerDocument;
-				$mapping = $mappings->appendChild($document->createElement('mapping'));
-				$mapping->appendChild($document->createElement('global_ref', $urlParam));
-				$mapping->appendChild($document->createElement('path', empty($path) ? '/' : $path));
+				$mapping = $mappings->appendChild(
+					$document->createElement('mapping')
+				);
+				$mapping->appendChild(
+					$document->createElement('global_ref', $urlParam)
+				);
+				$mapping->appendChild(
+					$document->createElement('path', empty($path) ? '/' : $path)
+				);
 			}
 		}
 

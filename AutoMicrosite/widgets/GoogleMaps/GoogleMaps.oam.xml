@@ -8,12 +8,13 @@
 		<require type="javascript" src="jquery.min.js"/>
 	</library>
 
-	<require type="javascript" src="GoogleMaps.js"></require>
-	<require type="javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></require>
+<require type="javascript" src="https://www.google.com/jsapi" />
+	
+	<require type="javascript" src="GoogleMaps.js?v=2"></require>
 
-	<content>
-		<div id="__WID__map" style="width:100%;height:10%;"></div>
-	</content>
+	<content><![CDATA[
+		<div id="__WID__map" style="width:100%;height:100%;"></div>
+	]]></content>
 
 	<topic name="AutoMicrosite.GoogleMaps" type="object" subscribe="true">
 		<description>

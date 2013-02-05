@@ -5,14 +5,16 @@
 		xmlns="http://openajax.org/metadata"
 		x:min-width="100" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
+		sandbox="true"
 	>
 
-	<require type="javascript" src="OrganizationDeptInfo.js"></require>
+	<require type="javascript" src="OrganizationDeptInfo.js?v=2"></require>
 
-	<content>
+	<content><![CDATA[
 		<style type="text/css">
 			#__WID__table {
 				width: 100%;
+				font-family: sans-serif;
 			}
 			#__WID__table thead {
 				font-weight: bold;
@@ -40,7 +42,7 @@
 				</tbody>
 			</table>
 		</div>
-	</content>
+	]]></content>
 
 	<topic name="AutoMicrosite.Table.OrganizationData.Dept" type="object" subscribe="true">
 		<description>

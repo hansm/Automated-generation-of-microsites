@@ -52,6 +52,7 @@ if ( isset( $_GET['oawu'] ) ) {
     
     // GET request
     if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
+		//var_dump('GET');
         $ct = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
         header( 'Content-Type: ' . $ct );
         $contents = @file_get_contents( $url );
@@ -63,6 +64,7 @@ if ( isset( $_GET['oawu'] ) ) {
     
     // POST request
     else if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+		//var_dump('POST');
         $ct = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'application/x-www-form-urlencoded';
         $rawdata = file_get_contents('php://input');
         $headers = 'Content-Type: ' . $ct . PHP_EOL. 'Content-Length: ' . strlen( $rawdata ) . PHP_EOL;
@@ -70,6 +72,7 @@ if ( isset( $_GET['oawu'] ) ) {
                          'header' => $headers,
                          'content' => $rawdata);
         $context = stream_context_create( array('http'=>$options) );
+		//var_dump($rawdata);
         echo file_get_contents( $url, false, $context );
     }
 }

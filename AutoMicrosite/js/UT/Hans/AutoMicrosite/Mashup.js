@@ -6,7 +6,7 @@
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query", "dojo/dom-attr"
 		, "UT/Hans/AutoMicrosite/Size", "UT/Hans/AutoMicrosite/Log"
-		, "UT/Hans/AutoMicrosite/WidgetLoader"]
+		, "UT/Hans/AutoMicrosite/WidgetLoad"]
 	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr, SizeHandler, log, Loader) {
 	return declare(null, {
 
@@ -125,6 +125,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
+			console.log("PUBLISH " + topic);
+			console.log(data);
 			// Listen on the MenuClick topic to track clicking on menu items
 			if (topic == "AutoMicrosite.MenuClick") {
 				this.loader.menuClick(data, this.size);

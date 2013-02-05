@@ -5,14 +5,16 @@
 		xmlns="http://openajax.org/metadata"
 		x:min-width="100" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
+		sandbox="true"
 	>
 
 	<require type="javascript" src="OrganizationInfo.js"></require>
 
-	<content>
+	<content><![CDATA[
 		<style type="text/css">
 			#__WID__table {
 				width: 100%;
+				font-family: sans-serif;
 			}
 			#__WID__table .label {
 				font-weight: bold;
@@ -56,7 +58,7 @@
 				</tbody>
 			</table>
 		</div>
-	</content>
+	]]></content>
 
 	<topic name="AutoMicrosite.Table.OrganizationData" type="object" subscribe="true">
 		<description>
@@ -86,7 +88,9 @@
 	</topic>
 
 	<categories>
+		<!-- TODO: currently application does not handle situations when 2 widgets match the same placeholder
 		<category x:iri="http://schema.org/Table" />
+		-->
 		<category x:iri="http://schema.org/AboutPage" />
     </categories>
 

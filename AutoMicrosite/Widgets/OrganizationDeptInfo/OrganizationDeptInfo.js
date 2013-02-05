@@ -14,18 +14,18 @@ if (typeof(AutoMicrosite.Widget) == "undefined") {
 /**
  * Widget constructor
  */
-AutoMicrosite.OrganizationInfo.GoogleMaps = function() {
+AutoMicrosite.Widget.OrganizationDeptInfo = function() {
 	this.widgetId = null;
 };
 
-AutoMicrosite.Widget.OrganizationInfo.prototype = {
+AutoMicrosite.Widget.OrganizationDeptInfo.prototype = {
 
 	/**
 	 * Widget loaded
 	 */
 	onLoad: function() {
 		this.widgetId = this.OpenAjax.getId();
-
+        
 		this.OpenAjax.hub.subscribe("AutoMicrosite.Table.OrganizationData",
 			(function(topic, receivedData) {
 				this.fillTable(receivedData);

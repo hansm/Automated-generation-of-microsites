@@ -64,6 +64,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
+			
+			//this.attachTransformer();
 
 			// Reorder in priority order
 			this.data.sort(function(a, b) {
@@ -88,6 +90,41 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.loadVisualWidget(this.visualWidgets[i]);
 			}
 		},
+		
+		// TODO: move to a metadata file
+		attachTransformer: function() {
+			var transformerWidgetUrl = "http://automicrosite.maesalu.com:8833/TransformerWidget.html";
+			var tunnelUrl = window.location.href.replace(/\/[^\/]*$/, '') + "/js/rpc_relay.html";
+			console.log("+++++++++++++++++++++++++++++++++++++++++");
+			console.log(tunnelUrl);
+			var div = domConstruct.create("div", {
+				id: "transformerWidget"
+			}, document.body);
+			
+			
+			new OpenAjax.hub.IframeContainer(this.loader.hub , "transformerWidget",
+			  {
+				Container: {
+				  onSecurityAlert: function() {},
+				  onConnect:       function() {},
+				  onDisconnect:    function() {}
+				},
+				IframeContainer: {
+				  // DOM element that is parent of this container:
+				  parent:      div,
+				  // Container's iframe will have these CSS styles:
+				  iframeAttrs: { id: "smallHidden" },
+				  // Container's iframe loads the following URL:
+				  uri: transformerWidgetUrl,
+				  // Tunnel URL required by IframeHubClient. This particular tunnel URL
+				  // is the one that corresponds to release/all/OpenAjaxManagedHub-all.js:
+				  tunnelURI:  tunnelUrl
+				}
+			  }
+			);
+
+		},
+		
 
 		/**
 		 * Load visual widget
@@ -137,6 +174,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				id: this.WIDGET_ELEMENT_ID_PREFIX + "_" + widget.id
 			}, this.getPlaceholder(widget.placeholder));
 			
+			var thisLoader = this.loader;
+			
+			thisLoader.hub.subscribe("ee.stacc.transformer.mapping.add.raw", function() {}); // TODO: remove, only needed so 'onPublish' would be called when no subscribers
+			
 			// Load widget
 			this.loader.create({
 				spec: widget.metadataFile + (AM_DEBUG ? "?v="+ Math.random() : ""),
@@ -148,7 +189,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					widgetObject.widgetId2 = widget.id;
 					callback(widgetObject);
 					
-					// TODO: publish mappings
+					console.log("!!!!!!!!!!!!");
+					thisLoader.hub.publish("ee.stacc.transformer.mapping.add.raw",
+						widget.mappings);
+					
+					//console.log(widgetObject.OpenAjax);
+					//console.log(thisLoader.hub);
+					//console.log(this);
 				},
 				onError: function(error) {
 					console.log(error);

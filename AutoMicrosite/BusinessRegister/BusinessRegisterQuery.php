@@ -1,6 +1,6 @@
 <?php
 
-require './Environment.php';
+require '../Environment.php';
 
 use UT\Hans\AutoMicrosite\Util\CurlConnection;
 
@@ -164,5 +164,3 @@ class BusinessRegistryRequest {
 }
 
 new BusinessRegistryRequest($_REQUEST);
-
-?>

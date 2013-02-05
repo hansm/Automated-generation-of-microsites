@@ -14,7 +14,7 @@ if (typeof(AutoMicrosite.Widget) == "undefined") {
 /**
  * Widget constructor
  */
-AutoMicrosite.OrganizationInfo.GoogleMaps = function() {
+AutoMicrosite.Widget.OrganizationInfo = function() {
 	this.widgetId = null;
 };
 

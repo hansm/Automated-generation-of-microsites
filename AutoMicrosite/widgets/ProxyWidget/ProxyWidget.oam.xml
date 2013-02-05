@@ -6,7 +6,7 @@
 	>
 
 	<require type="javascript"><![CDATA[
-
+/*
 function generateWidget(wsdlUri, operation, ProxyWidgetUri) {
   function onClientSecurityAlert(source, alertType) {  /* Handle client-side security alerts */
   }
@@ -51,7 +51,7 @@ function generateWidget(wsdlUri, operation, ProxyWidgetUri) {
   }
           );
 }
-
+*/
 	]]></require>
 
 	<content><![CDATA[ ]]></content>

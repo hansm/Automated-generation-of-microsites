@@ -2,16 +2,17 @@
 <widget name="BusinessRegisterQueryWidget" id="AutoMicrosite/BusinessRegisterQueryWidget"
 		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.BusinessRegisterQuery"
 		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
-		xmlns="http://openajax.org/metadata">
+		xmlns="http://openajax.org/metadata"
+		sandbox="true">
 
 	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
 		<require type="javascript" src="jquery.min.js"/>
 	</library>
 
-	<require type="javascript" src="BusinessRegisterQuery.js"></require>
+	<require type="javascript" src="BusinessRegisterQuery.js?v=8"></require>
 
 	<!-- Empty content element is required by the widget loader, somehow it does not work without -->
-	<content><![CDATA[ ]]></content>
+	<content src=""><![CDATA[ ]]></content>
 
 	<topic name="AutoMicrosite.BusinessRegister.QueryResponse" type="object" publish="true">
 		<description>
@@ -28,7 +29,7 @@
 	<property name="name" datatype="string" urlparam="http://schema.org/Organization#name" required="true" defaultValue="EVETERM OÜ"/>
 
 	<categories>
-		<category x:iri="http://schema.org/Dataset" />
+		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
     </categories>
 
 </widget>

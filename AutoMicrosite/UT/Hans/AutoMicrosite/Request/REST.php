@@ -9,5 +9,3 @@ namespace UT\Hans\AutoMicrosite\Request;
 class REST extends AbstractRequest {
 	// TODO: implement
 }
-
-?>

@@ -76,6 +76,7 @@ console.log(visualWidgets);
 		 * Process all placeholders
 		 */
 		processPlaceholder: function(placeholder) {
+			//return ;
 			var placeholderId = placeholder.getAttribute("itemid");
 			
 			var widgets = 0;
