@@ -102,8 +102,10 @@ OpenAjax.widget.Loader = function( args )
     _loaderRoot = null;
     var scripts = document.getElementsByTagName("script");
     // match "OpenAjax-mashup.js", "OpenAjaxManagedHub-std.js", "OpenAjaxManagedHub-core.js", or "OpenAjaxManagedHub-all.js"
-    var reHub = /openajax(?:ManagedHub-.+|-mashup)\.js$/i;
+	// or "pagebus.js" (TIBCO PageBus)
+    var reHub = /(openajax(?:ManagedHub-.+|-mashup)|pagebus)\.js$/i;
     var reLoader = /loader\.js$/i;
+	var tunnelFileName = "rpc_relay.html";
     for ( var i = 0; (_tunnelURI === null || _loaderRoot === null) && i < scripts.length; i++ ) {
         var src = scripts[i].src;
         if ( src ) {
@@ -115,10 +117,14 @@ OpenAjax.widget.Loader = function( args )
                     _hubBaseJS = src;
                     m = src.match( reHub );
                     var hubRoot = src.substring( 0, m.index );
+					if (src.match(/pagebus\.js/i)) {
+						// TIBCO PageBus has its own fancy tunnel script
+						tunnelFileName = "tunnel.html";
+					}
                     if ( /openajax-mashup\.js/i.test( m[0] ) ) {
-                        _tunnelURI = hubRoot + "containers/iframe/rpc/rpc_relay.html"; 
+                        _tunnelURI = hubRoot + "containers/iframe/rpc/" + tunnelFileName; 
                     } else {
-                        _tunnelURI = hubRoot + "rpc_relay.html";
+                        _tunnelURI = hubRoot + tunnelFileName;
                     }
                 }
             }
@@ -1832,7 +1838,7 @@ var RemoteWidget = function( target )
     });
     
     this._id = this._hubClient.getClientID();
-    
+
     this._hubClient.connect(
             function( item, success, errorCode ) {
                 // XXX handle error
@@ -2079,7 +2085,7 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
             try {
                 onComplete( forceXml ? toXml(xhr) : xhr.responseText );
             } catch(e) {
-                onError(e);
+               onError(e);
             }
         } else {
             onError( new Error("Unable to load " + url + " status:" + xhr.status) );

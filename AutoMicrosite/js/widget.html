@@ -64,13 +64,17 @@
         // load OpenAjax Hub files
         var scripts;
         var oaaHubJS = queryURLParam( "oawh" );
-        var m = oaaHubJS.match( /openajax(?:ManagedHub-.+|-mashup)\.js$/i );
+        var m = oaaHubJS.match( /(openajax(?:ManagedHub-.+|-mashup)|pagebus)\.js$/i );
         if ( m ) {
             var hubRoot = oaaHubJS.substring( 0, m.index );
             var baseName = oaaHubJS.substring( m.index );
             switch ( baseName.toLowerCase() ) {
                 case "openajaxmanagedhub-all.js":
                     scripts = [ { src: hubRoot + "OpenAjaxManagedHub-all.js" } ];
+                    break;
+				case "pagebus.js":
+                    scripts = [ { src: hubRoot + "pagebus.js" } ];
+					console.log("siin ka");
                     break;
                 case "openajaxmanagedhub-core.js":
                     scripts = [ { src: hubRoot + "OpenAjaxManagedHub-core.js" },
