@@ -1,14 +1,14 @@
 /**
- * Widget loading class
+ * Widget loading process
  *
  * @author Hans
  */
 // TODO: load visual first and only then add data widgets. so far show "Loading..." message (probably overlay would be a good idea)
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query"
-		, "UT/Hans/AutoMicrosite/Log"
-		, "dojo/NodeList-traverse"]
-	, function(declare, dom, domConstruct, domStyle, win, on, query, log, nodeListTraverse) {
+		, "dojo/NodeList-traverse", "dojo/dom-attr"]
+	, function(declare, dom, domConstruct, domStyle, win, on, query, nodeListTraverse
+		, domAttr) {
 	return declare(null, {
 
 		WIDGET_ELEMENT_ID_PREFIX: "widgetElement",
@@ -24,9 +24,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		placeholders: [],
 
 		/**
-		 * Event to run when all visual widgets have finished loading
+		 * Callback functions to run when all visual widgets have finished loading
 		 */
 		visualDoneCallback: null,
+		
+		/**
+		 * Callback function to run when all data widgets have finished loading
+		 */
 		allDoneCallback: null,
 
 		/**
@@ -54,6 +58,11 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.placeholders = placeholders;
 			this.visualDoneCallback = visualDone;
 			this.allDoneCallback = allDone;
+			
+			// Reorder widgets in priority order
+			this.data.sort(function(a, b) {
+				return b.priority - a.priority;
+			});
 		},
 
 		/**
@@ -65,13 +74,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
 			
-			//this.attachTransformer();
+			this.attachTransformer(); // TODO: remove
 
-			// Reorder in priority order
-			this.data.sort(function(a, b) {
-				return b.priority - a.priority;
-			});
-			
 			// Distribute widgets to data and visual
 			for (var i in this.data) {
 				if (this.data[i].isDataWidget) {
@@ -80,6 +84,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					this.visualWidgets.push(this.data[i]);
 				}
 			}
+			
+			// TODO: transformer should probably loaded even before visual
 
 			// Load visual widgets
 			if (this.visualWidgets.length == 0) {
@@ -94,7 +100,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		// TODO: move to a metadata file
 		attachTransformer: function() {
 			var transformerWidgetUrl = "http://automicrosite.maesalu.com:8833/TransformerWidget.html";
-			var tunnelUrl = window.location.href.replace(/\/[^\/]*$/, '') + "/js/rpc_relay.html";
+			var tunnelUrl = window.location.href.replace(/\/[^\/]*$/, '') + "/js/tunnel.html";
 			console.log("+++++++++++++++++++++++++++++++++++++++++");
 			console.log(tunnelUrl);
 			var div = domConstruct.create("div", {
@@ -125,7 +131,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 		},
 		
-
 		/**
 		 * Load visual widget
 		 */
@@ -168,67 +173,34 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		loadWidget: function(widget, callback) {
 			widget.enabled = true;
-			
+
 			// Create element for widget
 			widget.div = domConstruct.create("div", {
 				id: this.WIDGET_ELEMENT_ID_PREFIX + "_" + widget.id
-			}, this.getPlaceholder(widget.placeholder));
-			
+			}, this.getPlaceholderElement(widget.placeholder));
+
 			var thisLoader = this.loader;
-			
+
 			thisLoader.hub.subscribe("ee.stacc.transformer.mapping.add.raw", function() {}); // TODO: remove, only needed so 'onPublish' would be called when no subscribers
-			
+
 			// Load widget
 			this.loader.create({
-				spec: widget.metadataFile + (AM_DEBUG ? "?v="+ Math.random() : ""),
-				target: widget.div,
-				properties: widget.properties ? widget.properties : {},
+				spec:		widget.metadataFile + (AM_DEBUG ? "?v="+ Math.random() : ""),
+				target:		widget.div,
+				properties: (widget.properties ? widget.properties : {}),
 				onComplete: function(widgetObject) {
 					console.log("Widget loaded: "+ widget.id);
-					
+
 					widgetObject.widgetId2 = widget.id;
 					callback(widgetObject);
-					
-					console.log("!!!!!!!!!!!!");
+
 					thisLoader.hub.publish("ee.stacc.transformer.mapping.add.raw",
 						widget.mappings);
-					
-					//console.log(widgetObject.OpenAjax);
-					//console.log(thisLoader.hub);
-					//console.log(this);
 				},
-				onError: function(error) {
-					console.log(error);
+				onError:	function(error) {
 					alert(error);
 				}
 			});
-			/*
-console.log(widget);
-			if (widget.separatePage) {
-				divWidget.style.display = "none";
-				console.log("Menu 1111111111111111111111111");
-				
-				var menuWidget = this.getMenuWidget();
-				console.log(menuWidget);
-				if (menuWidget) {
-					var menuItems = [];
-					menuItems.push({
-						label: widget.title ? widget.title : "123",
-						href: this.WIDGET_ELEMENT_ID_PREFIX +"_"+ widgetId
-					});
-
-					menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
-				}
-			}*/
-		},
-		
-		getMenuWidget: function() {
-			// TODO: this info should probably come from server side, in case menu is used
-			for (var i = 0; i < this.visualWidgetsLoadedObjects.length; i++) {
-				if (this.visualWidgetsLoadedObjects[i].divMenu) { // TODO: really-really bad way to find menu
-					return this.visualWidgetsLoadedObjects[i];
-				}
-			}
 		},
 		
 		getWidgetsInPlaceholder: function(placeholder) {
@@ -251,40 +223,54 @@ console.log(widget);
 		 * All widgets finished loading
 		 */
 		visualDone: function() {
-			// Hide 'separatePage' widgets
-			var widget, widgetId, widgetDiv, menuWidget, menuItems;
-			for (var i = 0; i < this.visualWidgets.length; i++) {
-				if (this.visualWidgets[i].separatePage) {
-					widget = this.visualWidgets[i];
-					widget.enabled = false;
-					widget.div.style.display = "none";
-
-					menuWidget = this.getMenuWidget();
-					if (menuWidget) {
-						menuItems = menuWidget.OpenAjax.getPropertyValue("buttons");
-						if (!menuItems) {
-							menuItems = [];
-							menuItems.push({
-								label: "Main", // TODO: maybe combine from rest of the widget titles
-								href: {widget: null, placeholder: widget.placeholder}
-							});
-						}
-						menuItems.push({
-							label: widget.title ? widget.title : "123",
-							href: {widget: widget.id, placeholder: widget.placeholder}
-						});
-
-						menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
-					}
-				}
-			}
-			
 			console.log("WidgetLoader Finished loading visual widgets");
+			this.buildNavigation();
+			
 			if (typeof this.visualDone == "function") {
 				this.visualDoneCallback(this.visualWidgetsLoadedObjects
 					, this.dataWidgetsLoadedObjects);
 			}
 			this.loadDataWidgets();
+		},
+				
+		buildNavigation: function() {
+			var menuWidget = this.getMenuWidget();
+			if (!menuWidget) return;
+
+			// Hide 'separatePage' widgets
+			var widget, widgetId, widgetDiv, menuWidget, menuItems;
+			
+			for (var i = 0; i < this.visualWidgets.length; i++) {
+				if (!this.visualWidgets[i].separatePage) continue;
+
+				widget = this.visualWidgets[i];
+				widget.enabled = false;
+				widget.div.style.display = "none";
+
+				menuItems = menuWidget.OpenAjax.getPropertyValue("buttons");
+				if (!menuItems) {
+					menuItems = [];
+					menuItems.push({
+						label: "Main", // TODO: maybe combine from rest of the widget titles
+						href: {widget: null, placeholder: widget.placeholder}
+					});
+				}
+				menuItems.push({
+					label: widget.title ? widget.title : "123",
+					href: {widget: widget.id, placeholder: widget.placeholder}
+				});
+
+				menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
+			}
+		},
+				
+		getMenuWidget: function() {
+			// TODO: this info should probably come from server side, in case menu is used
+			for (var i = 0; i < this.visualWidgetsLoadedObjects.length; i++) {
+				if (this.visualWidgetsLoadedObjects[i].divMenu) { // TODO: really-really bad way to find menu
+					return this.visualWidgetsLoadedObjects[i];
+				}
+			}
 		},
 		
 		menuClick: function(widgetInfo, size) {
@@ -310,7 +296,6 @@ console.log(widget);
 		 * Load data widgets once visual widgets are done
 		 */
 		loadDataWidgets: function() {
-			log("WidgetLoader", "Start loading data widgets");
 			if (this.dataWidgets.length == 0) {
 				this.done();
 				return;
@@ -320,22 +305,25 @@ console.log(widget);
 			}
 		},
 
+		/**
+		 * All widgets finished loading
+		 */
 		done: function() {
 			if (typeof this.allDoneCallback == "function") {
 				this.allDoneCallback(this.visualWidgetsLoadedObjects
 					, this.dataWidgetsLoadedObjects);
 			}
-			log("WidgetLoader", "Done");
 		},
 
-		getPlaceholder: function(placeholder) {
-			if (!placeholder) {
-				return document.body; // append to end of document if no placeholder, e.g. data widgets
-			}
-
-			for (var i in this.placeholders) {
-				if (this.placeholders[i].getAttribute("itemid") == placeholder) {
-					return this.placeholders[i];
+		/**
+		 * Get placeholder DOM element
+		 */
+		getPlaceholderElement: function(placeholder) {
+			if (placeholder) {
+				for (var i in this.placeholders) {
+					if (domAttr.get(this.placeholders[i], "itemid") == placeholder) {
+						return this.placeholders[i];
+					}
 				}
 			}
 

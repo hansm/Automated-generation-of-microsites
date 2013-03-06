@@ -6,19 +6,32 @@
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query", "dojo/dom-attr"
 		, "UT/Hans/AutoMicrosite/Size", "UT/Hans/AutoMicrosite/Log"
-		, "UT/Hans/AutoMicrosite/WidgetLoad"]
-	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr, SizeHandler, log, Loader) {
+		, "UT/Hans/AutoMicrosite/WidgetLoad"
+	    , "UT/Hans/AutoMicrosite/Curtain"]
+	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr
+				, SizeHandler, log, Loader, Curtain) {
 	return declare(null, {
 
 		/**
 		 * Template placeholder itemtype
 		 */
 		TEMPLATE_PLACEHOLDER: "http://automicrosite.maesalu.com/TemplatePlaceholder",
-
-		widgetData: [],
-
+		
 		widgetIdPrefix: "widget",
 
+		/**
+		 * Widget data received from server-side
+		 */
+		widgetData: [],
+		
+		/**
+		 * Data about the template received from server-side
+		 */
+		templateData: [],
+
+		/**
+		 * Mashup DOM element
+		 */
 		divMashup: null,
 
 		/**
@@ -37,9 +50,14 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		widgets: [],
 
 		/**
-		 * Template placeholders for the widgets
+		 * Template placeholder DOM elements for the widgets
 		 */
 		placeholders: [],
+
+		/**
+		 * Curtain handler
+		 */
+		curtain: null,
 
 		/**
 		 * Widget resize handler
@@ -48,20 +66,17 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 		loader: null,
 
-		loadingMessage: null,
-
 		dataWidgets: [],
 
 		visualWidgets: [],
-
-		templateData: [],
-
+		
 		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
 		constructor: function(divMashupId, widgetData, templateData) {
+			console.log("Mashup.constructor");
 			console.log("widgetData");
 			console.log(widgetData);
 			console.log("templateData");
@@ -83,38 +98,25 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 			// Find template placeholders
 			this.placeholders = domQuery("[itemtype='"+ this.TEMPLATE_PLACEHOLDER +"']");
-			console.log("Placeholders found: "+ this.placeholders.length);
 			if (this.placeholders.length == 0) {
 				this.handleError("No placeholders found on the template.");
 				return;
 			}
+			
+			this.curtain = new Curtain();
+			this.curtain.enable();
 
 			// Load widgets
 			this.size = null;
 			this.dataWidgets = [];
 			this.visualWidgets = [];
-			this.loader = new Loader(this.openAjaxLoader, this.widgetData, this.placeholders, this.visualWidgetsLoaded.bind(this),
-				this.allWidgetsLoaded.bind(this));
-
-			// Loading mashup message
-			var dimensions = win.getBox();
-			this.loadingMessage = domConstruct.create("div", {
-				id: "loadingMashup",
-				innerHTML: "Loading mashup...",
-				style: {
-					background: "rgba(0, 0, 0, 0.5)",
-					color: "#FFFFFF",
-					position: "absolute",
-					top: 0,
-					left: 0,
-					width: "100%",
-					height: "100%",
-					padding: "0",
-					textAlign: "center",
-					lineHeight: dimensions.h +"px",
-					zIndex: 100000
-				}
-			}, document.body);
+			this.loader = new Loader(
+				this.openAjaxLoader,
+				this.widgetData,
+				this.placeholders,
+				this.visualWidgetsLoaded.bind(this),
+				this.allWidgetsLoaded.bind(this)
+			);
 		},
 
 		/**
@@ -147,7 +149,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		*/
 		onSecurityAlert: function(source, alertType) {
 			// TODO: do something about it
-			this.handleError(source +" "+ alertType);
+			this.handleError("Security alert: "+ source +" "+ alertType);
 		},
 
 		/**
@@ -163,7 +165,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		allWidgetsLoaded: function() {
-			this.loadingMessage.style.display = "none";
+			this.curtain.disable();
 		},
 
 		/**
@@ -198,5 +200,5 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			*/
 		}
 
-	})
+	});
 });

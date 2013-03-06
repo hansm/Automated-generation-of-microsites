@@ -118,7 +118,7 @@ class Hub {
 	 */
 	public function toHtml() {
 		try {
-			$openAjaxHubHeaders = \file_get_contents('Template/OpenAjaxHubHeaders.html');
+			$openAjaxHubHeaders = \file_get_contents(ROOT .'OpenAjaxHubHeaders.html');
 		} catch (ErrorException $e) {
 			throw new RuntimeException('Could not load OpenAjax hub headers.');
 		}
