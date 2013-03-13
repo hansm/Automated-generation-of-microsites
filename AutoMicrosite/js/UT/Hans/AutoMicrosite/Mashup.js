@@ -5,25 +5,23 @@
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query", "dojo/dom-attr"
-		, "UT/Hans/AutoMicrosite/Size", "UT/Hans/AutoMicrosite/Log"
+		, "UT/Hans/AutoMicrosite/Size"
 		, "UT/Hans/AutoMicrosite/WidgetLoad"
 	    , "UT/Hans/AutoMicrosite/Curtain"]
 	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr
-				, SizeHandler, log, Loader, Curtain) {
+				, SizeHandler, Loader, Curtain) {
 	return declare(null, {
 
 		/**
 		 * Template placeholder itemtype
 		 */
 		TEMPLATE_PLACEHOLDER: "http://automicrosite.maesalu.com/TemplatePlaceholder",
-		
-		widgetIdPrefix: "widget",
 
 		/**
 		 * Widget data received from server-side
 		 */
 		widgetData: [],
-		
+
 		/**
 		 * Data about the template received from server-side
 		 */
@@ -66,10 +64,15 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
 		loader: null,
 
+		/**
+		 * Navigation handler object
+		 */
+		navigation: null,
+
 		dataWidgets: [],
 
 		visualWidgets: [],
-		
+
 		/**
 		 * Constructor method
 		 *
@@ -102,12 +105,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.handleError("No placeholders found on the template.");
 				return;
 			}
-			
+
 			this.curtain = new Curtain();
 			this.curtain.enable();
 
 			// Load widgets
 			this.size = null;
+			this.navigation = null;
 			this.dataWidgets = [];
 			this.visualWidgets = [];
 			this.loader = new Loader(
@@ -118,6 +122,17 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.allWidgetsLoaded.bind(this)
 			);
 		},
+
+		/**
+		 * Load all widgets into mashup
+		 */
+		start: function() {
+			try {
+				this.loader.load();
+			} catch (e) {
+				this.handleError(e);
+			}
+		}
 
 		/**
 		 * Handle error message
@@ -157,47 +172,20 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		visualWidgetsLoaded: function(visualWidgets, dataWidgets) {
 			this.size = new SizeHandler(this.widgetData, this.placeholders, visualWidgets);
+			this.navigation = new Navigation(visualWidgets, this.size);
+			this.navigation.build();
 			this.size.run();
-			
+
 			window.onresize = function() {
 				this.size.run();
 			}.bind(this);
 		},
 
+		/**
+		 * All widgets have finished loading
+		 */
 		allWidgetsLoaded: function() {
 			this.curtain.disable();
-		},
-
-		/**
-		 * Load all widgets into mashup
-		 */
-		start: function() {
-			try {
-				this.loader.load();
-			} catch (e) {
-				this.handleError(e);
-			}
-
-/*
-			for (var i in this.widgetData) {
-				this.loadWidget(i, this.widgetData[i]);
-			}
-
-			// remove empty placeholders (optional)
-			/*
-			for (var k = 0; k < this.placeholders.length; k++) {
-				var removeItem = true;
-				for (var j in this.widgetData) {
-					if (this.placeholders[k].getAttribute("itemid") == this.widgetData[j].placeholder) {
-						removeItem = false;
-						break;
-					}
-				}
-				if (removeItem) {
-					this.placeholders[k].parentNode.removeChild(this.placeholders[k]);
-				}
-			}
-			*/
 		}
 
 	});

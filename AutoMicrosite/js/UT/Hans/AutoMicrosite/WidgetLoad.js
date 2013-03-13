@@ -11,6 +11,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, domAttr) {
 	return declare(null, {
 
+        /**
+         * Prefix for widget
+         */
 		WIDGET_ELEMENT_ID_PREFIX: "widgetElement",
 
 		/**
@@ -27,7 +30,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Callback functions to run when all visual widgets have finished loading
 		 */
 		visualDoneCallback: null,
-		
+
 		/**
 		 * Callback function to run when all data widgets have finished loading
 		 */
@@ -58,7 +61,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.placeholders = placeholders;
 			this.visualDoneCallback = visualDone;
 			this.allDoneCallback = allDone;
-			
+
 			// Reorder widgets in priority order
 			this.data.sort(function(a, b) {
 				return b.priority - a.priority;
@@ -69,12 +72,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Start loading widgets
 		 */
 		load: function() {
-			console.log("WidgetLoader.load loading visual widgets");
+			console.log("WidgetLoad.load");
 
 			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
-			
-			this.attachTransformer(); // TODO: remove
 
 			// Distribute widgets to data and visual
 			for (var i in this.data) {
@@ -84,19 +85,40 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					this.visualWidgets.push(this.data[i]);
 				}
 			}
-			
-			// TODO: transformer should probably loaded even before visual
 
-			// Load visual widgets
-			if (this.visualWidgets.length == 0) {
+            // TODO: transformer should probably be loaded first, but should still
+            //       be in an OpenAjax metadata file
+            this.attachTransformer(); // TODO: remove
+
+            this.loadVisualWidgets();
+		},
+
+        /**
+         * Load visual widgets
+         */
+        loadVisualWidgets: function() {
+            if (this.visualWidgets.length == 0) {
 				this.visualDone();
 				return;
 			}
-			for (i in this.visualWidgets) {
+            for (i in this.visualWidgets) {
 				this.loadVisualWidget(this.visualWidgets[i]);
 			}
+        },
+
+		/**
+		 * Load data widgets, after visual widgets are done
+		 */
+		loadDataWidgets: function() {
+			if (this.dataWidgets.length == 0) {
+				this.done();
+				return;
+			}
+			for (i in this.dataWidgets) {
+				this.loadDataWidget(this.dataWidgets[i]);
+			}
 		},
-		
+
 		// TODO: move to a metadata file
 		attachTransformer: function() {
 			var transformerWidgetUrl = "http://automicrosite.maesalu.com:8833/TransformerWidget.html";
@@ -106,8 +128,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			var div = domConstruct.create("div", {
 				id: "transformerWidget"
 			}, document.body);
-			
-			
+
 			new OpenAjax.hub.IframeContainer(this.loader.hub , "transformerWidget",
 			  {
 				Container: {
@@ -130,18 +151,18 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			);
 
 		},
-		
+
 		/**
 		 * Load visual widget
 		 */
 		loadVisualWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
 				widget.openAjax = widgetObject;
-				
+
 				this.visualWidgetsLoaded.push(widgetId);
-				
+
 				this.visualWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
-				
+
 				// All visual widgets done
 				if (this.visualWidgetsLoaded.length == this.visualWidgets.length) {
 					this.visualDone();
@@ -156,10 +177,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		loadDataWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
 				widget.openAjax = widgetObject;
-				
+
 				this.dataWidgetsLoaded.push(widgetId);
 				this.dataWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
-				
+
 				// All data widgets done
 				if (this.dataWidgetsLoaded.length == this.dataWidgets.length) {
 					this.done();
@@ -202,7 +223,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			});
 		},
-		
+
 		getWidgetsInPlaceholder: function(placeholder) {
 			var widgets = [];
 			for (var i = 0; i < this.visualWidgets.length; i++) {
@@ -212,7 +233,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 			return widgets;
 		},
-		
+
 		forEach: function(array, callback) {
 			for (var i in array) {
 				callback(array[i]);
@@ -223,23 +244,24 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * All widgets finished loading
 		 */
 		visualDone: function() {
-			console.log("WidgetLoader Finished loading visual widgets");
+			console.log("WidgetLoad.visualDone");
 			this.buildNavigation();
-			
+
 			if (typeof this.visualDone == "function") {
 				this.visualDoneCallback(this.visualWidgetsLoadedObjects
 					, this.dataWidgetsLoadedObjects);
 			}
+
 			this.loadDataWidgets();
 		},
-				
+
 		buildNavigation: function() {
 			var menuWidget = this.getMenuWidget();
 			if (!menuWidget) return;
 
 			// Hide 'separatePage' widgets
-			var widget, widgetId, widgetDiv, menuWidget, menuItems;
-			
+			var widget, widgetId, widgetDiv, menuItems;
+
 			for (var i = 0; i < this.visualWidgets.length; i++) {
 				if (!this.visualWidgets[i].separatePage) continue;
 
@@ -263,7 +285,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
 			}
 		},
-				
+
 		getMenuWidget: function() {
 			// TODO: this info should probably come from server side, in case menu is used
 			for (var i = 0; i < this.visualWidgetsLoadedObjects.length; i++) {
@@ -272,7 +294,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			}
 		},
-		
+
 		menuClick: function(widgetInfo, size) {
 			console.log("loader 123");
 			console.log("opening widget "+ widgetInfo);
@@ -290,19 +312,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			});
 
 			size.run();
-		},
-
-		/**
-		 * Load data widgets once visual widgets are done
-		 */
-		loadDataWidgets: function() {
-			if (this.dataWidgets.length == 0) {
-				this.done();
-				return;
-			}
-			for (i in this.dataWidgets) {
-				this.loadDataWidget(this.dataWidgets[i]);
-			}
 		},
 
 		/**

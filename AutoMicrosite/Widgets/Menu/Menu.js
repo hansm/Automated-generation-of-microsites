@@ -32,10 +32,10 @@ AutoMicrosite.Widget.Menu.prototype = {
 		this.drawMenu();
 
 		this.OpenAjax.hub.subscribe("AutoMicrosite.MenuClick", function(topic, data) {
-				console.log("Menu received:");
-				console.log(topic);
-				console.log(data);
-			});
+			console.log("Menu received:");
+			console.log(topic);
+			console.log(data);
+		});
 	},
 
 	/**
@@ -72,7 +72,7 @@ AutoMicrosite.Widget.Menu.prototype = {
 
 			a = document.createElement("a");
 			a.innerHTML = button.label;
-			
+
 			if (typeof button.href == "string" && button.href.match(/^http:\/\//i)) {
 				a.href = button.href;
 				a.target = "_blank";
@@ -84,7 +84,7 @@ AutoMicrosite.Widget.Menu.prototype = {
 					return false;
 				}.bind(a, button.href);
 			}
-			
+
 			this.divMenu.appendChild(a);
 		}
 	}

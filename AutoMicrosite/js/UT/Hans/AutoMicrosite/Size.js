@@ -1,5 +1,5 @@
 /**
- * Widget resizing component. Keeps the widgets appropriate for screen size.
+ * Widget resizing class. Keeps the widgets appropriate for screen size.
  *
  * @author Hans
  */
@@ -9,53 +9,46 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/NodeList-traverse"]
 	, function(declare, dom, domConstruct, domStyle, win, on, log, query, domGeom, nodeListTraverse) {
 	return declare(null, {
-		
+
 		/**
 		 * Widget data
 		 */
 		data: [],
-		
+
 		/**
 		 * Widget placeholder elements
 		 */
 		placeholders: [],
-		
+
 		/**
 		 * Visual widgets' OpenAjax widget objects
 		 */
 		visualWidgets: [],
-		
+
 		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
 		constructor: function(widgetData, placeholders, visualWidgets) {
-			log("Size", "constructor");
-
+            console.log("Size.constructor");
 			this.data = widgetData;
 			this.placeholders = placeholders;
 			this.visualWidgets = visualWidgets;
-console.log("placeholders");
-console.log(placeholders);
-console.log(widgetData);
-console.log(visualWidgets);
-			log("Window dimensions", win.getBox());
 		},
-		
+
 		/**
-		 * Run widget resize
+		 * Run widget resize. Process all placeholders one by one
 		 */
 		run: function() {
 			for (var i = 0; i < this.placeholders.length; i++) {
 				this.processPlaceholder(this.placeholders[i]);
 			}
-			/*
-			for (var i in this.visualWidgets) {
-				this.calculateWidgetDimensions(this.visualWidgets[i]);
-			}*/
 		},
-		
+
+        /**
+         * Get all widgets in placeholder
+         */
 		getWidgetsInPlaceholder: function(placeholder) {
 			var widgets = [];
 			for (var i = 0; i < this.data.length; i++) {
@@ -63,38 +56,39 @@ console.log(visualWidgets);
 					widgets.push(this.data[i]);
 				}
 			}
+
 			return widgets;
 		},
-		
+
 		forEach: function(array, callback) {
 			for (var i in array) {
 				callback(array[i]);
 			}
 		},
-		
+
 		/**
 		 * Process all placeholders
 		 */
 		processPlaceholder: function(placeholder) {
 			//return ;
 			var placeholderId = placeholder.getAttribute("itemid");
-			
+
 			var widgets = 0;
 			var row;
 			for (var i in this.data) {
 				row = this.data[i];
 				if (row.placeholder != placeholderId) continue;
-				
+
 				// Find widget manager element
 				console.log(row);
 				var widgetManager = row.openAjax;
-				
+
 				// TODO: some fancier logic, so it would be possible to have several widgets on the same page
 				if (widgets === 0) {
 					showWidget = widgetManager;
 				}
 				//widgetManager.OpenAjax._rootElement.style.display = "none";
-				
+
 				if (row.enabled) {
 					this.calculateWidgetDimensions(row);
 				}
@@ -114,15 +108,15 @@ console.log(visualWidgets);
 				}
 			}*/
 		},
-			
-			
-			
+
+
+
 		calculateWidgetDimensions: function(widget) {
 			var widgetManager = widget.openAjax;
 			console.log("calculateWidgetDimensions");
 			console.log(widgetManager);
 			//widgetManager.OpenAjax._rootElement.style.width = win.getBox().w +"px";
-			
+
 			var placeholderWidgets = this.getWidgetsInPlaceholder(widget.placeholder);
 			this.forEach(placeholderWidgets, function(w) {
 				w.div.style.display = "none";
@@ -152,7 +146,7 @@ console.log(placeholderDimensions);
 			//console.log(widgetManager.OpenAjax.getDimensions());
 			//console.log(widgetManager.OpenAjax.getAvailableDimensions());
 		},
-			
+
 		getMenuWidget: function() {
 			// TODO: this info should probably come from server side, in case menu is used
 			for (var i = 0; i < this.visualWidgets.length; i++) {
@@ -161,10 +155,9 @@ console.log(placeholderDimensions);
 				}
 			}
 		},
-				
+
 		menuClick: function(widgetId) {
 			console.log("opening widget "+ widgetId);
-			
 		}
 
 	});
