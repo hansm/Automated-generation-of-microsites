@@ -4,10 +4,10 @@
  * @author Hans
  */
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
-		, "dojo/window", "dojo/on", "UT/Hans/AutoMicrosite/Log"
+		, "dojo/window", "dojo/on"
 		, "dojo/query", "dojo/dom-geometry"
 		, "dojo/NodeList-traverse"]
-	, function(declare, dom, domConstruct, domStyle, win, on, log, query, domGeom, nodeListTraverse) {
+	, function(declare, dom, domConstruct, domStyle, win, on, query, domGeom, nodeListTraverse) {
 	return declare(null, {
 
 		/**

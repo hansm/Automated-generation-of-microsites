@@ -7,9 +7,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query", "dojo/dom-attr"
 		, "UT/Hans/AutoMicrosite/Size"
 		, "UT/Hans/AutoMicrosite/WidgetLoad"
-	    , "UT/Hans/AutoMicrosite/Curtain"]
+	    , "UT/Hans/AutoMicrosite/Curtain"
+		, "UT/Hans/AutoMicrosite/Navigation"]
 	, function(declare, dom, domConstruct, domStyle, win, on, domQuery, domAttr
-				, SizeHandler, Loader, Curtain) {
+				, SizeHandler, Loader, Curtain, Navigation) {
 	return declare(null, {
 
 		/**
@@ -132,7 +133,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			} catch (e) {
 				this.handleError(e);
 			}
-		}
+		},
 
 		/**
 		 * Handle error message

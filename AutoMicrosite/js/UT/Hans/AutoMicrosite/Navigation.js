@@ -70,9 +70,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		getMenuWidget: function() {
 			// TODO: this info should probably come from server side, in case menu is used
-			for (var i = 0; i < this.visualWidgets.length; i++) {
-				if (this.visualWidgets[i].divMenu) { // TODO: REALLY-really-really bad way to find menu
-					return this.visualWidgets[i];
+			for (var i = 0; i < this.widgets.length; i++) {
+				if (this.widgets[i].divMenu) { // TODO: REALLY-really-really bad way to find menu
+					return this.widgets[i];
 				}
 			}
 
