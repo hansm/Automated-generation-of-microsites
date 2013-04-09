@@ -161,6 +161,57 @@
 				</Atom>
 			</then>
 		</Implies>
+		
+		<!-- Different types of charts are all charts -->
+		
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/BarChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Chart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/LineChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Chart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/PieChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Chart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
 
 	</Assert>
 

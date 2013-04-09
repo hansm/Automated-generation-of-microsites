@@ -139,6 +139,49 @@
     <owl:Class rdf:about="&automicrosite;Finance">
         <rdfs:subClassOf rdf:resource="&schema;Organization"/>
     </owl:Class>
+
+
+
+    <!-- http://automicrosite.maesalu.com/Chart -->
+
+    <owl:Class rdf:about="&automicrosite;Chart">
+        <rdfs:subClassOf rdf:resource="&schema;WebPageElement"/>
+        <rdfs:comment>Chart illustrations on a web site.</rdfs:comment>
+    </owl:Class>
+
+
+
+    <!-- http://automicrosite.maesalu.com/BarChart -->
+
+    <owl:Class rdf:about="&automicrosite;BarChart">
+        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    </owl:Class>
+
+
+
+    <!-- http://automicrosite.maesalu.com/LineChart -->
+
+    <owl:Class rdf:about="&automicrosite;LineChart">
+        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    </owl:Class>
+
+
+
+    <!-- http://automicrosite.maesalu.com/PieChart -->
+
+    <owl:Class rdf:about="&automicrosite;PieChart">
+        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    </owl:Class>
+
+
+
+    <!-- http://automicrosite.maesalu.com/Form -->
+
+    <owl:Class rdf:about="&automicrosite;Form">
+        <rdfs:subClassOf rdf:resource="&schema;WebPageElement"/>
+        <rdfs:comment>Chart illustrations on a web site.</rdfs:comment>
+    </owl:Class>
+	
 </rdf:RDF>
 
 
