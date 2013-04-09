@@ -33,9 +33,16 @@ class MicrodataPhpDOMDocument extends DOMDocument {
 	 *   A DOMNodeList containing all top level microdata items.
 	 */
 	public function getItems($typeNames = '') {
-		// TODO: make $typeNames work
-		// Return top level items.
-		return $this->xpath()->query('//*[@itemscope and not(@itemprop)]');
+		$typeFilter = '';
+		if (!empty($typeNames) && $typeNames !== '*') {
+			$typeFilter = ' and @itemtype=\''
+				. \htmlentities($typeNames, ENT_QUOTES, 'UTF-8')
+				. '\'';
+		}
+
+		// Return top level items (no itemprop)
+		return $this->xpath()->query('//*[@itemscope and not(@itemprop)'
+				. $typeFilter . ']');
 	}
 
 	/**
