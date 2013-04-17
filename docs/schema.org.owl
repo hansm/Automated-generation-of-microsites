@@ -4,22 +4,22 @@
 <!DOCTYPE rdf:RDF [
     <!ENTITY schema "http://schema.org/" >
     <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY automicrosite "http://automicrosite.maesalu.com/" >
+    <!ENTITY deepweb "http://deepweb.ut.ee/" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
 ]>
 
 
-<rdf:RDF xmlns="http://automicrosite.maesalu.com/"
-     xml:base="http://automicrosite.maesalu.com/"
+<rdf:RDF xmlns="http://deepweb.ut.ee/"
+     xml:base="http://deepweb.ut.ee/"
      xmlns:schema="http://schema.org/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:automicrosite="http://automicrosite.maesalu.com/">
-    <owl:Ontology rdf:about="http://automicrosite.maesalu.com/">
+     xmlns:deepweb="http://deepweb.ut.ee/">
+    <owl:Ontology rdf:about="http://deepweb.ut.ee/">
         <owl:imports rdf:resource="http://schema.org/"/>
     </owl:Ontology>
     
@@ -58,50 +58,50 @@
     
 
 
-    <!-- http://automicrosite.maesalu.com/annualTurnover -->
+    <!-- http://deepweb.ut.ee/annualTurnover -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;annualTurnover">
+    <owl:DatatypeProperty rdf:about="&deepweb;annualTurnover">
         <rdfs:domain rdf:resource="&schema;Organization"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://automicrosite.maesalu.com/krdxDebtCurrency -->
+    <!-- http://deepweb.ut.ee/krdxDebtCurrency -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;krdxDebtCurrency">
-        <rdfs:domain rdf:resource="&automicrosite;Debt"/>
+    <owl:DatatypeProperty rdf:about="&deepweb;krdxDebtCurrency">
+        <rdfs:domain rdf:resource="&deepweb;Debt"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://automicrosite.maesalu.com/krdxDebtSum -->
+    <!-- http://deepweb.ut.ee/krdxDebtSum -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;krdxDebtSum">
-        <rdfs:domain rdf:resource="&automicrosite;Debt"/>
+    <owl:DatatypeProperty rdf:about="&deepweb;krdxDebtSum">
+        <rdfs:domain rdf:resource="&deepweb;Debt"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://automicrosite.maesalu.com/taxDebtCurrency -->
+    <!-- http://deepweb.ut.ee/taxDebtCurrency -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;taxDebtCurrency">
-        <rdfs:domain rdf:resource="&automicrosite;Debt"/>
+    <owl:DatatypeProperty rdf:about="&deepweb;taxDebtCurrency">
+        <rdfs:domain rdf:resource="&deepweb;Debt"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://automicrosite.maesalu.com/taxDebtSum -->
+    <!-- http://deepweb.ut.ee/taxDebtSum -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;taxDebtSum">
-        <rdfs:domain rdf:resource="&automicrosite;Debt"/>
+    <owl:DatatypeProperty rdf:about="&deepweb;taxDebtSum">
+        <rdfs:domain rdf:resource="&deepweb;Debt"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://automicrosite.maesalu.com/taxDebtUpdateDate -->
+    <!-- http://deepweb.ut.ee/taxDebtUpdateDate -->
 
-    <owl:DatatypeProperty rdf:about="&automicrosite;taxDebtUpdateDate">
-        <rdfs:domain rdf:resource="&automicrosite;Debt"/>
+    <owl:DatatypeProperty rdf:about="&deepweb;taxDebtUpdateDate">
+        <rdfs:domain rdf:resource="&deepweb;Debt"/>
     </owl:DatatypeProperty>
     
 
@@ -117,67 +117,67 @@
     
 
 
-    <!-- http://automicrosite.maesalu.com/Datasets -->
+    <!-- http://deepweb.ut.ee/Datasets -->
 
-    <owl:Class rdf:about="&automicrosite;Datasets">
+    <owl:Class rdf:about="&deepweb;Datasets">
         <rdfs:subClassOf rdf:resource="&schema;CreativeWork"/>
         <rdfs:comment>Implementation of proposal specified here http://www.w3.org/wiki/WebSchemas/Datasets</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://automicrosite.maesalu.com/Debt -->
+    <!-- http://deepweb.ut.ee/Debt -->
 
-    <owl:Class rdf:about="&automicrosite;Debt">
-        <rdfs:subClassOf rdf:resource="&automicrosite;Finance"/>
+    <owl:Class rdf:about="&deepweb;Debt">
+        <rdfs:subClassOf rdf:resource="&deepweb;Finance"/>
     </owl:Class>
     
 
 
-    <!-- http://automicrosite.maesalu.com/Finance -->
+    <!-- http://deepweb.ut.ee/Finance -->
 
-    <owl:Class rdf:about="&automicrosite;Finance">
+    <owl:Class rdf:about="&deepweb;Finance">
         <rdfs:subClassOf rdf:resource="&schema;Organization"/>
     </owl:Class>
 
 
 
-    <!-- http://automicrosite.maesalu.com/Chart -->
+    <!-- http://deepweb.ut.ee/Chart -->
 
-    <owl:Class rdf:about="&automicrosite;Chart">
+    <owl:Class rdf:about="&deepweb;Chart">
         <rdfs:subClassOf rdf:resource="&schema;WebPageElement"/>
         <rdfs:comment>Chart illustrations on a web site.</rdfs:comment>
     </owl:Class>
 
 
 
-    <!-- http://automicrosite.maesalu.com/BarChart -->
+    <!-- http://deepweb.ut.ee/BarChart -->
 
-    <owl:Class rdf:about="&automicrosite;BarChart">
-        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    <owl:Class rdf:about="&deepweb;BarChart">
+        <rdfs:subClassOf rdf:resource="&deepweb;Chart"/>
     </owl:Class>
 
 
 
-    <!-- http://automicrosite.maesalu.com/LineChart -->
+    <!-- http://deepweb.ut.ee/LineChart -->
 
-    <owl:Class rdf:about="&automicrosite;LineChart">
-        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    <owl:Class rdf:about="&deepweb;LineChart">
+        <rdfs:subClassOf rdf:resource="&deepweb;Chart"/>
     </owl:Class>
 
 
 
-    <!-- http://automicrosite.maesalu.com/PieChart -->
+    <!-- http://deepweb.ut.ee/PieChart -->
 
-    <owl:Class rdf:about="&automicrosite;PieChart">
-        <rdfs:subClassOf rdf:resource="&automicrosite;Chart"/>
+    <owl:Class rdf:about="&deepweb;PieChart">
+        <rdfs:subClassOf rdf:resource="&deepweb;Chart"/>
     </owl:Class>
 
 
 
-    <!-- http://automicrosite.maesalu.com/Form -->
+    <!-- http://deepweb.ut.ee/Form -->
 
-    <owl:Class rdf:about="&automicrosite;Form">
+    <owl:Class rdf:about="&deepweb;Form">
         <rdfs:subClassOf rdf:resource="&schema;WebPageElement"/>
         <rdfs:comment>Chart illustrations on a web site.</rdfs:comment>
     </owl:Class>
