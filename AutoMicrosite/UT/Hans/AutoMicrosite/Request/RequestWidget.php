@@ -20,6 +20,13 @@ class RequestWidget implements IRequestWidget {
 	 */
 	private $properties;
 
+	/**
+	 * Flow order number, whenever available
+	 *
+	 * @var int|null
+	 */
+	private $flowOrder;
+
 	public function getProperties() {
 		return $this->properties;
 	}
@@ -31,10 +38,12 @@ class RequestWidget implements IRequestWidget {
 	/**
 	 * @param string $url
 	 * @param array $properties
+	 * @param int|null $flowOrder
 	 */
-	public function __construct($url, $properties = array()) {
+	public function __construct($url, $properties = array(), $flowOrder = null) {
 		$this->url = $url;
 		$this->properties = $properties;
+		$this->flowOrder = $flowOrder;
 	}
 
 	/**
@@ -45,6 +54,10 @@ class RequestWidget implements IRequestWidget {
 	 */
 	public function addProperty($name, $value) {
 		$this->properties[$name] = $value;
+	}
+
+	public function getFlowOrder() {
+		return $this->flowOrder;
 	}
 
 }

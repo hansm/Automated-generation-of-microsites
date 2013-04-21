@@ -41,6 +41,12 @@ interface IWidget {
 	 */
 	public function separatePage();
 
+	/**
+	 * Line number of the widget in a placeholder
+	 *
+	 * @return int
+	 */
+	public function getLineNumber();
 	
 	public function getMaxWidth();
 

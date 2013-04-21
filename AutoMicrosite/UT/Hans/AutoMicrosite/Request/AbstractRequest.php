@@ -11,7 +11,7 @@ use UT\Hans\AutoMicrosite\Util\Log;
  *
  * @author Hans
  */
-abstract class AbstractRequest {
+abstract class AbstractRequest implements IRequest {
 
 	/**
 	 * Widget metadata files URLs
@@ -50,20 +50,10 @@ abstract class AbstractRequest {
 		$this->widgets = $widgets;
 	}
 
-	/**
-	 * Get widget files
-	 *
-	 * @return array
-	 */
 	public function getWidgets() {
 		return $this->widgets;
 	}
 
-	/**
-	 * Get the title of the mashup
-	 *
-	 * @return string
-	 */
 	public function getTitle() {
 		return $this->title;
 	}
@@ -82,30 +72,16 @@ abstract class AbstractRequest {
 		try {
 			$this->loadConf();
 			$this->setInput();
-			$result = $this->buildMashup();
+			if (!$result = $this->getCache()) {
+				$result = $this->buildMashup();
+				$this->saveCache($result);
+			}
 			$this->response($result);
 		} catch (Exception $e) {
 			$this->log->exception($e);
 			$this->handleException($e);
 		}
 	}
-
-	/**
-	 * Set input variables
-	 */
-	abstract protected function setInput();
-
-	/**
-	 * Handle error response
-	 *
-	 * @param \Exception $e
-	 */
-	abstract protected function handleException(Exception $e);
-
-	/**
-	 * Send result to request
-	 */
-	abstract protected function response($result);
 
 	/**
 	 * Construct mashup
@@ -161,7 +137,7 @@ abstract class AbstractRequest {
 	 * @throws \Exception
 	 */
 	protected function saveToFile($contents) {
-		$mashupDir = $this->getConf('general', 'mashup_dir');
+		$mashupDir = $this->getConf('general', 'cache_dir');
 		$fileName = \str_replace(' ', '-', $this->getTitle())
 						.'-'. \time() .'.html';
 		while (\file_exists($mashupDir . $fileName)) {
@@ -176,6 +152,78 @@ abstract class AbstractRequest {
 		}
 
 		return $this->getConf('general', 'mashup_dir_url') . \urlencode($fileName);
+	}
+
+	/**
+	 * Try to load cached mashup
+	 *
+	 * @return string
+	 */
+	protected function getCache() {
+		if (!$this->getConf('general', 'cache')
+				|| !$this->getConf('general', 'cache_dir')) return '';
+
+		$cacheFileName = self::calcHash($this->getTitle(), $this->getWidgets()) .'.html';
+		$cacheFileFullName = $this->getConf('general', 'cache_dir') . $cacheFileName;
+
+		if (!\file_exists($cacheFileFullName)) {
+			return '';
+		}
+
+		$cacheCreateDate = \filemtime($cacheFileFullName);
+		foreach ($this->getConf('rules') as $rulesFile) {
+			if (\filemtime($rulesFile) > $cacheCreateDate) {
+				return '';
+			}
+		}
+
+		try {
+			return \file_get_contents($cacheFileFullName);;
+		} catch (ErrorException $e) {
+			$this->log->exception($e);
+			return '';
+		}
+	}
+
+	/**
+	 * Save cache to disk
+	 *
+	 * @param string $content
+	 */
+	protected function saveCache($content) {
+		if (!$this->getConf('general', 'cache')
+				|| !$this->getConf('general', 'cache_dir')) return;
+
+		$cacheFileName = self::calcHash($this->getTitle(), $this->getWidgets()) .'.html';
+		try {
+			\file_put_contents($this->getConf('general', 'cache_dir') . $cacheFileName,
+				$content);
+		} catch (ErrorException $e) {
+			$this->log->exception($e);
+		}
+	}
+
+	/**
+	 * Calculate a "unique" hash for the input
+	 *
+	 * @param type $title
+	 * @param \UT\Hans\AutoMicrosite\Request\IRequestWidget[] $widgets
+	 */
+	public static function calcHash($title, $widgets) {
+		usort($widgets, function($a, $b) {
+			return strcasecmp($a->getUrl(), $b->getUrl());
+		});
+
+		$hashString = $title .':';
+		foreach ($widgets as $widget) {
+			$hashString .= $widget->getUrl() .';';
+			foreach ($widget->getProperties() as $propName => $propValue) {
+				$hashString .= $propName .'='. $propValue .';';
+			}
+			$hashString .= $widget->getFlowOrder() .';';
+		}
+
+		return \sha1($hashString);
 	}
 
 }

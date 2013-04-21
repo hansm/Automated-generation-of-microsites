@@ -26,14 +26,14 @@ class MicrodataTemplateToRuleMl {
 
 	const RULML_NS = 'http://ruleml.org/spec';
 
-	const PLACEHOLDER_ITEMTYPE = 'http://automicrosite.maesalu.com/TemplatePlaceholder';
+	const PLACEHOLDER_ITEMTYPE = 'http://deepweb.ut.ee/TemplatePlaceholder';
 
 	/**
 	 * Template fits facts relation
 	 */
-	const TEMPLATE_REL = 'http://automicrosite.maesalu.com/#template';
+	const TEMPLATE_REL = 'http://deepweb.ut.ee/#template';
 	
-	const WIDGET_PLACE_REL = 'http://automicrosite.maesalu.com/#widgetPlace';
+	const WIDGET_PLACE_REL = 'http://deepweb.ut.ee/#widgetPlace';
 
 	private $dimensionVariables = array('min-height', 'min-width', 'max-height', 'max-height');
 
@@ -112,7 +112,7 @@ class MicrodataTemplateToRuleMl {
 			foreach ($this->dimensionVariables as $dimensionVar) {
 				if (!empty($templateProp[$dimensionVar])) {
 					$assert->appendChild(
-						self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#'. $dimensionVar, array(
+						self::createAtom('http://deepweb.ut.ee/TemplatePlaceholder#'. $dimensionVar, array(
 							new Slot(new Ind('template'), new Ind($templateId)),
 							new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 							new Slot(
@@ -128,7 +128,7 @@ class MicrodataTemplateToRuleMl {
 			if (isset($templateProp['multiple']) && isset($templateProp['multiple'][0])
 					&& strcasecmp($templateProp['multiple'][0], 'true') == 0) {
 				$assert->appendChild(
-					self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#multiple', array(
+					self::createAtom('http://deepweb.ut.ee/TemplatePlaceholder#multiple', array(
 						new Slot(new Ind('template'), new Ind($templateId)),
 						new Slot(new Ind('placeholder'), new Ind($placeholderId))
 					))
@@ -141,7 +141,7 @@ class MicrodataTemplateToRuleMl {
 
 			$ifAnd = new AndElement();
 			$ifAnd->appendChild(
-				self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+				self::createAtom('http://deepweb.ut.ee/TemplatePlaceholder#category', array(
 					new Slot(new Ind('template'), new Ind($templateId)),
 					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 					new Slot(new Ind('category'), new Variable('category'))
@@ -154,13 +154,13 @@ class MicrodataTemplateToRuleMl {
 				))
 			);
 			$ifAnd->appendChild(
-				self::createAtom('http://automicrosite.maesalu.com/#isDataWidget', array(
+				self::createAtom('http://deepweb.ut.ee/#isDataWidget', array(
 					new Slot(new Ind('widget'), new Variable('widget')),
 					new Slot(new Ind('value'), new Variable('isDataWidget'))
 				))
 			);
 			$ifAnd->appendChild(
-				self::createAtom('http://automicrosite.maesalu.com/#priority', array(
+				self::createAtom('http://deepweb.ut.ee/#priority', array(
 					new Slot(new Ind('widget'), new Variable('widget')),
 					new Slot(new Ind('priority'), new Variable('priority'))
 				))
@@ -203,7 +203,7 @@ class MicrodataTemplateToRuleMl {
 	private static function createCategoryFacts(array $categories, $templateId, $placeholderId) {
 		$facts = array();
 		foreach ($categories as $categoryValue) {
-			$facts[] = self::createAtom('http://automicrosite.maesalu.com/TemplatePlaceholder#category', array(
+			$facts[] = self::createAtom('http://deepweb.ut.ee/TemplatePlaceholder#category', array(
 				new Slot(new Ind('template'), new Ind($templateId)),
 				new Slot(new Ind('placeholder'), new Ind($placeholderId)),
 				new Slot(new Ind('category'), new Ind($categoryValue))

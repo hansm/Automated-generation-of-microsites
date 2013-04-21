@@ -18,7 +18,7 @@ class RuleMlWidget implements IWidget {
 	 *
 	 * @var string[]
 	 */
-	private $intVars = array('priority');
+	private $intVars = array('priority', 'line');
 
 	/**
 	 * Response variables converted to boolean
@@ -73,6 +73,10 @@ class RuleMlWidget implements IWidget {
 
 	public function separatePage() {
 		return $this->getValue('separatePage');
+	}
+
+	public function getLineNumber() {
+		return $this->getValue('line');
 	}
 
 	public function getMaxHeight() {

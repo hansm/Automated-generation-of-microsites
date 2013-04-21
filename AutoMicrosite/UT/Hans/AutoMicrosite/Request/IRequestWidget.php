@@ -20,5 +20,11 @@ interface IRequestWidget {
 	 */
 	public function getProperties();
 
+	/**
+	 * Return workflow order number, when available
+	 *
+	 * @return int|null
+	 */
+	public function getFlowOrder();
 
 }

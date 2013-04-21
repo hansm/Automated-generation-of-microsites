@@ -16,7 +16,7 @@ use \Exception;
  */
 class GET extends AbstractRequest {
 
-	protected function setInput() {
+	public function setInput() {
 		if (empty($_REQUEST['widget']) || !\is_array($_REQUEST['widget'])) {
 			throw new Exception('No widgets given as input.');
 		}
@@ -38,7 +38,7 @@ class GET extends AbstractRequest {
 		$this->setTitle(isset($_REQUEST['title']) ? $_REQUEST['title'] : 'My mashup');
 	}
 
-	protected function handleException(Exception $e) {
+	public function handleException(Exception $e) {
 		echo '<!DOCTYPE html>
 <html>
 	<head>
@@ -51,7 +51,7 @@ class GET extends AbstractRequest {
 </html>';
 	}
 
-	protected function response($result) {
+	public function response($result) {
 		echo $result;
 		/*
 			$url = $this->saveToFile($result);
