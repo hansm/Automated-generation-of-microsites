@@ -16,7 +16,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * Template placeholder itemtype
 		 */
-		TEMPLATE_PLACEHOLDER: "http://automicrosite.maesalu.com/TemplatePlaceholder",
+		TEMPLATE_PLACEHOLDER: "http://deepweb.ut.ee/TemplatePlaceholder",
 
 		/**
 		 * Widget data received from server-side

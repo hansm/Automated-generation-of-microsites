@@ -3,7 +3,7 @@
 		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Menu"
 		x:min-width="640" x:max-width="2000"
 		xmlns="http://openajax.org/metadata"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
 
 	<require type="javascript" src="Menu.js?v=3" />
 

@@ -1,6 +1,6 @@
 <Query>
 		<Atom>
-			<Rel>http://automicrosite.maesalu.com/#widgetQuery</Rel>
+			<Rel>http://deepweb.ut.ee/#widgetQuery</Rel>
 			<slot><Ind>widget</Ind><Ind>{$widget}</Ind></slot>
 			<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 			<slot><Ind>template</Ind><Ind>{$template}</Ind></slot>

@@ -31,7 +31,7 @@ class MicrodataTemplateToRuleMl {
 	/**
 	 * Layout template placeholder type
 	 */
-	const PLACEHOLDER_ITEMTYPE = 'http://automicrosite.maesalu.com/TemplatePlaceholder';
+	const PLACEHOLDER_ITEMTYPE = 'http://deepweb.ut.ee/TemplatePlaceholder';
 
 	/**
 	 * Template placeholder dimension limits

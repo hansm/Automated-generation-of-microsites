@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget name="MapWidget" id="http://automicrosite.maesalu.com/Widget/Map"
+<widget name="MapWidget" id="http://deepweb.ut.ee/Widget/Map"
 		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Map"
 		x:min-width="640" x:max-width="2000"
 		x:min-height="640" x:max-height="2000"
 		xmlns="http://openajax.org/metadata"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension">
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
 
 	<title>Map widget</title>
 	<description>

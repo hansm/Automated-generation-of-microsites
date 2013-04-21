@@ -16,7 +16,7 @@ class MicrodataTemplate {
 
 	const RULML_NS = 'http://ruleml.org/spec';
 
-	const SLOT_ITEMTYPE = 'http://automicrosite.maesalu.com/TemplateSlot';
+	const SLOT_ITEMTYPE = 'http://deepweb.ut.ee/TemplateSlot';
 
 	/**
 	 * URL to template file

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="DataWidget" id="AutoMicrosite/Manual/Data"
 		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Manual.Data"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
 	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
@@ -79,6 +79,6 @@
 	</topic>
     
 	<categories>
-		<category x:iri="http://schema.org/Dataset" />
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>
 </widget>

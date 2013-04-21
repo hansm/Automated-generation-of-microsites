@@ -7,12 +7,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#priority</Rel>
+							<Rel>http://deepweb.ut.ee/#priority</Rel>
 							<slot><Ind>widget</Ind><Var>widget</Var></slot>
 							<slot><Ind>priority</Ind><Var>x</Var></slot>
 						</Atom>
@@ -21,7 +21,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority2</Rel>
+					<Rel>http://deepweb.ut.ee/#priority2</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>0</Ind></slot>
 				</Atom>
@@ -32,14 +32,14 @@
 		<Implies>
 			<if>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority</Rel>
+					<Rel>http://deepweb.ut.ee/#priority</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority2</Rel>
+					<Rel>http://deepweb.ut.ee/#priority2</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 				</Atom>
@@ -56,7 +56,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority</Rel>
+					<Rel>http://deepweb.ut.ee/#priority</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
 				</Atom>
@@ -73,7 +73,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority</Rel>
+					<Rel>http://deepweb.ut.ee/#priority</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>10</Ind></slot>
 				</Atom>
@@ -90,7 +90,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#priority</Rel>
+					<Rel>http://deepweb.ut.ee/#priority</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>priority</Ind><Ind>1</Ind></slot>
 				</Atom>

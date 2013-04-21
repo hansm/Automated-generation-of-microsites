@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="GoogleMapsWidget" id="AutoMicrosite/GoogleMapsWidget"
 		spec="1.0" width="640" height="480" jsClass="AutoMicrosite.Widget.GoogleMaps"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
 	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">

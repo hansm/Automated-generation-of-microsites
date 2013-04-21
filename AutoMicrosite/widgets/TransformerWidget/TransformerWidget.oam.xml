@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="TransformerWidget" id="AutoMicrosite/TransformerWidget"
 		spec="1.0" width="0" height="0"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 		sandbox="true"
 	>
@@ -9,7 +9,7 @@
 	<content><![CDATA[ ]]></content>
 
 	<categories>
-		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>
 
 </widget>

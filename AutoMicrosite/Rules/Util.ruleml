@@ -53,12 +53,12 @@
 				<Atom>
 					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Dataset</Ind></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/Datasets</Ind></slot>
 				</Atom>
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+					<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>true</Ind></slot>
 				</Atom>
@@ -68,12 +68,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+							<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
 							<slot><Ind>widget</Ind><Var>widget</Var></slot>
 							<slot><Ind>value</Ind><Ind>true</Ind></slot>
 						</Atom>
@@ -82,7 +82,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+					<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>false</Ind></slot>
 				</Atom>
@@ -94,12 +94,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#separatePage</Rel>
+							<Rel>http://deepweb.ut.ee/#separatePage</Rel>
 							<slot><Ind>widget</Ind><Var>widget</Var></slot>
 							<slot><Ind>value</Ind><Ind>true</Ind></slot>
 						</Atom>
@@ -108,7 +108,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#separatePage</Rel>
+					<Rel>http://deepweb.ut.ee/#separatePage</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>false</Ind></slot>
 				</Atom>
@@ -120,23 +120,23 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 						<slot><Ind>template</Ind><Var>template</Var></slot>
 					</Atom>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+						<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Var>isDataWidget</Var></slot>
 					</Atom>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#priority2</Rel>
+						<Rel>http://deepweb.ut.ee/#priority2</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>priority</Ind><Var>priority</Var></slot>
 					</Atom>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Var>separatePage</Var></slot>
 					</Atom>
@@ -144,7 +144,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetQuery</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetQuery</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
@@ -160,11 +160,11 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#templateExists</Rel>
+						<Rel>http://deepweb.ut.ee/#templateExists</Rel>
 						<Var>template</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#isDataWidget</Rel>
+						<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Ind>true</Ind></slot>
 					</Atom>
@@ -172,7 +172,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>placeholder</Ind><Ind>NULL</Ind></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
@@ -189,7 +189,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -206,7 +206,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>true</Ind></slot>
 				</Atom>
@@ -216,12 +216,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+							<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
 							<slot><Ind>widget</Ind><Var>widget</Var></slot>
 							<slot><Ind>value</Ind><Ind>true</Ind></slot>
 						</Atom>
@@ -230,7 +230,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetSeparatePage</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>false</Ind></slot>
 				</Atom>
@@ -244,12 +244,12 @@
 				<And>
 					
 					<Atom>
-						<Rel>http://automicrosite.maesalu.com/#template</Rel>
+						<Rel>http://deepweb.ut.ee/#template</Rel>
 						<slot><Ind>template</Ind><Var>template</Var></slot>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#widgetsMissPlace</Rel>
+							<Rel>http://deepweb.ut.ee/#widgetsMissPlace</Rel>
 							<slot><Ind>template</Ind><Var>template</Var></slot>
 						</Atom>
 					</Naf>
@@ -257,7 +257,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#templateQuery</Rel>
+					<Rel>http://deepweb.ut.ee/#templateQuery</Rel>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
 				</Atom>
 			</then>
@@ -268,16 +268,16 @@
 			<if>
 				<And>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#templateExists</Rel>
+							<Rel>http://deepweb.ut.ee/#templateExists</Rel>
 							<Var>template</Var>
 						</Atom>
 						<Atom>
-							<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+							<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 							<Var>widget</Var>
 						</Atom>
 						<Naf>
 							<Atom>
-								<Rel>http://automicrosite.maesalu.com/#widgetPlace</Rel>
+								<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
 								<slot><Ind>widget</Ind><Var>widget</Var></slot>
 								<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 								<slot><Ind>template</Ind><Var>template</Var></slot>
@@ -287,7 +287,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetsMissPlace</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetsMissPlace</Rel>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
 				</Atom>
 			</then>

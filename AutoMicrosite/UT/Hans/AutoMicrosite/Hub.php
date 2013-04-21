@@ -15,25 +15,6 @@ use UT\Hans\AutoMicrosite\Template\MicrodataTemplate;
  */
 class Hub {
 
-	const TEMPLATE_DIR = 'Template/';
-
-	//const RULEML_SERVICE_URL = 'http://localhost:8080/RuleMLApp/RuleMLService';
-	const RULEML_SERVICE_URL = 'http://automicrosite.maesalu.com:8080/RuleMlApp2/RuleMLService';
-
-	const RULES_FILE = 'Rules/Rules.ruleml';
-
-	const RULES_FILE_UTIL = 'Rules/Util.ruleml';
-
-	const WIDGET_SELECT_RULES = 'Rules/WidgetSelectRules.ruleml';
-
-	const PRIORITY_RULES = 'Rules/Priority.ruleml';
-
-	const GENERALIZATION_RULES = 'Rules/Generalization.ruleml';
-
-	const TEMPLATE_QUERY = 'Rules/TemplateQuery.ruleml';
-
-	const WIDGET_PLACE_QUERY = 'Rules/WidgetPlaceQuery.ruleml';
-
 	/**
 	 * Mashup title
 	 *

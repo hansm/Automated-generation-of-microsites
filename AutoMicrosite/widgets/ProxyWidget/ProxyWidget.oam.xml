@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="ProxyWidget" id="AutoMicrosite/ProxyWidget"
 		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Widget.ProxyWidget"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 	>
 
@@ -60,7 +60,7 @@ function generateWidget(wsdlUri, operation, ProxyWidgetUri) {
 	<property name="operation" datatype="string" />
 
 	<categories>
-		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>
 
 </widget>

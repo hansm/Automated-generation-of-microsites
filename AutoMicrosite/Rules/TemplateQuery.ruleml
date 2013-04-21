@@ -1,6 +1,6 @@
 <Query>
 		<Atom>
-			<Rel>http://automicrosite.maesalu.com/#templateQuery</Rel>
+			<Rel>http://deepweb.ut.ee/#templateQuery</Rel>
 			<slot><Ind>template</Ind><Var>template</Var></slot>
 		</Atom>
 </Query>

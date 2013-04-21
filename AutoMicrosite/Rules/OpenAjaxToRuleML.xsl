@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://ruleml.org/spec"
 	xmlns:oa="http://openajax.org/metadata"
-	xmlns:oax="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+	xmlns:oax="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 	version="1.0">
 
 	<xsl:param name="widget" select="999" />
@@ -20,7 +20,7 @@
 				</xsl:for-each>
 
 				<Atom>
-					<Rel>http://automicrosite.maesalu.com/#widgetExists</Rel>
+					<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
 					<Ind><xsl:value-of select="$widget" /></Ind>
 				</Atom>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="OrganizationDeptInfoWidget" id="AutoMicrosite/OrganizationDeptInfoWidget"
 		spec="1.0" width="640" height="480" jsClass="AutoMicrosite.Widget.OrganizationDeptInfo"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 		x:min-width="100" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
@@ -48,11 +48,11 @@
 		<description>
 			Show organization dept data in a table
 		</description>
-		<property name="taxDebtSum" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtSum" />
-		<property name="taxDebtCurrency" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtCurrency" />
-		<property name="taxDebtUpdateDate" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/taxDebtUpdateDate" />
-		<property name="krdxDebtSum" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/krdxDebtSum" />
-		<property name="krdxDebtCurrency" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/krdxDebtCurrency" />
+		<property name="taxDebtSum" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtSum" />
+		<property name="taxDebtCurrency" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtCurrency" />
+		<property name="taxDebtUpdateDate" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtUpdateDate" />
+		<property name="krdxDebtSum" datatype="string" required="true" urlparam="http://deepweb.ut.ee/krdxDebtSum" />
+		<property name="krdxDebtCurrency" datatype="string" required="true" urlparam="http://deepweb.ut.ee/krdxDebtCurrency" />
 	</topic>
 
 	<categories>

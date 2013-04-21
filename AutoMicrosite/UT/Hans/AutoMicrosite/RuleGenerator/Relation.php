@@ -11,7 +11,7 @@ class Relation {
 	/**
 	 * Widget exists
 	 */
-	const WIDGET = 'http://automicrosite.maesalu.com/#widgetExists';
+	const WIDGET = 'http://deepweb.ut.ee/#widgetExists';
 
 	/**
 	 * Widget belongs to category
@@ -21,23 +21,23 @@ class Relation {
 	/**
 	 * Widget is data widget (non-visual)
 	 */
-	const WIDGET_IS_DATA = 'http://automicrosite.maesalu.com/#isDataWidget';
+	const WIDGET_IS_DATA = 'http://deepweb.ut.ee/#isDataWidget';
 
 	/**
 	 * Widget priority value (priority2 because it has default value)
 	 */
-	const WIDGET_PRIORITY = 'http://automicrosite.maesalu.com/#priority2';
+	const WIDGET_PRIORITY = 'http://deepweb.ut.ee/#priority2';
 
 	/**
 	 * Template exists
 	 */
-	const TEMPLATE = 'http://automicrosite.maesalu.com/#templateExists';
+	const TEMPLATE = 'http://deepweb.ut.ee/#templateExists';
 
 	/**
 	 * Template fits widgets relation
 	 * Widgets for all template placeholders
 	 */
-	const TEMPLATE_WIDGETS = 'http://automicrosite.maesalu.com/#template';
+	const TEMPLATE_WIDGETS = 'http://deepweb.ut.ee/#template';
 
 	/**
 	 * All visual widgets have a placeholders in a template
@@ -47,25 +47,25 @@ class Relation {
 	/**
 	 * Widget matches placeholder in a template
 	 */
-	const WIDGET_PLACE = 'http://automicrosite.maesalu.com/#widgetPlace';
+	const WIDGET_PLACE = 'http://deepweb.ut.ee/#widgetPlace';
 
-	const TEMPLATE_MIN_HEIGHT = 'http://automicrosite.maesalu.com/TemplatePlaceholder#min-height';
+	const TEMPLATE_MIN_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#min-height';
 
-	const TEMPLATE_MAX_HEIGHT = 'http://automicrosite.maesalu.com/TemplatePlaceholder#max-height';
+	const TEMPLATE_MAX_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#max-height';
 
-	const TEMPLATE_MIN_WIDTH = 'http://automicrosite.maesalu.com/TemplatePlaceholder#min-width';
+	const TEMPLATE_MIN_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#min-width';
 
-	const TEMPLATE_MAX_WIDTH = 'http://automicrosite.maesalu.com/TemplatePlaceholder#max-width';
+	const TEMPLATE_MAX_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#max-width';
 
 	/**
 	 * Whether template allows multiple widgets
 	 */
-	const TEMPLATE_MULTIPLE = 'http://automicrosite.maesalu.com/TemplatePlaceholder#multiple';
+	const TEMPLATE_MULTIPLE = 'http://deepweb.ut.ee/TemplatePlaceholder#multiple';
 
 	/**
 	 * Template allows category in a placeholder
 	 */
-	const PLACE_CATEGORY = 'http://automicrosite.maesalu.com/TemplatePlaceholder#category';
+	const PLACE_CATEGORY = 'http://deepweb.ut.ee/TemplatePlaceholder#category';
 
 	/**
 	 * Get template dimensions relation based on variable name

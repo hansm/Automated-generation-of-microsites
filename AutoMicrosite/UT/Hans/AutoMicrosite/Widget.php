@@ -72,6 +72,13 @@ class Widget implements RuleGeneratorWidget {
 	public $separatePage;
 
 	/**
+	 * Line number of widget in mashup when multiple widgets are allowed in the placeholder
+	 *
+	 * @var int
+	 */
+	public $line;
+
+	/**
 	 * Whether widget contains user interface
 	 *
 	 * @var boolean
@@ -134,6 +141,7 @@ class Widget implements RuleGeneratorWidget {
 		$this->priority = $widget->getPriority();
 		$this->isDataWidget = $widget->isDataWidget();
 		$this->separatePage = $widget->separatePage();
+		$this->line = $widget->getLineNumber();
 	}
 
 	/**

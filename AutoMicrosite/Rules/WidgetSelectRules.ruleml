@@ -8,7 +8,7 @@
 		<Implies>
 			<if>
 				<Atom>
-					<Rel iri="http://automicrosite.maesalu.com/DataType" />
+					<Rel iri="http://deepweb.ut.ee/DataType" />
 					<slot><Ind>data</Ind><Var>dataType</Var></slot>
 				</Atom>
 			</if>

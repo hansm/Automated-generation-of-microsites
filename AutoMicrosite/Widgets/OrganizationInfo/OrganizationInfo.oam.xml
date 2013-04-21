@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="OrganizationInfoWidget" id="AutoMicrosite/OrganizationInfoWidget"
 		spec="1.0" width="640" height="480" jsClass="AutoMicrosite.Widget.OrganizationInfo"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 		x:min-width="100" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
@@ -76,7 +76,7 @@
 		<property name="telephone" datatype="string" required="true" urlparam="http://schema.org/telephone" /><!-- phoneNumber -->
 		<property name="email" datatype="string" required="true" urlparam="http://schema.org/email" /><!-- emailAddress -->
 		<property name="employees" datatype="string" required="true" urlparam="http://schema.org/employees" /><!-- numberOfEmployees.upperBound -->
-		<property name="annualTurnover" datatype="string" required="true" urlparam="http://automicrosite.maesalu.com/annualTurnover" /><!-- annualTurnover.upperBound -->
+		<property name="annualTurnover" datatype="string" required="true" urlparam="http://deepweb.ut.ee/annualTurnover" /><!-- annualTurnover.upperBound -->
 		<property name="foundingDate" datatype="string" required="true" urlparam="http://schema.org/foundingDate" /><!-- registrationDate -->
 		<property name="description" datatype="string" required="true" urlparam="http://schema.org/description" /><!-- organizationDescription -->
 	</topic>

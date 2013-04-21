@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="BusinessRegisterQueryWidget" id="AutoMicrosite/BusinessRegisterQueryWidget"
 		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.BusinessRegisterQuery"
-		xmlns:x="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 		sandbox="true">
 
@@ -29,7 +29,7 @@
 	<property name="name" datatype="string" urlparam="http://schema.org/Organization#name" required="true" defaultValue="EVETERM OÜ"/>
 
 	<categories>
-		<category x:iri="http://automicrosite.maesalu.com/Dataset" />
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>
 
 </widget>
