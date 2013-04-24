@@ -181,6 +181,14 @@
         <rdfs:subClassOf rdf:resource="&schema;WebPageElement"/>
         <rdfs:comment>Chart illustrations on a web site.</rdfs:comment>
     </owl:Class>
+
+
+    <!-- http://deepweb.ut.ee/AutoMenu -->
+
+    <owl:Class rdf:about="&deepweb;AutoMenu">
+        <rdfs:subClassOf rdf:resource="&schema;SiteNavigationElement"/>
+        <rdfs:comment>Menu element that auto microsite application is able to populate.</rdfs:comment>
+    </owl:Class>
 	
 </rdf:RDF>
 
