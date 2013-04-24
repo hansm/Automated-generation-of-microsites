@@ -161,9 +161,9 @@
 				</Atom>
 			</then>
 		</Implies>
-		
+
 		<!-- Different types of charts are all charts -->
-		
+
 		<Implies>
 			<if>
 				<Atom>
@@ -243,6 +243,73 @@
 					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/Datasets</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- temporary -->
+
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/LineChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/LineChart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/BarChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/BarChart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/PieChart</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/PieChart</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://automicrosite.maesalu.com/Form</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/Form</Ind></slot>
 				</Atom>
 			</then>
 		</Implies>

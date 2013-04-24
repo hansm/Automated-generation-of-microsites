@@ -25,7 +25,7 @@ AutoMicrosite.Widget.Table.prototype = {
 	onLoad: function() {
 		this.widgetId = this.OpenAjax.getId();
 		var thisWidget = this;
-		
+
 		this.table = document.getElementById(this.widgetId +"table");
 		this.drawTable();
 
@@ -51,12 +51,12 @@ AutoMicrosite.Widget.Table.prototype = {
 		var row, column, value;
 		for (var i = 1; i < this.tableData.length; i++) {
 			row = [];
-			
+
 			for (var j = 0; j < this.tableData[i].length; j++) {
 				row.push((this.tableData[i][j] == "undefined" || this.tableData[i][j] == null)
 					? "-" : this.tableData[i][j]);
 			}
-			
+
 			data.tbody.push(row);
 		}
 
@@ -94,8 +94,8 @@ AutoMicrosite.Widget.Table.prototype = {
 
 		// TODO: check table height and possible paginate
 		// TODO: request parent width / height change
-		console.log(this.OpenAjax.getDimensions());
-		console.log(this.table.offsetHeight);
+		//console.log(this.OpenAjax.getDimensions());
+		//console.log(this.table.offsetHeight);
 		this.table.parentNode.style.height = "100%";//this.OpenAjax.getDimensions().height +"px";
 		//this.table.parentNode.style.width = this.OpenAjax.getDimensions().width +"px";
 	},

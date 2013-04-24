@@ -24,6 +24,11 @@ class Relation {
 	const WIDGET_IS_DATA = 'http://deepweb.ut.ee/#isDataWidget';
 
 	/**
+	 * Widget is menu widget
+	 */
+	const WIDGET_IS_MENU = 'http://deepweb.ut.ee/#isMenuWidget';
+
+	/**
 	 * Widget priority value (priority2 because it has default value)
 	 */
 	const WIDGET_PRIORITY = 'http://deepweb.ut.ee/#priority2';

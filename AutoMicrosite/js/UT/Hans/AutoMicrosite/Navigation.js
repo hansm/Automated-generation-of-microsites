@@ -31,6 +31,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Build navigation
 		 */
 		build: function() {
+			console.log("Building navigation");
 			var menuWidget = this.getMenuWidget();
 			if (!menuWidget) return;
 
@@ -41,15 +42,19 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				widget = this.widgets[i];
 				if (!widget.separatePage) continue;
 
+				// Disable widget
 				widget.enabled = false;
 				domStyle.set(widget.div, {
 					display: "none"
 				});
 
-				menuItems = menuWidget.OpenAjax.getPropertyValue("buttons");
+				// Add to menu
+				menuItems = menuWidget.openAjax.OpenAjax.getPropertyValue("buttons");
 				if (!menuItems) {
+					var titleElement = document.getElementsByTagName('title')[0];
 					menuItems = [{
-						label: "Main", // TODO: use the title of the mashup
+						label: (titleElement && titleElement.innerHTML ?
+									titleElement.innerHTML : 'Home'),
 						href: {widget: null, placeholder: widget.placeholder}
 					}];
 				}
@@ -59,7 +64,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 					href: {widget: widget.id, placeholder: widget.placeholder}
 				});
 
-				menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
+				menuWidget.openAjax.OpenAjax.setPropertyValue("buttons", menuItems);
 			}
 
 			// TODO: if all widgets in a placeholder are "separatePage" then show the first one
@@ -69,9 +74,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Get menu widget
 		 */
 		getMenuWidget: function() {
-			// TODO: this info should probably come from server side, in case menu is used
 			for (var i = 0; i < this.widgets.length; i++) {
-				if (this.widgets[i].divMenu) { // TODO: REALLY-really-really bad way to find menu
+				if (this.widgets[i].isMenuWidget) {
 					return this.widgets[i];
 				}
 			}

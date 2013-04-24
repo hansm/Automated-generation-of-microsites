@@ -35,13 +35,23 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}, document.body);
 		},
 
+		/**
+		 * Show curtain
+		 */
 		enable: function() {
-			this.div.style.display = "block";
+			domStyle.set(this.div, {
+				display: "block"
+			});
 		},
 
+		/**
+		 * Hide curtain
+		 */
 		disable: function() {
-			this.div.style.display = "none";
+			domStyle.set(this.div, {
+				display: "none"
+			});
 		}
-		
+
 	});
 });

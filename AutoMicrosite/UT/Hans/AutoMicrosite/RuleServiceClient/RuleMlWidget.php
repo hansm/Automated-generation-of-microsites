@@ -25,7 +25,7 @@ class RuleMlWidget implements IWidget {
 	 *
 	 * @var string[]
 	 */
-	private $booleanVars = array('isDataWidget', 'separatePage');
+	private $booleanVars = array('isDataWidget', 'separatePage', 'isMenuWidget');
 
 	public function __construct($response) {
 		$variables = RuleMlService::getResponseVarNodes($response);
@@ -69,6 +69,10 @@ class RuleMlWidget implements IWidget {
 
 	public function isDataWidget() {
 		return $this->getValue('isDataWidget');
+	}
+
+	public function isMenuWidget() {
+		return $this->getValue('isMenuWidget');
 	}
 
 	public function separatePage() {

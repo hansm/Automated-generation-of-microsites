@@ -3,6 +3,9 @@
 	xmlns="http://ruleml.org/spec"
 	xmlns:oa="http://openajax.org/metadata"
 	xmlns:oax="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
+
+	xmlns:oaxx="http://automicrosite.maesalu.com/OpenAjaxMetadataExtension"
+
 	version="1.0">
 
 	<xsl:param name="widget" select="999" />
@@ -15,7 +18,12 @@
 					<Atom>
 						<Rel>http://openajax.org/metadata#category</Rel>
 						<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
-						<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
+						<xsl:if test="@oax:iri">
+							<slot><Ind>category</Ind><Ind><xsl:value-of select="@oax:iri" /></Ind></slot>
+						</xsl:if>
+						<xsl:if test="@oaxx:iri">
+							<slot><Ind>category</Ind><Ind><xsl:value-of select="@oaxx:iri" /></Ind></slot>
+						</xsl:if>
 					</Atom>
 				</xsl:for-each>
 

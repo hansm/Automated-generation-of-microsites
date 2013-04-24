@@ -34,13 +34,14 @@
 		<div id="__WID__menu"></div>
 		]]>
     </content>
-    
+
 	<categories>
 		<category x:iri="http://schema.org/SiteNavigationElement" />
+		<category x:iri="http://deepweb.ut.ee/AutoMenu" />
     </categories>
 
 	<property name="buttons" datatype="Array" />
 
 	<topic name="AutoMicrosite.MenuClick" type="String" publish="true" />
-	
+
 </widget>

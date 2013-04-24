@@ -5,6 +5,7 @@
 			<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 			<slot><Ind>template</Ind><Ind>{$template}</Ind></slot>
 			<slot><Ind>isDataWidget</Ind><Var>isDataWidget</Var></slot>
+			<slot><Ind>isMenuWidget</Ind><Var>isMenuWidget</Var></slot>
 			<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
 		</Atom>

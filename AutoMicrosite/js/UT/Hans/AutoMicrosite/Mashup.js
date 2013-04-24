@@ -80,12 +80,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
 		constructor: function(divMashupId, widgetData, templateData) {
-			console.log("Mashup.constructor");
-			console.log("widgetData");
-			console.log(widgetData);
-			console.log("templateData");
-			console.log(templateData);
-
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetData = widgetData;
 			this.templateData = templateData;
@@ -107,8 +101,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				return;
 			}
 
+			// Curtain handler
 			this.curtain = new Curtain();
-			this.curtain.enable();
 
 			// Load widgets
 			this.size = null;
@@ -118,9 +112,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.loader = new Loader(
 				this.openAjaxLoader,
 				this.widgetData,
-				this.placeholders,
-				this.visualWidgetsLoaded.bind(this),
-				this.allWidgetsLoaded.bind(this)
+				this.placeholders
 			);
 		},
 
@@ -128,8 +120,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Load all widgets into mashup
 		 */
 		start: function() {
+			this.curtain.enable();
 			try {
-				this.loader.load();
+				this.loader.load(
+					this.visualWidgetsLoaded.bind(this),
+					this.allWidgetsLoaded.bind(this)
+				);
 			} catch (e) {
 				this.handleError(e);
 			}
@@ -143,8 +139,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
-			console.log("PUBLISH " + topic);
-			console.log(data);
 			// Listen on the MenuClick topic to track clicking on menu items
 			if (topic == "AutoMicrosite.MenuClick") {
 				this.loader.menuClick(data, this.size);
@@ -172,11 +166,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Actions to perform once visual widgets have finished loading
 		 */
 		visualWidgetsLoaded: function(visualWidgets, dataWidgets) {
-			this.size = new SizeHandler(this.widgetData, this.placeholders, visualWidgets);
 			this.navigation = new Navigation(visualWidgets, this.size);
 			this.navigation.build();
+			this.size = new SizeHandler(visualWidgets, this.placeholders);
 			this.size.run();
 
+			// Re-calculate sizes when page is resized
 			window.onresize = function() {
 				this.size.run();
 			}.bind(this);

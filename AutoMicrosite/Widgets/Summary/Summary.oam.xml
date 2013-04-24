@@ -4,7 +4,7 @@
 		x:min-width="640" x:max-width="2000"
 		xmlns="http://openajax.org/metadata"
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
-			
+
 	<require type="javascript" src="Summary.js"></require>
 
     <content>
@@ -27,7 +27,7 @@
 		<div id="__WID__content">summary</div>
 		]]>
     </content>
-    
+
 	<categories>
 		<category x:iri="http://schema.org/WPFooter" />
     </categories>
@@ -47,5 +47,5 @@
 			</property>
 		</property>
 	</topic>
-	
+
 </widget>

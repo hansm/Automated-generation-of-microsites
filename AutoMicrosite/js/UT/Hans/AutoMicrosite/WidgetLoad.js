@@ -3,7 +3,6 @@
  *
  * @author Hans
  */
-// TODO: load visual first and only then add data widgets. so far show "Loading..." message (probably overlay would be a good idea)
 define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		, "dojo/window", "dojo/on", "dojo/query"
 		, "dojo/NodeList-traverse", "dojo/dom-attr"]
@@ -53,14 +52,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		visualWidgetsLoadedObjects: [],
 		dataWidgetsLoadedObjects: [],
 
-		constructor: function(openAjaxLoader, widgetData, placeholders, visualDone, allDone) {
-			console.log("WidgetLoader.constructor");
-
+		constructor: function(openAjaxLoader, widgetData, placeholders) {
 			this.loader = openAjaxLoader;
 			this.data = widgetData;
 			this.placeholders = placeholders;
-			this.visualDoneCallback = visualDone;
-			this.allDoneCallback = allDone;
 
 			// Reorder widgets in priority order
 			this.data.sort(function(a, b) {
@@ -71,8 +66,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * Start loading widgets
 		 */
-		load: function() {
-			console.log("WidgetLoad.load");
+		load: function(visualDone, allDone) {
+			this.visualDoneCallback = visualDone;
+			this.allDoneCallback = allDone;
 
 			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
@@ -88,7 +84,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 
             // TODO: transformer should probably be loaded first, but should still
             //       be in an OpenAjax metadata file
-            this.attachTransformer(); // TODO: remove
+            //this.attachTransformer(); // TODO: remove
 
             this.loadVisualWidgets();
 		},
@@ -101,6 +97,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.visualDone();
 				return;
 			}
+
             for (i in this.visualWidgets) {
 				this.loadVisualWidget(this.visualWidgets[i]);
 			}
@@ -123,8 +120,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		attachTransformer: function() {
 			var transformerWidgetUrl = "http://automicrosite.maesalu.com:8833/TransformerWidget.html";
 			var tunnelUrl = window.location.href.replace(/\/[^\/]*$/, '') + "/js/tunnel.html";
-			console.log("+++++++++++++++++++++++++++++++++++++++++");
-			console.log(tunnelUrl);
+
 			var div = domConstruct.create("div", {
 				id: "transformerWidget"
 			}, document.body);
@@ -200,19 +196,27 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				id: this.WIDGET_ELEMENT_ID_PREFIX + "_" + widget.id
 			}, this.getPlaceholderElement(widget.placeholder));
 
+			// Hide data widgets
+			if (widget.isDataWidget) {
+				domStyle.set(widget.div, "display", "none");
+			} else {
+				domStyle.set(widget.div, "overflow", "auto");
+			}
+
 			var thisLoader = this.loader;
 
 			thisLoader.hub.subscribe("ee.stacc.transformer.mapping.add.raw", function() {}); // TODO: remove, only needed so 'onPublish' would be called when no subscribers
 
 			// Load widget
 			this.loader.create({
-				spec:		widget.metadataFile + (AM_DEBUG ? "?v="+ Math.random() : ""),
+				spec:		widget.metadataFile,
 				target:		widget.div,
 				properties: (widget.properties ? widget.properties : {}),
 				onComplete: function(widgetObject) {
-					console.log("Widget loaded: "+ widget.id);
+					//console.log("Widget loaded: "+ widget.id);
 
 					widgetObject.widgetId2 = widget.id;
+					widgetObject.autoMicrositeData = widget;
 					callback(widgetObject);
 
 					thisLoader.hub.publish("ee.stacc.transformer.mapping.add.raw",
@@ -245,11 +249,11 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		visualDone: function() {
 			console.log("WidgetLoad.visualDone");
-			this.buildNavigation();
+			//this.buildNavigation();
 
 			if (typeof this.visualDone == "function") {
-				this.visualDoneCallback(this.visualWidgetsLoadedObjects
-					, this.dataWidgetsLoadedObjects);
+				this.visualDoneCallback(this.visualWidgets
+					, this.dataWidgets);
 			}
 
 			this.loadDataWidgets();
@@ -296,8 +300,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		menuClick: function(widgetInfo, size) {
-			console.log("loader 123");
-			console.log("opening widget "+ widgetInfo);
+			console.log("WidgetLoad.menuClick "+ widgetInfo);
 			var widgetId = widgetInfo.widget;
 			var placeholderWidgets = this.getWidgetsInPlaceholder(widgetInfo.placeholder);
 			this.forEach(placeholderWidgets, function(w) {
@@ -318,6 +321,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * All widgets finished loading
 		 */
 		done: function() {
+			console.log("WidgetLoad.done");
 			if (typeof this.allDoneCallback == "function") {
 				this.allDoneCallback(this.visualWidgetsLoadedObjects
 					, this.dataWidgetsLoadedObjects);

@@ -45,7 +45,7 @@ class Widget implements RuleGeneratorWidget {
 	 * @var string
 	 */
 	public $width;
-	public $minWidth;
+	public $minWidth = 100;
 	public $maxWidth;
 
 	/**
@@ -54,7 +54,7 @@ class Widget implements RuleGeneratorWidget {
 	 * @var string
 	 */
 	public $height;
-	public $minHeight;
+	public $minHeight = 100;
 	public $maxHeight;
 
 	/**
@@ -91,6 +91,13 @@ class Widget implements RuleGeneratorWidget {
 	 * @var boolean
 	 */
 	public $isDataWidget;
+
+	/**
+	 * Whether it is a menu widget that auto microsite can populate
+	 *
+	 * @var boolean´
+	 */
+	public $isMenuWidget;
 
 	/**
 	 * Mapings generated for semantic integration widget
@@ -140,6 +147,7 @@ class Widget implements RuleGeneratorWidget {
 		$this->placeholder = $widget->getPlaceholder();
 		$this->priority = $widget->getPriority();
 		$this->isDataWidget = $widget->isDataWidget();
+		$this->isMenuWidget = $widget->isMenuWidget();
 		$this->separatePage = $widget->separatePage();
 		$this->line = $widget->getLineNumber();
 	}

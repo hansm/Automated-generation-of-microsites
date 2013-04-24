@@ -21,20 +21,13 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		placeholders: [],
 
 		/**
-		 * Visual widgets' OpenAjax widget objects
-		 */
-		visualWidgets: [],
-
-		/**
 		 * Constructor method
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
-		constructor: function(widgetData, placeholders, visualWidgets) {
-            console.log("Size.constructor");
+		constructor: function(widgetData, placeholders) {
 			this.data = widgetData;
 			this.placeholders = placeholders;
-			this.visualWidgets = visualWidgets;
 		},
 
 		/**
@@ -49,10 +42,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
         /**
          * Get all widgets in placeholder
          */
-		getWidgetsInPlaceholder: function(placeholder) {
+		getWidgetsInPlaceholder: function(placeholder, onlyEnabled) {
 			var widgets = [];
 			for (var i = 0; i < this.data.length; i++) {
-				if (this.data[i].placeholder == placeholder) {
+				if ((!onlyEnabled || this.data[i].enabled) && this.data[i].placeholder == placeholder) {
 					widgets.push(this.data[i]);
 				}
 			}
@@ -72,92 +65,53 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		processPlaceholder: function(placeholder) {
 			//return ;
 			var placeholderId = placeholder.getAttribute("itemid");
+			var widgets = this.getWidgetsInPlaceholder(placeholderId, true);
 
-			var widgets = 0;
-			var row;
-			for (var i in this.data) {
-				row = this.data[i];
-				if (row.placeholder != placeholderId) continue;
-
-				// Find widget manager element
-				console.log(row);
-				var widgetManager = row.openAjax;
-
-				// TODO: some fancier logic, so it would be possible to have several widgets on the same page
-				if (widgets === 0) {
-					showWidget = widgetManager;
-				}
-				//widgetManager.OpenAjax._rootElement.style.display = "none";
-
-				if (row.enabled) {
-					this.calculateWidgetDimensions(row);
-				}
-				widgets++;
+			if (widgets.length == 0) {
+				return;
 			}
-		/*
-			if (showWidget) {
-				showWidget.OpenAjax._rootElement.style.display = "block";
-				this.calculateWidgetDimensions(showWidget);
-			}*/
- /*
-			if (widgets > 1) {
-				var menuWidget = this.getMenuWidget();
-				if (menuWidget) {
-					log("processPlaceholder", "Writing buttons property.");
-					this.getMenuWidget().OpenAjax.setPropertyValue("buttons", menuItems);
-				}
-			}*/
+
+			// Find placeholder actual dimensions
+			this.forEach(widgets, function(w) {
+				domStyle.set(w.div, {
+					display: "none"
+				});
+			});
+			var dimensions = domGeom.getContentBox(widgets[0].div.parentNode);
+			var placeholderDimensions = {
+				width: dimensions.w,
+				height: dimensions.h
+			};
+			console.log(placeholderDimensions);
+
+			this.forEach(widgets, function(w) {
+				domStyle.set(w.div, {
+					display: "block"
+				});
+			});
+
+			for (var i = 0; i < widgets.length; i++) {
+				this.setWidgetDimensions(widgets[i], placeholderDimensions);
+			}
 		},
 
+		setWidgetDimensions: function(widget, dimensions) {
+			var placeholderWidgets = this.getWidgetsInPlaceholder(widget.placeholder, true);
 
+			var widgetDimensions = {
+				width: dimensions.width,
+				height: dimensions.height
+			};
 
-		calculateWidgetDimensions: function(widget) {
-			var widgetManager = widget.openAjax;
-			console.log("calculateWidgetDimensions");
-			console.log(widgetManager);
-			//widgetManager.OpenAjax._rootElement.style.width = win.getBox().w +"px";
+			if (placeholderWidgets.length > 1) {
+				widget.div.style.cssFloat = "left";
+				widgetDimensions.width = widgetDimensions.width / placeholderWidgets.length;
+			}
 
-			var placeholderWidgets = this.getWidgetsInPlaceholder(widget.placeholder);
-			this.forEach(placeholderWidgets, function(w) {
-				w.div.style.display = "none";
-			});
-
-			var widgetRootElement = query.NodeList();
-			widgetRootElement.push(widgetManager.OpenAjax._rootElement);
-			//widgetManager.OpenAjax._rootElement.style.display = "none";
-			console.log(widgetRootElement.parent()[0]);
-			var placeholderDimensions = domGeom.getContentBox(widgetRootElement.parent()[0]);
-			//widgetManager.OpenAjax._rootElement.style.display = "block";
-console.log(placeholderDimensions);
-
-			this.forEach(placeholderWidgets, function(w) {
-				if (w.enabled) {
-					w.div.style.display = "block";
-				}
-			});
+			// TODO: consider actual and allowed dimensions when fitting
 
 			// TODO: shouldn't it be 'requestSizeChange'?
-			widgetManager.OpenAjax.adjustDimensions({
-				width: placeholderDimensions.w,
-				height: placeholderDimensions.h
-			});
-
-			//console.log(placeholderDimensions);
-			//console.log(widgetManager.OpenAjax.getDimensions());
-			//console.log(widgetManager.OpenAjax.getAvailableDimensions());
-		},
-
-		getMenuWidget: function() {
-			// TODO: this info should probably come from server side, in case menu is used
-			for (var i = 0; i < this.visualWidgets.length; i++) {
-				if (this.visualWidgets[i].divMenu) { // TODO: really-really bad way to find menu
-					return this.visualWidgets[i];
-				}
-			}
-		},
-
-		menuClick: function(widgetId) {
-			console.log("opening widget "+ widgetId);
+			widget.openAjax.OpenAjax.adjustDimensions(widgetDimensions);
 		}
 
 	});

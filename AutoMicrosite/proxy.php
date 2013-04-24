@@ -3,16 +3,16 @@
 
         Copyright 2006-2008 OpenAjax Alliance
 
-        Licensed under the Apache License, Version 2.0 (the "License"); 
-        you may not use this file except in compliance with the License. 
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
-        
+
                 http://www.apache.org/licenses/LICENSE-2.0
 
-        Unless required by applicable law or agreed to in writing, software 
-        distributed under the License is distributed on an "AS IS" BASIS, 
-        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-        See the License for the specific language governing permissions and 
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
         limitations under the License.
 */
 
@@ -24,6 +24,7 @@ function isValidURL($url)
 	/* From http://stackoverflow.com/questions/161738/what-is-the-best-regular-expression-to-check-if-a-string-is-a-valid-url#161749,
 		Creative Commons license: http://creativecommons.org/licenses/by-sa/3.0/  */
 
+	return true;
 	return preg_match('/^(https?):\/\/(?#											protocol
 						)(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+(?#         username
 						)(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?(?#      password
@@ -49,7 +50,7 @@ if ( isset( $_GET['oawu'] ) ) {
 		echo 'invalid url: '.$url;
 		exit();
 	}
-    
+
     // GET request
     if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
 		//var_dump('GET');
@@ -61,7 +62,7 @@ if ( isset( $_GET['oawu'] ) ) {
         }
         echo $contents;
     }
-    
+
     // POST request
     else if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		//var_dump('POST');

@@ -1,6 +1,6 @@
 /**
  * Map widget JavaScript
- * 
+ *
  * @author Hans
  */
 
@@ -19,8 +19,8 @@ AutoMicrosite.Widget.Map = function() {
 	this.matrix = [];
 	this.columns = [];
 	this.map = null;
-	
-	
+
+
 	this.columnNames = {};
 	this.data = [];
 	this.dataTable = null;
@@ -44,7 +44,7 @@ AutoMicrosite.Widget.Map.prototype = {
 				thisWidget.mapLoaded();
 			}
 		});
-	
+
 		this.OpenAjax.hub.subscribe("AutoMicrosite.Topic.Map.Data", function(topic, receivedData) {
 			thisWidget.data = receivedData;
 			thisWidget.processData(thisWidget.data);
@@ -54,24 +54,24 @@ AutoMicrosite.Widget.Map.prototype = {
 			}
 			thisWidget.drawMenu();
 		});
-	
+
 		//setInterval(function() { thisWidget.drawMap(); }, 1000);
 
 		this.drawMenu();
 	},
-	
+
 	/**
 	 * Widget dimensions change
 	 * @param object e
 	 */
 	onSizeChanged: function(e) {
-		console.log("Map.onSizeChanged");
+		//console.log("Map.onSizeChanged");
 		this.drawMap();
 	},
-	
+
 	/**
 	 * Process data into more acceptable format
-	 * 
+	 *
 	 * @param array data
 	 */
 	processData: function(data) {
@@ -87,7 +87,7 @@ AutoMicrosite.Widget.Map.prototype = {
 			}
 		}
 		columns.sort();
-		
+
 		// Create full data matrix
 		var m = [];
 		var val, k;
@@ -115,7 +115,7 @@ AutoMicrosite.Widget.Map.prototype = {
 	mapLoaded: function() {
 		var thisWidget = this;
 		this.map = new google.visualization.GeoChart(document.getElementById(this.widgetId +"map"));
-			
+
 		this.drawMap();
 		google.visualization.events.addListener(this.map, "select", function() {
 			try {
@@ -142,7 +142,7 @@ AutoMicrosite.Widget.Map.prototype = {
 		var columnName = this.columns[columnNumber];
 
 		var widgetDimensions = this.OpenAjax.getDimensions();
-		console.log(widgetDimensions);
+		//console.log(widgetDimensions);
 		var options = {
 			width: widgetDimensions.width, height: widgetDimensions.height,
 			enableRegionInteractivity: true,
@@ -152,7 +152,7 @@ AutoMicrosite.Widget.Map.prototype = {
 		this.dataTable = new google.visualization.DataTable();
 		this.dataTable.addColumn("string", "Country");
 		this.dataTable.addColumn("number", "Salary");
-		
+
 		var dataRow, matrixRow;
 		for (var i in this.data) {
 			dataRow = this.data[i];
@@ -166,9 +166,9 @@ AutoMicrosite.Widget.Map.prototype = {
 			console.log("Map error: "+ e);
 		}
 	},
-	
+
 	mapClick: function(id) {
-		console.log("Showing: "+ id);
+		//console.log("Showing: "+ id);
 		this.showBubble();
 
 		for (var i in this.data) {
@@ -177,7 +177,7 @@ AutoMicrosite.Widget.Map.prototype = {
 			}
 		}
 	},
-	
+
 	/**
 	 * Show bubble with country info
 	 */
@@ -192,15 +192,15 @@ AutoMicrosite.Widget.Map.prototype = {
 
 		// TODO: closing
 	},
-	
+
 	bubbleText: function(data) {
 		if (this.divBubble == null) {
 			return;
 		}
-		
+
 		var thisWidget = this;
 		this.divBubble.innerHTML = "";
-		
+
 		// close button
 		var aClose = document.createElement("a");
 		aClose.href = "#close";
@@ -214,14 +214,14 @@ AutoMicrosite.Widget.Map.prototype = {
 			return false;
 		};
 		this.divBubble.appendChild(aClose);
-		
+
 		// data
 		var p;
 		p = document.createElement("div");
 		p.style.fontWeight = "bold";
 		p.appendChild(document.createTextNode(data.country));
 		this.divBubble.appendChild(p);
-			
+
 		for (var i in data.values) {
 			p = document.createElement("div");
 			p.appendChild(
@@ -254,7 +254,7 @@ AutoMicrosite.Widget.Map.prototype = {
 			a.href = "#"+ this.columns[i];
 			a.columnNumber = i;
 			a.onclick = function() {
-				console.log("Loading year "+ thisWidget.columns[this.columnNumber]);
+				//console.log("Loading year "+ thisWidget.columns[this.columnNumber]);
 				thisWidget.drawMap(this.columnNumber);
 				return false;
 			};

@@ -35,6 +35,13 @@ interface IWidget {
 	public function isDataWidget();
 
 	/**
+	 * Whether it is a menu widget that auto microsite can populate
+	 *
+	 * @return boolean
+	 */
+	public function isMenuWidget();
+
+	/**
 	 * Whether the widget needs a separate page
 	 *
 	 * @return boolean
@@ -47,7 +54,7 @@ interface IWidget {
 	 * @return int
 	 */
 	public function getLineNumber();
-	
+
 	public function getMaxWidth();
 
 	public function getMinWidth();

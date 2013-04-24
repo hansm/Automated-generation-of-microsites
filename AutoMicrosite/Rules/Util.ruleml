@@ -89,6 +89,48 @@
 			</then>
 		</Implies>
 
+		<!-- Check whether the widget is a menu widget -->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/AutoMenu</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/#isMenuWidget</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>true</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/#isMenuWidget</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>value</Ind><Ind>true</Ind></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/#isMenuWidget</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>false</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
 		<!-- Whether widget has to be on a separate page -->
 		<Implies>
 			<if>
@@ -131,6 +173,11 @@
 						<slot><Ind>value</Ind><Var>isDataWidget</Var></slot>
 					</Atom>
 					<Atom>
+						<Rel>http://deepweb.ut.ee/#isMenuWidget</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Var>isMenuWidget</Var></slot>
+					</Atom>
+					<Atom>
 						<Rel>http://deepweb.ut.ee/#priority2</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>priority</Ind><Var>priority</Var></slot>
@@ -149,6 +196,7 @@
 					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
 					<slot><Ind>isDataWidget</Ind><Var>isDataWidget</Var></slot>
+					<slot><Ind>isMenuWidget</Ind><Var>isMenuWidget</Var></slot>
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 					<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
 				</Atom>
@@ -242,7 +290,7 @@
 		<Implies>
 			<if>
 				<And>
-					
+
 					<Atom>
 						<Rel>http://deepweb.ut.ee/#template</Rel>
 						<slot><Ind>template</Ind><Var>template</Var></slot>
