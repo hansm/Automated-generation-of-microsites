@@ -25,6 +25,13 @@ class CurlConnection {
 	private $options = array();
 
 	/**
+	 * Log handler
+	 *
+	 * @var \UT\Hans\AutoMicrosite\Util\Log
+	 */
+	private $log;
+
+	/**
 	 * Set URL value
 	 *
 	 * @param string $url
@@ -44,9 +51,11 @@ class CurlConnection {
 
 	/**
 	 * @param string $url
+	 * @param \UT\Hans\AutoMicrosite\Util\Log $log
 	 */
-	public function __construct($url) {
+	public function __construct($url, Log $log = null) {
 		$this->url = $url;
+		$this->log = empty($log) ? new Log('curl_exec') : $log;
 	}
 
 	/**
@@ -98,11 +107,24 @@ class CurlConnection {
 	private function exec(array $options) {
 		$options += $this->options;
 
-		$log = new Log('curl_exec');
-		$log->info("REQUEST:\n". $this->url .' ('. \implode('; ', $options) .')');
+		if (isset($options[CURLOPT_CUSTOMREQUEST])) {
+			$action = $options[CURLOPT_CUSTOMREQUEST];
+		} elseif (isset($options[CURLOPT_POST]) && $options[CURLOPT_POST]) {
+			$action = 'POST';
+		} else {
+			$action = 'GET';
+		}
+		$this->log->info("REQUEST:\n"
+			. $action . ' '
+			. $this->url . "\n"
+			. (isset($options[CURLOPT_HTTPHEADER]) ? implode("\n", $options[CURLOPT_HTTPHEADER]) . "\n\n" : '')
+			. (isset($options[CURLOPT_POSTFIELDS]) ? $options[CURLOPT_POSTFIELDS] : '')
+			. "\n");
 
 		// Data is in UTF-8 encoding and JSON
-		$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
+		if (!isset($options[CURLOPT_HTTPHEADER])) {
+			$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
+		}
 
 		$ch = \curl_init($this->url);
 		foreach ($options as $optionName => $optionValue) {
@@ -110,7 +132,7 @@ class CurlConnection {
 		}
 
 		$return = \curl_exec($ch);
-		$log->info("RESPONSE:\n". $this->url ."\n". $return);
+		$this->log->info("RESPONSE:\n". $this->url ."\n". $return . "\n\n");
 
 		if ($return === false) {
 			throw new ErrorException('Curl exception: '. \curl_error($ch));
