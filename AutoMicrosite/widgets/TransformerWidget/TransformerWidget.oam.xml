@@ -4,12 +4,13 @@
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
 		sandbox="true"
+		jsClass="AutoMicrosite.Widget.Transformer"
 	>
 
-	<content><![CDATA[ ]]></content>
+	<content x:iri="http://automicrosite.maesalu.com:8833/TransformerWidget.html" />
 
 	<categories>
-		<category x:iri="http://deepweb.ut.ee/Datasets" />
+		<category x:iri="http://deepweb.ut.ee/Transformer" />
     </categories>
 
 </widget>

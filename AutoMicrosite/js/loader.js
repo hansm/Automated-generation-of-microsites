@@ -2,16 +2,16 @@
 
         Copyright 2006-2009 OpenAjax Alliance
 
-        Licensed under the Apache License, Version 2.0 (the "License"); 
-        you may not use this file except in compliance with the License. 
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
-        
+
                 http://www.apache.org/licenses/LICENSE-2.0
 
-        Unless required by applicable law or agreed to in writing, software 
-        distributed under the License is distributed on an "AS IS" BASIS, 
-        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-        See the License for the specific language governing permissions and 
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
         limitations under the License.
 */
 
@@ -50,10 +50,10 @@ if ( ! OpenAjax.widget ) {
 /**
  * @class
  * <p> Widget loader. </p>
- * 
+ *
  * @description
  * Creates a new Loader instance.
- * 
+ *
  * @param {Object} args
  *     Parameters used to instantiate the Loader.  This object may contain the
  *     following properties:
@@ -66,24 +66,24 @@ OpenAjax.widget.Loader = function( args )
     var onpub = args.ManagedHub.onPublish;
     var onunsub = args.ManagedHub.onUnsubscribe;
     var scope = args.scope || window;
-    
+
     function _onSubscribe( topic, container )
     {
         return onsub.apply( scope, arguments );
     }
-    
+
     function _onPublish( topic, data, pcont, scont )
     {
         return onpub.apply( scope, arguments );
     }
-    
+
     function _onUnsubscribe( topic, container )
     {
         if ( onunsub ) {
             return onunsub.apply( scope, arguments );
         }
     }
-    
+
     this.hub = new OpenAjax.hub.ManagedHub({
         onPublish: _onPublish,
         onSubscribe: _onSubscribe,
@@ -91,11 +91,11 @@ OpenAjax.widget.Loader = function( args )
         scope: scope,
         log: args.logs
     });
-    
+
     _hub = this.hub;
-    
+
     _metadataCache = {};
-    
+
     // Find location of OpenAjax Hub files, so that we can generate 'tunnel.html'
     // location.
     _tunnelURI = null;
@@ -122,13 +122,13 @@ OpenAjax.widget.Loader = function( args )
 						tunnelFileName = "tunnel.html";
 					}
                     if ( /openajax-mashup\.js/i.test( m[0] ) ) {
-                        _tunnelURI = hubRoot + "containers/iframe/rpc/" + tunnelFileName; 
+                        _tunnelURI = hubRoot + "containers/iframe/rpc/" + tunnelFileName;
                     } else {
                         _tunnelURI = hubRoot + tunnelFileName;
                     }
                 }
             }
-            
+
             if ( _loaderRoot === null ) {
                 if ( reLoader.test( src ) ) {
                     // make URL absolute
@@ -139,7 +139,7 @@ OpenAjax.widget.Loader = function( args )
             }
         }
     }
-    
+
     // parse oaaLoaderConfig object
     if ( typeof oaaLoaderConfig !== "undefined" ) {
         // Save proxy URL, if specified
@@ -152,7 +152,7 @@ OpenAjax.widget.Loader = function( args )
             }
         }
     }
-    
+
     _metadata_plurals = {
         authors: "author",
         categories: "category",
@@ -172,7 +172,7 @@ OpenAjax.widget.Loader = function( args )
 };
 
 /**
- * Load and parse a widget specification. 
+ * Load and parse a widget specification.
  *
  * @param {Object} args
  *     Parameters used to load widget metadata.  This object may contain the
@@ -201,16 +201,16 @@ OpenAjax.widget.Loader = function( args )
 OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
 {
     // XXX TODO properly handle plural elements
-    
+
     // make sure the URL is absolute
     // XXX need a better method of doing this
     var a = document.createElement('a');
     a.href = args.url;
     var url = a.href;
-    
+
     var async = typeof args.async !== "undefined" ? args.async : true,
         cache = _metadataCache;
-    
+
     // Return the attributes of the given DOM element as an object of
     // name-value pairs.
     var _getAttrs = function(elem) {
@@ -220,7 +220,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
         }
         return map;
     };
-    
+
     // Return the text content of the given DOM element.
     var _innerText = function( node ) {
         var text = node.innerText || node.textContent;
@@ -238,14 +238,14 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
         }
         return text;
     };
-    
+
     // Find which of the widget's message bundles to use for widget
     // localization.  Generates the "locale" object.
     var _getLocale = function( metadata, onComplete ) {
         // find the client's locale
         var userLocale = (args.locale ? args.locale :
                 (navigator.language ? navigator.language : navigator.userLanguage)).toLowerCase();
-        
+
         // find the closest widget locale match to the client's locale
         var localeNode = null,
             lang;
@@ -255,14 +255,14 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                 localeNode = metadata.locale[ userLocale ];
                 break;
             }
-            
+
             var idx = userLocale.lastIndexOf( "-" );
             if ( idx === -1 ) {
                 break;
             }
             userLocale = userLocale.slice( 0, idx );
         } while(1);
-        
+
         // no appropriate message bundle was found for the user's locale -- try
         // the fallback message bundle
         if ( ! localeNode ) {
@@ -275,7 +275,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                 return;
             }
         }
-        
+
         // retrieve the message bundle file contents
         var u = _getProxyUrl( _resolveURI( localeNode.messages, metadata._src_ ) );
         OpenAjax.widget._xhrGet( u, async, true,
@@ -289,7 +289,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                         var text = _innerText( msg[j] );
                         messages[ name ] = text;
                     }
-                    
+
                     metadata._locale_ = {
                         lang: lang,
                         language_direction: localeNode.language_direction ? localeNode.language_direction : "ltr",
@@ -304,26 +304,26 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                 }
         );
     };
-    
+
     // Parse the given DOM element's children and add data to the "parentObj"
-    // object. 
+    // object.
     var _parseElement = function( metadata, element, parentObj, grandparentObj ) {
         if ( element.childNodes.length === 0 ) {
             return true; // return true in order to circumvent _innerText() call
         }
-        
+
         var elemName = element.tagName.toLowerCase();
         var hasNonTextContent = false;
-        
+
         for ( var i = 0; i < element.childNodes.length; i++ ) {
             var node = element.childNodes.item( i );
-            
+
             // for text nodes, "node.tagName" is undefined
             if ( ! node.tagName ) {
                 continue;
             }
             var tagName = node.tagName.toLowerCase();
-            
+
             if ( tagName in _metadata_plurals ) {
                 // Ignore plural elements, but loop over their child nodes.
                 _parseElement( metadata, node, parentObj, parentObj );
@@ -341,17 +341,17 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                 {
                     continue;
                 }
-                
+
                 // <locale> and <property> have already been handled
                 if ( tagName === "locale" || tagName === "property" ) {
                     continue;
                 }
-                
+
                 hasNonTextContent = true;
 
                 // get the attributes for this element
                 var item = _getAttrs( node );
-                
+
                 // handle any special cases
                 var attrs,
                     obj = parentObj;
@@ -380,7 +380,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                         }
                         break;
                 }
-                
+
                 // Add this element info to the object.  If this element has a
                 // 'name' attribute, then we index using that.
                 var name = item.name;
@@ -396,7 +396,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                     }
                     obj[ tagName ].push( item );
                 }
-                
+
                 // See if this element has any child nodes that need to be
                 // handled.  If not, then see if it has any text content.
                 if ( ! _parseElement( metadata, node, item, parentObj ) ) {
@@ -407,25 +407,36 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                     if ( ! text ) {
                         text = _innerText( node );
                     }
-                    
+
                     if ( text ) {
                         item._content_ = _doValueSubstitutions( text, metadata, args.properties );
                     }
                 }
+
+				// Get content element URI attribute
+				if (tagName == "content") {
+					var attrs = _getAttrs(node);
+					for (var i in attrs) {
+						if (i.match(/iri$/)) {
+							obj.contentUri = attrs[i];
+							break;
+						}
+					}
+				}
             }
         }
-        
+
         return hasNonTextContent;
     };
-    
+
     // Convert the widget's DOM into a JavaScript object.
     var _transformXML = function( dom ) {
         var widget = dom.getElementsByTagName('widget').item(0);
         var metadata = _getAttrs(widget);
-        
+
         // save location of widget metadata file
         metadata._src_ = url;
-        
+
         // In order to handle substitutions, we need to first parse the 'locale'
         // and 'property' elements.
         var locales = widget.getElementsByTagName( "locale" );
@@ -434,7 +445,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
             for ( var i = 0; i < locales.length; i++ ) {
                 var item = _getAttrs( locales[i] );
                 var lang = item.lang ? item.lang.toLowerCase() : null;
-                
+
                 if ( ! lang ) {
                     // If <locale> has no "lang" attribute, then this is the
                     // fallback message bundle.  We only allow one, so just
@@ -447,24 +458,24 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                     metadata.locale[ lang ] = item;
                 }
             }
-            
+
             // given these locale elements, find the user's locale
             _getLocale( metadata, finish );
         } else {
             finish();
         }
-        
+
         function finish() {
             // Now that we've handled <locale>, we move on to <property>
             var properties = widget.getElementsByTagName( "property" );
             if ( properties.length > 0 ) {
                 metadata.property = {};
-                
+
                 for ( var i = 0; i < properties.length; i++ ) {
                     var item = _getAttrs( properties[i] );
                     var name = item.name;
                     delete item.name;
-                    
+
                     metadata.property[ name ] = item;
 
                     // If <property> is a child of <properties>, save the
@@ -479,15 +490,15 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
                             item._managed_ = attrs.managed;
                         }
                     }
-                    
+
                     // see if it has any child elements
                     _parseElement( metadata, properties[i], item, null );
                 }
             }
-            
+
             // parse the rest of the widget DOM
             _parseElement( metadata, widget, metadata, metadata );
-            
+
             if ( cache ) {
                 cache[url] = metadata;
             }
@@ -555,7 +566,7 @@ OpenAjax.widget.Loader.prototype.loadMetadata = function( args )
  * @param {Function} args.onError
  *     Callback which is invoked if an error occurs,
  *     onError( //String// error ).
- * 
+ *
  * @returns {Object}
  *     Widget instance object.
  */
@@ -584,7 +595,7 @@ OpenAjax.widget.Loader.prototype.create = function(args)
         availDimensions = {},
         onComplete = args.onComplete,
         onError = args.onError || function(e) { console.error(e); };
-    
+
     if ( typeof target == "string" ) {
         target = document.getElementById( target );
     }
@@ -594,7 +605,7 @@ OpenAjax.widget.Loader.prototype.create = function(args)
     if ( ! wid ) {
         while ((wid = "OAA" + ++_uniqueId) && document.getElementById(wid));
     }
-    
+
     if ( args.availableDimensions ) {
         if ( args.availableDimensions.width ) {
             availDimensions.width = args.availableDimensions.width;
@@ -603,7 +614,7 @@ OpenAjax.widget.Loader.prototype.create = function(args)
             availDimensions.height = args.availableDimensions.height;
         }
     }
-    
+
     var oaa;
     if ( spec.sandbox || args.sandbox ) {
         oaa = new ProxyWidget();
@@ -618,7 +629,7 @@ OpenAjax.widget.Loader.prototype.create = function(args)
         availDimensions: availDimensions,
         adjustDimensions: args.adjustDimensions
     });
-    
+
     oaa._render( target, view, onComplete );
 
     // XXX How does the mashup developer get access to the widget object (or even
@@ -632,7 +643,7 @@ OpenAjax.widget.Loader.prototype.create = function(args)
 /**
  * Create many widgets at once. The resources for any inline (non-sandboxed)
  * widgets are reconciled in order to avoid duplicates.
- * 
+ *
  * @param {Object} args
  *     Parameters used to create many widgets.  This object may contain the
  *     following properties:
@@ -652,7 +663,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
     var specs = [],
         loaded = args.widgets.length,
         that = this;
-    
+
     function loadMetadata( w, idx ) {
         that.loadMetadata({
                 url: w.spec,
@@ -667,11 +678,11 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
                 onError: args.onError
         });
     }
-    
+
     // load the widget metadata for each widget
     for ( var i = 0; i < args.widgets.length; i++ ) {
         var w = args.widgets[i];
-        
+
         if ( typeof w.spec === "string" ) {
             loadMetadata( w, i );
         } else {
@@ -681,7 +692,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
             }
         }
     }
-    
+
     // Compare version strings. Returns 0 if equal, a value greater than 0 if
     // ver1 is higher than ver2, or a value less than 0 otherwise.
     function _vercmp( ver1, ver2 ) {
@@ -696,7 +707,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
         }
         return 0;
     }
-    
+
     function _indexOf( req, arr, from ) {
         for ( var i = from; i < arr.length; i++ ) {
             if ( arr[i].src === req.src && arr[i].type === req.type &&
@@ -707,7 +718,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
         }
         return -1;
     }
-    
+
     // Now that we have every widget's metadata, we need to reconcile the
     // resources for inline widgets, removing any duplicates.
     function reconcile() {
@@ -716,10 +727,10 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
             firstInlineIdx = -1,
             instances = [],
             created = args.widgets.length;
-        
+
         for ( var i = 0; i < specs.length; i++ ) {
             var spec = specs[i];
-            
+
             // we only need to reconcile inline widgets -- skip over any that
             // are to be sandboxed
             if ( spec.sandbox || args.widgets[i].sandbox ) {
@@ -728,7 +739,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
             if ( firstInlineIdx < 0 ) {
                 firstInlineIdx = i;
             }
-            
+
             // reconcile <library>
             if ( spec.library ) {
                 for ( var libname in spec.library ) {
@@ -752,10 +763,10 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
                         libs[ libname ] = spec.library[ libname ];
                     }
                 }
-                
+
                 delete spec.library;
             }
-            
+
             // reconcile <require>
             if ( spec.require ) {
                 if ( reqs.length === 0 ) {
@@ -770,7 +781,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
                         if ( ! r.src ) {
                             continue;
                         }
-                        
+
                         var idx = _indexOf( r, reqs, reqStart );
                         if ( idx !== -1 ) {
                             changed = true;
@@ -779,16 +790,16 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
                             specReqStart = j + 1;
                         }
                     }
-                    
+
                     if ( ! changed ) {
                         reqs = reqs.concat( spec.require );
                     }
                 }
-                
+
                 delete spec.require;
             }
         }
-        
+
         function _loadWidgetAtIndex( idx, onComplete, onError ) {
             var w = args.widgets[ idx ];
             w.spec = specs[ idx ];
@@ -804,13 +815,13 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
             w.onError = onError;
             that.create( w );
         }
-        
+
         // Add the reconciled libraries and requires to the first inline widget
         // metadata object. Create this widget before the rest so it can load
         // these resources. When done, load the rest of the widgets.
         specs[ firstInlineIdx ].library = libs;
         specs[ firstInlineIdx ].require = reqs;
-        
+
         _loadWidgetAtIndex( firstInlineIdx,
                 function( instance ) {    // onComplete
                     // create the rest of the widgets
@@ -830,7 +841,7 @@ OpenAjax.widget.Loader.prototype.createMany = function( args )
 
 /**
  * Updates the available dimensions for the given widget.
- * 
+ *
  * @param {Object | String} widget
  *     Widget instance object or ID.
  * @param {Object} availDimensions
@@ -848,7 +859,7 @@ OpenAjax.widget.Loader.prototype.setAvailableDimensions = function( widget, avai
 
 /**
  * Returns a widget instance for the given ID.
- * 
+ *
  * @param {Object} id
  *     Requested widget ID.
  */
@@ -888,7 +899,7 @@ var _proxyURL = null;
  * Returns the proxied version of the given URL.  If a proxy was never
  * specified, or if the given URL is in the same origin, then the URL is
  * returned unchanged.
- *  
+ *
  * @param {String} url
  * @returns {String}
  *     Proxied version of URL
@@ -908,7 +919,7 @@ function _getProxyUrl( url ) {
 /**
  * Returns an absolute URI version of the passed-in uri.  URI is resolved
  * against the widget metadata location.
- * 
+ *
  * @param {Object} uri
  *     URI to resolve
  * @param {Object} specURI
@@ -921,11 +932,11 @@ function _resolveURI( uri, specURI )
     if ( /^\w+:\/\/.+/.exec( uri ) !== null ) {
         return uri;
     }
-    
+
     if ( uri.charAt(0) !== "/" ) {
         return specURI.slice( 0, specURI.lastIndexOf("/") + 1 ) + uri;
     }
-    
+
     return (/^(\w+:\/\/[^\/]+).*/.exec( specURI ))[1] + uri;
 }
 
@@ -937,7 +948,7 @@ if (!_head) {
 
 /**
  * Perform localization and property value substitutions on the given text.
- * 
+ *
  * @param {String} text
  *     Text on which to do substitutions.
  * @param {Object} metadata
@@ -946,7 +957,7 @@ if (!_head) {
  * @param {Object} properties
  *     Object of name-value pairs, where the name matches a property name as
  *     defined in the widget metadata.
- * 
+ *
  * @returns {String}
  *     A version of the text, with any variables substituted.
  */
@@ -955,13 +966,13 @@ function _doValueSubstitutions( text, metadata, properties )
     function escapequotes( text ) {
         return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
     }
-    
+
     function entityencode( text ) {
         return text.replace(/&/gm, "&amp;").replace(/</gm, "&lt;")
 		        .replace(/>/gm, "&gt;").replace(/"/gm, "&quot;")
 				.replace(/'/gm, "&#39;");
     }
-    
+
     // do localization substitutions
     var locale = metadata._locale_;
     if ( locale ) {
@@ -1032,25 +1043,25 @@ function _doValueSubstitutions( text, metadata, properties )
 
 var BaseWidget = function() {};
 
-BaseWidget.prototype = 
+BaseWidget.prototype =
 {
     //*** OpenAjax Metadata Widget APIs ***//
-   
+
     getId: function() {
         return this._id;
     },
-    
+
     getAvailableDimensions: function() {
         return this._availableDimensions;
     },
-    
+
     getDimensions: function() {
         return {
             width: parseInt( this._rootElement.style.width, 10 ),
             height: parseInt( this._rootElement.style.height, 10 )
         };
     },
-    
+
     adjustDimensions: function( dimensions ) {
         // ask the app if this widget is allowed to resize to the
         // requested dimensions
@@ -1065,21 +1076,21 @@ BaseWidget.prototype =
         }
         return null;
     },
-    
+
     getMode: function() {
         // XXX TODO
         alert( "BaseWidget.getMode not implemented" );
     },
-    
+
     requestMode: function( mode ) {
         // XXX TODO
         alert( "BaseWidget.requestMode not implemented" );
     },
-    
+
     getPropertyValue: function(name) {
-        return this._properties[name] || this._spec.property[name].defaultValue;
+		return this._properties[name] || this._spec.property[name].defaultValue;
     },
-    
+
     setPropertyValue: function( name, value )
     {
         if ( this._setPropertyValue( name, value, true, true ) ) {
@@ -1090,7 +1101,7 @@ BaseWidget.prototype =
             }
         }
     },
-    
+
     getPropertyNames: function() {
         var names = [];
         for (var name in this._spec.property) {
@@ -1098,25 +1109,25 @@ BaseWidget.prototype =
         }
         return names;
     },
-    
+
     getMsg: function( key )
     {
         // XXX TODO
         alert( "BaseWidget.getMsg not implemented" );
     },
-    
+
     rewriteURI: function( url )
     {
         return _getProxyUrl( _resolveURI( url, this._spec._src_ ) );
     },
-    
+
 // XXX old code
 //      getSupportedViews: function() {
 //          var views = {};
 //          for (var i=0; i < this.spec.contents; i++) {
 //              var list = (this.spec.contents[i].view || "default").split(",");
 //              for (var j=0; j < list.length; j++) {
-//                  //TODO: this method is supposed to construct a hash of View objects. What are View objects? 
+//                  //TODO: this method is supposed to construct a hash of View objects. What are View objects?
 //                  views[list[j] = undefined];
 //              }
 //          }
@@ -1125,9 +1136,9 @@ BaseWidget.prototype =
 //      requestNavigateTo: function() {
 //          //TODO
 //      },
-    
+
     //*** private functions ***//
-   
+
     _init: function ( args )
     {
         this._id = args.id;
@@ -1136,17 +1147,17 @@ BaseWidget.prototype =
         this._rootElement = args.root;
         this._availableDimensions = args.availDimensions;
         this._adjustDimensionsCB = args.adjustDimensions;
-        
+
         this._connectToHub();
         this._createHubSubObject();
         this._handlePropSubscriptions();
-        
+
         // XXX should we directly set size on rootElement, or create a DIV
         //   inside and change its dimensions?
         this._rootElement.style.width = this._spec.width + "px";
         this._rootElement.style.height = this._spec.height + "px";
     },
-    
+
     _connectToHub: function()
     {
         // XXX add error checks
@@ -1160,14 +1171,14 @@ BaseWidget.prototype =
                     }
                 }
         );
-        
+
         this._hubClient = new OpenAjax.hub.InlineHubClient({
                 HubClient: {
                     onSecurityAlert: function( source, alertType ) {
                         console.log( "onSecurityAlert: s=" + source.getClientID() + " a=" + alertType );
                     },
                     scope: this,
-                    log: function(msg) { console.log( msg ); }
+                    log: function(msg) { /*console.log( msg );*/ }
                 },
                 InlineHubClient: {
                     container: this._container
@@ -1175,7 +1186,7 @@ BaseWidget.prototype =
         });
         this._hubClient.connect();
     },
-    
+
     _createHubSubObject: function()
     {
         var that = this;
@@ -1183,36 +1194,36 @@ BaseWidget.prototype =
             this.subscribe = function() {
                 that._hubClient.subscribe.apply( that._hubClient, arguments );
             };
-            
+
             this.publish = function() {
                 that._hubClient.publish.apply( that._hubClient, arguments );
             };
-            
+
             this.unsubscribe = function() {
                 that._hubClient.unsubscribe.apply( that._hubClient, arguments );
             };
-            
+
             this.isConnected = function() {
                 that._hubClient.isConnected.apply( that._hubClient, arguments );
             };
-            
+
             this.getScope = function() {
                 that._hubClient.getScope.apply( that._hubClient, arguments );
             };
-            
+
             this.getSubscriberData = function() {
                 that._hubClient.getSubscriberData.apply( that._hubClient, arguments );
             };
-            
+
             this.getSubscriberScope = function() {
                 that._hubClient.getSubscriberScope.apply( that._hubClient, arguments );
             };
-            
+
             // do no expose this function
             this.getParameters = function() {};
         };
     },
-    
+
     _handlePropSubscriptions: function()
     {
         var that = this;
@@ -1224,7 +1235,7 @@ BaseWidget.prototype =
                     that
             );
         }
-        
+
         this._subscriptions = [];
         for ( var name in this._spec.property ) {
             var prop = this._spec.property[ name ];
@@ -1234,16 +1245,16 @@ BaseWidget.prototype =
             }
         }
     },
-    
+
     _setPropertyValue: function( name, newValue, notify, self )
     {
         var oldValue = this.getPropertyValue( name );
         newValue = this._decodePropValue( name, newValue );
-        
+
         if ( this._equals( name, oldValue, newValue )) {
             return false;
         }
-        
+
         this._properties[ name ] = newValue;
 
         // call onChange* functions
@@ -1262,10 +1273,10 @@ BaseWidget.prototype =
                 this._widget[ cb ].call( this._widget, event );
             }
         }
-        
+
         return true;
     },
-    
+
     _equals: function( propName, value1, value2 )
     {
         var prop = this._spec.property[ propName ];
@@ -1276,7 +1287,7 @@ BaseWidget.prototype =
                 return value1 == value2;
         }
     },
-    
+
     _encodePropValue: function( name, value )
     {
         var prop = this._spec.property[ name ];
@@ -1290,7 +1301,7 @@ BaseWidget.prototype =
         }
         return value;
     },
-    
+
     _decodePropValue: function( name, value )
     {
         var prop = this._spec.property[ name ];
@@ -1312,7 +1323,7 @@ BaseWidget.prototype =
     _render: function( target, view, onComplete )
     {
         var that = this;
-        
+
         this._widgetContext = new function() {
             // Keep track of the widget's content.  The scripts are separated
             // from each other, depending on when they should run.
@@ -1351,7 +1362,7 @@ BaseWidget.prototype =
                 //     on the app side?  Or is it also necessary inside an iframe?  Where does
                 //     the developer get the widget ID from?
                 _widgetTable[ that._id ] = widget;
-                
+
                 // evaluate widget content -- render content and run scripts
                 // in order
                 var s = [ "jsBefore", "jsContent", "jsAfter", "jsEnd" ];
@@ -1369,7 +1380,7 @@ BaseWidget.prototype =
                         OpenAjax.widget._runScript( scripts[j].text, scripts[j].src );
                     }
                 }
-                
+
                 // let the widget code know that the widget has been fully
                 // loaded
                 if ( widget.onLoad ) {
@@ -1383,21 +1394,21 @@ BaseWidget.prototype =
         };
 
         this._widgetContext.loadedCallbacks++;
-        
+
         if ( this._spec.require ) {
             this._loadAndEvalRequires();
         }
-        
+
         this._loadContent( target, view );
 
         this._widgetContext.runDeferredScripts();
     },
-    
+
     _loadAndEvalRequires: function()
     {
         var scripts = [];
         var prepost = {};
-        
+
         for (var i = 0; i < this._spec.require.length; i++) {
             var req = this._spec.require[i];
 
@@ -1435,12 +1446,12 @@ BaseWidget.prototype =
 //            if (library && library.postload) {
 //                this._runScript(library.postload);
 //            }
-            
+
             var library = req._library_ && this._spec.library[ req._library_ ];
             if ( library && library.preload && ! (req._library_ in prepost) ) {
                 scripts.push( { text: library.preload[0]._content_.replace(/__WID__/g, this._id) } );
             }
-            
+
             var prefix = library ? library.src : "";
             // relative URLs are assumed to be relative to widget XML file
             var uri = req.src ? _resolveURI( prefix + req.src, this._spec._src_ ) : null;
@@ -1460,17 +1471,17 @@ BaseWidget.prototype =
                 default:
                     // XXX TODO
             }
-            
+
             if ( library && library.postload && ! (req._library_ in prepost) ) {
                 scripts.push( { text: library.postload[0]._content_.replace(/__WID__/g, this._id) } );
             }
-            
+
             // keep track that we have already handled preload/postload for library
             if ( library ) {
                 prepost[ req._library_ ] = true;
             }
         }
-        
+
         this._widgetContext.loadedCallbacks++;
         var that = this;
         OpenAjax.widget._loadScripts( scripts, true,
@@ -1484,7 +1495,7 @@ console.error( error );
                 }
         );
     },
-    
+
     // load widget content (<content> & <javascript>)
     _loadContent: function( target, mode )
     {
@@ -1531,7 +1542,7 @@ console.error( error );
 
         if ( this._spec.javascript ) {
             this._widgetContext.loadedCallbacks++;
-    
+
             var scripts = [];
             for ( i = 0; i < this._spec.javascript.length; i++ ) {
                 scripts.push( this._spec.javascript[i] );
@@ -1543,7 +1554,7 @@ console.error( error );
                     s.text = s._content_;
                 }
             }
-            
+
             // load <javascript> elements, but don't evaluate yet
             OpenAjax.widget._loadScripts( scripts, false,
                     function( scripts, success, error ) {
@@ -1627,7 +1638,7 @@ console.error( error );
                 }
         );
     },
-    
+
     _setAvailableDimensions: function( availDimensions )
     {
         if ( availDimensions.width ) {
@@ -1685,7 +1696,7 @@ ProxyWidget.prototype.setPropertyValue = function(name, value)
 ProxyWidget.prototype._init = function( args )
 {
     BaseWidget.prototype._init.apply( this, arguments );
-    
+
     // create a dummy widget instance
     var widget = {
         OpenAjax: this
@@ -1696,30 +1707,63 @@ ProxyWidget.prototype._init = function( args )
 
 ProxyWidget.prototype._connectToHub = function()
 {
-    var widgetBaseURI = encodeURIComponent( this._spec._src_.slice( 0, this._spec._src_.lastIndexOf("/") + 1 ));
-    var stubURI = _loaderRoot + "widget.html?oawb=" + widgetBaseURI + "&oawh=" + encodeURIComponent( _hubBaseJS );
+	var enableScrolling = (this._spec.scrolling && this._spec.scrolling.toLowerCase() == "false") ?
+								"no" : "yes";
 
-    this._container = new OpenAjax.hub.IframeContainer( _hub, this._id,
-            {   Container: {
-                    onSecurityAlert: function( source, alertType ) {
-                        console.log( "onSecurityAlert: s=" + source.getClientID() + " a=" + alertType );
-                    },
-                    scope: this,
-                    log: function( msg ) { console.log( msg ); }
-                },
-                IframeContainer: {
-                    uri: stubURI,
-                    tunnelURI: _tunnelURI,
-                    iframeAttrs: {
-                            frameBorder: "0",
-                            scrolling: "no",
-                            style: { width: "100%", height: "100%" }
-                        },
-                    parent: this._rootElement
-                }
-            }
-    );
-    
+	if (this._spec && this._spec.contentUri) {
+		var stubURI = this._spec.contentUri;
+		var widgetId = this._id;
+
+		this._container = new OpenAjax.hub.IframeContainer(_hub, this._id,
+			{
+			  Container: {
+				  onConnect: function() {
+					  _hub.publish("openajax.widget." + widgetId + "._loaded", null);
+				  },
+				  onSecurityAlert: function( source, alertType ) {
+					  console.log( "onSecurityAlert: s=" + source.getClientID() + " a=" + alertType );
+				  },
+				  scope: this,
+				  log: function( msg ) { console.log( msg ); }
+			  },
+			  IframeContainer: {
+				  uri: stubURI,
+				  tunnelURI: _tunnelURI,
+				  iframeAttrs: {
+						  frameBorder: "0",
+						  scrolling: enableScrolling,
+						  style: { width: "100%", height: "100%" }
+					  },
+				  parent: this._rootElement
+			  }
+			}
+		);
+	} else {
+		var widgetBaseURI = encodeURIComponent( this._spec._src_.slice( 0, this._spec._src_.lastIndexOf("/") + 1 ));
+		var stubURI = _loaderRoot + "widget.html?oawb=" + widgetBaseURI + "&oawh=" + encodeURIComponent( _hubBaseJS );
+
+		this._container = new OpenAjax.hub.IframeContainer( _hub, this._id,
+				{   Container: {
+						onSecurityAlert: function( source, alertType ) {
+							console.log( "onSecurityAlert: s=" + source.getClientID() + " a=" + alertType );
+						},
+						scope: this,
+						log: function( msg ) { console.log( msg ); }
+					},
+					IframeContainer: {
+						uri: stubURI,
+						tunnelURI: _tunnelURI,
+						iframeAttrs: {
+								frameBorder: "0",
+								scrolling: enableScrolling,
+								style: { width: "100%", height: "100%" }
+							},
+						parent: this._rootElement
+					}
+				}
+		);
+	}
+
     this._listenForEvents();
 };
 
@@ -1730,7 +1774,7 @@ ProxyWidget.prototype._listenForEvents = function()
 {
     this._subs = [];
     var prefix = "openajax.widget." + this._id;
-    
+
     var sid = _hub.subscribe( prefix + "._instantiated",
             function( topic, data ) {
                 _hub.publish( prefix + "._init",
@@ -1746,9 +1790,9 @@ ProxyWidget.prototype._listenForEvents = function()
             },
             this
     );
-    
+
     this._subs.push( _hub.subscribe( prefix + ".api.*", this._apiCall, this ) );
-    
+
     this._subs.push( _hub.subscribe( prefix + "._propValueChange.remote",
             function( topic, data ) {
                 this._properties[ data.p ] = this._decodePropValue( data.p, data.v );
@@ -1796,9 +1840,9 @@ ProxyWidget.prototype._unload = function( callback )
         delete _widgetTable[ that._id ];
         callback( that._id );
     }
-    
+
     var prefix = "openajax.widget." + this._id;
-    
+
     // XXX set a timeout in case RemoteWidget never responds?
     this._subs.push( _hub.subscribe( prefix + "._unloaded",
             function( topic, data ) {    // onData
@@ -1814,7 +1858,7 @@ ProxyWidget.prototype._unload = function( callback )
                 }
             }
     ));
-    
+
     _hub.publish( prefix + "._unload", null );
 };
 
@@ -1826,17 +1870,17 @@ var RemoteWidget = function( target )
 {
     this._rootElement = target;
     this._proxyPropChange = false;
-    
+
     this._hubClient = new OpenAjax.hub.IframeHubClient({
             HubClient: {
                 onSecurityAlert: function( source, alertType ) {
                     console.log( "onSecurityAlert: s=" + source.getClientID() + " a=" + alertType );
                 },
                 scope: this,
-                log: function(msg) { console.log( msg ); }
+                log: function(msg) { /*console.log( msg );*/ }
             }
     });
-    
+
     this._id = this._hubClient.getClientID();
 
     this._hubClient.connect(
@@ -1849,7 +1893,7 @@ var RemoteWidget = function( target )
                         this._init,
                         this
                 );
-                
+
                 // then, let parent know that we are ready
                 this._hubClient.publish( topicPrefix + "._instantiated", null );
             },
@@ -1860,7 +1904,7 @@ var RemoteWidget = function( target )
 RemoteWidget.prototype = new BaseWidget();
 
   //*** OpenAjax Metadata Widget APIs ***//
-   
+
 RemoteWidget.prototype.adjustDimensions = function( dimensions )
 {
     this._hubClient.publish( "openajax.widget." + this._id + ".api.adjustDimensions", dimensions );
@@ -1872,21 +1916,21 @@ RemoteWidget.prototype._init = function( topic, data )
 {
     this._hubClient.unsubscribe( this._initSub );
     delete this._initSub;
-    
+
     // mixin received object with 'this'
     for ( var prop in data ) {
         if ( ! (prop in this) ) {
             this[ prop ] = data[ prop ];
         }
     }
-    
+
     _proxyURL = this._proxy;
     delete this._proxy;    // XXX handle this better
-    
+
     this._createHubSubObject();
     this._handlePropSubscriptions();
     this._listenForEvents();
-    
+
     // Add widget to page
     // _render() calls the widget objects "onLoad" method.
     var that = this;
@@ -1895,7 +1939,7 @@ RemoteWidget.prototype._init = function( topic, data )
                 that._hubClient.publish( "openajax.widget." + that._id + "._loaded", null );
             }
     );
-    
+
     // set widget size
     this._rootElement.style.width = this._spec.width + "px";
     this._rootElement.style.height = this._spec.height + "px";
@@ -1907,10 +1951,10 @@ RemoteWidget.prototype._connectToHub = function() {};
 RemoteWidget.prototype._listenForEvents = function()
 {
     var topicPrefix = "openajax.widget." + this._id;
-    
+
     // widget has been resized
     this._hubClient.subscribe( topicPrefix + "._sizeChanged", this._sizeChanged, this);
-    
+
     // update to the available (max) dimensions for this widget
     this._hubClient.subscribe( topicPrefix + "._availDimensions",
             function( topic, data ) {
@@ -1918,7 +1962,7 @@ RemoteWidget.prototype._listenForEvents = function()
             },
             this
     );
-    
+
     // ProxyWidget has updated property value
     this._hubClient.subscribe( topicPrefix + "._propValueChange.proxy",
             function( topic, data ) {
@@ -1928,7 +1972,7 @@ RemoteWidget.prototype._listenForEvents = function()
             },
             this
     );
-    
+
     this._hubClient.subscribe( topicPrefix + "._unload", this._unload, this );
 };
 
@@ -1950,10 +1994,10 @@ RemoteWidget.prototype._sizeChanged = function( topic, data )
     if ( this._widget.onSizeChanged ) {
         var oldDimensions = this.getDimensions();
     }
-    
+
     // change dimensions based on data from parent
     BaseWidget.prototype.adjustDimensions.call( this, data );
-    
+
     if ( this._widget.onSizeChanged ) {
         var newDimensions = this.getDimensions();
         this._widget.onSizeChanged.call(
@@ -1974,7 +2018,7 @@ RemoteWidget.prototype._unload = function()
             this._widget.onUnload( {} );
         } catch(e) {}
     }
-    
+
     this._hubClient.publish( "openajax.widget." + this._id + "._unloaded",
             null );
 };
@@ -2013,9 +2057,9 @@ if ( typeof OpenAjax === "undefined" ) {
 
 /**
  * Request the file contents at the given URL.
- * 
+ *
  * @memberOf OpenAjax.widget
- * 
+ *
  * @param {String} url
  *     URL whose contents we wish to retrieve.
  * @param {Boolean} async
@@ -2058,7 +2102,7 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
     var xhr = ((typeof XMLHttpRequest == "undefined" || !location.href.indexOf("file:")) && activeX) ?
         new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
     onError = onError || function(e) { console.error(e); };    // XXX don't use console
-    
+
     if ( async ) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
@@ -2069,7 +2113,7 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
     if ( forceXml && xhr.overrideMimeType ) {
         xhr.overrideMimeType("text/xml");
     }
-     
+
     xhr.open( "GET", url, async );
     try {
         xhr.send( null );
@@ -2079,7 +2123,7 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
     } catch(e) {
         onError(e);
     }
-    
+
     function checkStatus() {
         if ( ! xhr.status || xhr.status == 200 ) {
             try {
@@ -2099,9 +2143,9 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
 
 /**
  * Load all of the given scripts, making sure they are evaluated in order.
- * 
+ *
  * @memberOf OpenAjax.widget
- * 
+ *
  * @param {Object[]} scripts
  *     An array of scripts.  Each array element is an object which must have
  *     either a "text" property (the full script text) or a "src"
@@ -2115,7 +2159,7 @@ oaw._xhrGet = function( url, async, forceXml, onComplete, onError )
  *     parameter is the original 'scripts' array; each script now has a valid
  *     'text' property (when 'xdomain' is true, this may not be correct).
  *     Syntax is as follows:
- *     onComplete( //Object[]// scripts, //Boolean// success, //Error|String// error )  
+ *     onComplete( //Object[]// scripts, //Boolean// success, //Error|String// error )
  * @param {Boolean} [doEval="true"]
  *     By default, the scripts are evaluated after being loaded. Specify "false"
  *     to prevent evaluation.
@@ -2133,7 +2177,7 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
                 }
                 return;
             }
-            
+
             var script = document.createElement( 'SCRIPT' );
             script.setAttribute( 'type', 'text/javascript' );
             if ( scripts[idx].text ) {
@@ -2154,7 +2198,7 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
                 head.appendChild(script);
             }
         }
-        
+
         addScript( scripts, 0 );
     }
 
@@ -2162,7 +2206,7 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
     // scripts, but make sure that they are evaluated in the proper order.
     else {
         doEval = (typeof doEval !== "undefined") ? doEval : true;
-        
+
         var nextIdx = 0;
         function evalNextScript( idx ) {
             if ( idx === nextIdx ) {
@@ -2178,7 +2222,7 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
                 }
             }
         }
-        
+
         function getAndEval( idx ) {
             var s = scripts[idx];
             oaw._xhrGet( s.src, true, false,
@@ -2195,7 +2239,7 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
                     }
             );
         }
-        
+
         for ( var i = 0; i < scripts.length; i++ ) {
             if ( scripts[i].text ) {
                 evalNextScript( i );
@@ -2212,9 +2256,9 @@ oaw._loadScripts = function( scripts, xdomain, onComplete, doEval )
 
 /**
  * Evaluate the given JavaScript text.
- * 
+ *
  * @memberOf OpenAjax.widget
- * 
+ *
  * @param {String} text
  *     JavaScript code to evaluate.
  * @param {String} [source]
@@ -2235,16 +2279,16 @@ oaw._runScript = (function(){
             };
         }
     }
-    
+
     // fallbacks
-    
+
     // Next, see if the browser provides the execScript function (IE).
     if ( window.execScript ) {
         return function( text ) {
             window.execScript( text );
         };
     }
-    
+
     // Lastly, if all else fails, dynamically add script to HEAD
     // (i.e. Safari 3.2).
     var head = document.getElementsByTagName('HEAD').item(0);
