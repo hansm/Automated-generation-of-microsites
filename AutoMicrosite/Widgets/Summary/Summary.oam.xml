@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="SummaryWidget" id="AutoMicrosite/Widget/Summary"
 		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Summary"
-		x:min-width="640" x:max-width="2000"
+		x:min-width="100" x:min-height="25"
 		xmlns="http://openajax.org/metadata"
-		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
+		sandbox="true"
+		scrolling="true">
 
 	<require type="javascript" src="Summary.js"></require>
 
@@ -32,7 +34,7 @@
 		<category x:iri="http://schema.org/WPFooter" />
     </categories>
 
-	<topic name="AutoMicrosite.Data.Summary" type="object" subscribe="true">
+	<topic name="AutoMicrosite.LabourCost.Summary" type="object" subscribe="true">
 		<example><![CDATA[
 			{"data": [
 					{label: "Countries", value: 10},

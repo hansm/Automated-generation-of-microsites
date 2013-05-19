@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="MapWidget" id="AutoMicrosite/Widget/Menu"
 		spec="1.0" width="800" height="50" jsClass="AutoMicrosite.Widget.Menu"
-		x:min-width="640" x:max-width="2000"
+		x:min-width="200" x:min-height="25"
 		xmlns="http://openajax.org/metadata"
-		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
+		sandbox="true">
 
-	<require type="javascript" src="Menu.js?v=3" />
+	<require type="javascript" src="Menu.js" />
 
     <content>
 		<![CDATA[
@@ -16,9 +17,7 @@
 			background-color: black;
 		}
 		#__WID__menu a {
-			display: block;
-			float: left;
-			line-height: 50px;
+			display: inline-block;
 			padding: 0 25px;
 			color: white;
 			font-family: sans-serif;

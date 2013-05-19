@@ -26,11 +26,11 @@ AutoMicrosite.Widget.Table.prototype = {
 		this.widgetId = this.OpenAjax.getId();
 		var thisWidget = this;
 
-		this.table = document.getElementById(this.widgetId +"table");
+		this.table = document.getElementById(this.widgetId + "table");
 		this.drawTable();
 
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.Table", function(topic, receivedData) {
-			thisWidget.tableData = receivedData.data;
+		this.OpenAjax.hub.subscribe("AutoMicrosite.LabourCost.Data", function(topic, receivedData) {
+			thisWidget.tableData = receivedData;
 			thisWidget.drawTable();
 		});
 	},
@@ -92,12 +92,7 @@ AutoMicrosite.Widget.Table.prototype = {
 		this.drawTableSection(thead, data.thead);
 		this.drawTableSection(tbody, data.tbody);
 
-		// TODO: check table height and possible paginate
-		// TODO: request parent width / height change
-		//console.log(this.OpenAjax.getDimensions());
-		//console.log(this.table.offsetHeight);
-		this.table.parentNode.style.height = "100%";//this.OpenAjax.getDimensions().height +"px";
-		//this.table.parentNode.style.width = this.OpenAjax.getDimensions().width +"px";
+		this.table.parentNode.style.height = "100%";
 	},
 
 	/**

@@ -1,128 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="DataWidget" id="AutoMicrosite/Manual/Data"
-		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Manual.Data"
+		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Widget.Data"
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata">
 
 	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
 		<require type="javascript" src="jquery.min.js"/>
 	</library>
+	<require type="javascript" src="Data.js"></require>
+	<require type="text" src="data.txt" />
 
-	<require type="javascript"><![CDATA[
-	if (typeof(AutoMicrosite) == "undefined") {
-		AutoMicrosite = {};
-	}
-	if (typeof(AutoMicrosite.Manual) == "undefined") {
-		AutoMicrosite.Manual = {};
-	}
-	
-	AutoMicrosite.Manual.Data = function() {};
-	
-	AutoMicrosite.Manual.Data.prototype.onLoad = function() {
-		var thisWidget = this;
-		
-		$.get("Widgets/Data/data.txt", function(data) {
-			data = data.split("\n");
-
-			var newData = [];
-			var dataRow;
-			var dataValues;
-			var value;
-
-			for (var i = 0; i < data.length; i++) {
-				dataRow = [];
-				dataValues = $.map(data[i].split("\t"), $.trim);
-
-				for (var j = 0; j < dataValues.length; j++) {
-					value = dataValues[j] == ":" ? null : dataValues[j];
-					if (value != null && !isNaN(value)) {
-						value = parseFloat(value);
-					}
-					dataRow.push(value);
-				}
-
-				newData.push(dataRow);
-			}
-
-/*
-			[
-				{
-					"country": "Estonia",
-					"values":
-						[
-							{"year": 1995, "value": 10},
-							{"year": 1996, "value": 11},
-							{"year": 1997, "value": 12},
-						]
-				}
-			]
-*/
-
-			// Parse data
-			for (var i in data) {
-				data[i] = $.map(data[i].split("\t"), $.trim);
-			}
-
-			var columns = data[0];
-			var mapData = [];
-			var row, values, dataRow, val;
-			for (var i = 1; i < data.length; i++) {
-				dataRow = data[i];
-				values = [];
-				for (var j = 1; j < dataRow.length; j++) {
-					val = dataRow[j] == ":" ? null : dataRow[j];
-					if (val != null && !isNaN(val)) {
-						val = parseFloat(val);
-					}
-					values.push({
-						year: columns[j],
-						value: val
-					});
-				}
-				mapData.push({
-					country: dataRow[0],
-					values: values
-				});
-			}
-			
-
-			thisWidget.OpenAjax.hub.publish("AutoMicrosite.Data.Receive", newData);
-
-
-			thisWidget.OpenAjax.hub.publish("AutoMicrosite.Topic.Map.Data", mapData);
-		}, "text");
-	};
-	]]></require>
-
-	<require type="image" src="data.txt" />
-	
 	<!-- Empty content element is required by widget loader, somehow it does not work without -->
 	<content><![CDATA[ ]]></content>
-	
-	<topic name="AutoMicrosite.Data.Select" type="object" publish="true">
+
+	<topic name="AutoMicrosite.LabourCost.Map.Data" type="object" publish="true">
 		<description>
 			Query data manager for data based on id and/or column, data will be
 			returned to appropriate topic.
 		</description>
-		<example><![CDATA[
-			{"id": "Estonia",
-				"column": 2}
-		]]></example>
-		<property name="id" datatype="string" />
-		<property name="column" datatype="number" />
-		<property name="data" datatype="array" urlparam="http://schema.org/Table">
-			<property name="data" datatype="object">
-				<property name="country" datatype="string" urlparam="http://schema.org/Country" />
-				<property name="data" datatype="array">
-					<property name="data" datatype="object">
-						<property name="year" datatype="number" urlparam="http://schema.org/Date" />
-						<property name="value" datatype="number" urlparam="http://schema.org/Number" />
-					</property>
-				</property>
-			</property>
-		</property>
 	</topic>
-    
+	<topic name="AutoMicrosite.LabourCost.Data" type="object" publish="true">
+		<description>
+			Query data manager for data based on id and/or column, data will be
+			returned to appropriate topic.
+		</description>
+	</topic>
+   
 	<categories>
 		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>

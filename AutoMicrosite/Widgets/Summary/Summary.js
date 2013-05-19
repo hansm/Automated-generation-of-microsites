@@ -1,3 +1,7 @@
+/**
+ * Summary widget logic
+ */
+
 if (typeof(AutoMicrosite) == "undefined") {
 	AutoMicrosite = {};
 }
@@ -18,7 +22,7 @@ AutoMicrosite.Widget.Summary.prototype = {
 		this.widgetId = this.OpenAjax.getId();
 		var thisWidget = this;
 
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Data.Summary", function(topic, receivedData) {
+		this.OpenAjax.hub.subscribe("AutoMicrosite.LabourCost.Summary", function(topic, receivedData) {
 			var data = receivedData.data;
 			var divContent = document.getElementById(thisWidget.widgetId + "content");
 			divContent.innerHTML = "";

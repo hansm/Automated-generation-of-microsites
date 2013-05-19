@@ -25,26 +25,28 @@ AutoMicrosite.Widget.Menu.prototype = {
 	 */
 	onLoad: function() {
 		this.widgetId = this.OpenAjax.getId();
-		//var thisWidget = this;
-		this.divMenu = document.getElementById(this.widgetId +"menu");
-		console.log(this.widgetId + ":onLoad");
-		console.log(this.OpenAjax.getPropertyValue("buttons"));
+		this.divMenu = document.getElementById(this.widgetId + "menu");
 		this.drawMenu();
-
-		this.OpenAjax.hub.subscribe("AutoMicrosite.MenuClick", function(topic, data) {
-			console.log("Menu received:");
-			console.log(topic);
-			console.log(data);
-		});
 	},
 
 	/**
 	 * Menu buttons change
 	 */
 	onChange: function() {
-		console.log("Some property changed");
-		console.log(this.OpenAjax.getPropertyValue("buttons"));
 		this.drawMenu();
+	},
+
+	/**
+	 * Resize menu items
+	 */
+	onSizeChanged: function() {
+		var menuHeight = this.divMenu.clientHeight;
+		var menuFontSize = menuHeight / 2;
+		var menuElements = this.divMenu.childNodes;
+		for (var i = 0; i < menuElements.length; i++) {
+			menuElements[i].style.lineHeight = menuHeight + "px";
+			menuElements[i].style.fontSize = menuFontSize + "px";
+		}
 	},
 
 	/**
@@ -59,10 +61,15 @@ AutoMicrosite.Widget.Menu.prototype = {
 	 */
 	drawMenu: function() {
 		var thisWidget = this;
-		var buttons = this.OpenAjax.getPropertyValue("buttons");
-		this.divMenu.innerHTML = "";
+		try {
+			var buttons = this.OpenAjax.getPropertyValue("buttons");
+		} catch (e) {
+			console.error("Menu widget error: " + e);
+			return;
+		}
 
-		if (buttons == undefined || buttons.length == 0) {
+		this.divMenu.innerHTML = "";
+		if (!buttons || buttons.length == 0) {
 			return;
 		}
 
@@ -78,14 +85,15 @@ AutoMicrosite.Widget.Menu.prototype = {
 				a.target = "_blank";
 			} else if (typeof button.href == "object") {
 				a.href = "#"+ button.href.widget;
-				a.mashupAction = button.href;
-				a.onclick = function(data) {
+				a.onclick = (function(data) {
 					thisWidget.buttonClick(data);
 					return false;
-				}.bind(a, button.href);
+				}).bind(a, button.href);
 			}
 
 			this.divMenu.appendChild(a);
 		}
+
+		this.onSizeChanged();
 	}
 };

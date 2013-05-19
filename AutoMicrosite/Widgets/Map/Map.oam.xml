@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="MapWidget" id="http://deepweb.ut.ee/Widget/Map"
 		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Map"
-		x:min-width="640" x:max-width="2000"
-		x:min-height="640" x:max-height="2000"
+		x:min-width="100" x:min-height="100"
 		xmlns="http://openajax.org/metadata"
-		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension">
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
+		sandbox="true"
+		scrolling="true">
 
 	<title>Map widget</title>
 	<description>
@@ -42,7 +43,7 @@
 		#__WID__mapMenu a {
 			color: #000000;
 			display: inline-block;
-			padding: 6px 17px;
+			padding: 0 1em;
 			text-decoration: none;
 		}
 		#__WID__mapMenu a:hover {
@@ -55,77 +56,8 @@
 		]]>
     </content>
 
-	<topic name="AutoMicrosite.Topic.Map.Data" type="array" subscribe="true">
-		<example><![CDATA[
-			[
-				{
-					"country": "Estonia",
-					"values":
-						[
-							{"year": 1995, "value": 10},
-							{"year": 1996, "value": 11},
-							{"year": 1997, "value": 12},
-						]
-				}
-			]
-		]]></example>
-		<property name="*" datatype="object">
-			<property name="country" datatype="string" urlparam="http://schema.org/Country" />
-			<property name="values" datatype="array">
-				<property name="*" datatype="object">
-					<property name="year" datatype="number" urlparam="http://schema.org/year" />
-					<property name="value" datatype="number" urlparam="http://schema.org/value" />
-				</property>
-			</property>
-		</property>
-	</topic>
-	
-	<topic name="AutoMicrosite.Data.2D" type="object" subscribe="true">
-		<example><![CDATA[
-			{"data": [
-					{id: "Estonia", value: 10},
-					{id: "USA", value: 20}
-				]
-			}
-		]]></example>
-		<property name="data" datatype="array">
-			<property name="*" datatype="object">
-				<property name="id" datatype="string" />
-				<property name="value" datatype="string" />
-			</property>
-		</property>
-	</topic>
-	<topic name="AutoMicrosite.Data.Row" type="object" subscribe="true">
-		<example><![CDATA[
-			{"data": [
-					{label: "Country", value: "Estonia"},
-					{label: "1999", value: "10"},
-					{label: "200", value: "20"}
-				]
-			}
-		]]></example>
-		<property name="data" datatype="array">
-			<property name="*" datatype="object">
-				<property name="label" datatype="string" />
-				<property name="value" datatype="string" />
-			</property>
-		</property>
-	</topic>
-	
-	<topic name="AutoMicrosite.Data.Select" type="object" publish="true">
-		<description>
-			Query data manager for data based on id and/or column, data will be
-			returned to appropriate topic.
-		</description>
-		<example><![CDATA[
-			{"id": "Estonia",
-				"column": 2}
-		]]></example>
-		<property name="id" datatype="string" />
-		<property name="column" datatype="number" />
-	</topic>
-
-	<property name="buttons" datatype="array" />
+	<topic name="AutoMicrosite.LabourCost.Map.Data" type="array" subscribe="true"></topic>
+	<topic name="AutoMicrosite.LabourCost.Summary" type="array" publish="true"></topic>
 
 	<categories>
 		<category x:iri="http://schema.org/Map" />

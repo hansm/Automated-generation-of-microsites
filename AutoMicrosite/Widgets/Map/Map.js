@@ -19,10 +19,6 @@ AutoMicrosite.Widget.Map = function() {
 	this.matrix = [];
 	this.columns = [];
 	this.map = null;
-
-
-	this.columnNames = {};
-	this.data = [];
 	this.dataTable = null;
 	this.widgetId = null;
 	this.divBubble = null;
@@ -39,13 +35,13 @@ AutoMicrosite.Widget.Map.prototype = {
 		var thisWidget = this;
 
 		google.load("visualization", "1", {
-			"packages": ["geochart"],
-			"callback": function() {
+			packages: ["geochart"],
+			callback: function() {
 				thisWidget.mapLoaded();
 			}
 		});
 
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Topic.Map.Data", function(topic, receivedData) {
+		this.OpenAjax.hub.subscribe("AutoMicrosite.LabourCost.Map.Data", function(topic, receivedData) {
 			thisWidget.data = receivedData;
 			thisWidget.processData(thisWidget.data);
 
@@ -55,8 +51,6 @@ AutoMicrosite.Widget.Map.prototype = {
 			thisWidget.drawMenu();
 		});
 
-		//setInterval(function() { thisWidget.drawMap(); }, 1000);
-
 		this.drawMenu();
 	},
 
@@ -65,7 +59,6 @@ AutoMicrosite.Widget.Map.prototype = {
 	 * @param object e
 	 */
 	onSizeChanged: function(e) {
-		//console.log("Map.onSizeChanged");
 		this.drawMap();
 	},
 
@@ -142,9 +135,8 @@ AutoMicrosite.Widget.Map.prototype = {
 		var columnName = this.columns[columnNumber];
 
 		var widgetDimensions = this.OpenAjax.getDimensions();
-		//console.log(widgetDimensions);
 		var options = {
-			width: widgetDimensions.width, height: widgetDimensions.height,
+			width: widgetDimensions.width, height: widgetDimensions.height * 0.89,
 			enableRegionInteractivity: true,
 			region: 150
 		};
@@ -165,10 +157,32 @@ AutoMicrosite.Widget.Map.prototype = {
 		} catch (e) {
 			console.log("Map error: "+ e);
 		}
+
+		this.publishSummary(columnNumber);
+	},
+
+	/**
+	 * Publish summary of the selected data
+	 */
+	publishSummary: function(columnNumber) {
+		var matrixRow;
+		var objectsCount = 0, objectsSum = 0;
+		for (var i in this.data) {
+			matrixRow = this.matrix[i];
+			if (matrixRow[columnNumber]) {
+				objectsCount++;
+				objectsSum += matrixRow[columnNumber];
+			}
+		}
+
+		var data = [];
+		data.push({label: "Number of '"+ this.columns[columnNumber] +"' objects", value: objectsCount});
+		data.push({label: "Average value", value: Math.round((objectsSum / objectsCount) * 100) / 100});
+
+		this.OpenAjax.hub.publish("AutoMicrosite.LabourCost.Summary", {data: data});
 	},
 
 	mapClick: function(id) {
-		//console.log("Showing: "+ id);
 		this.showBubble();
 
 		for (var i in this.data) {
@@ -239,7 +253,7 @@ AutoMicrosite.Widget.Map.prototype = {
 		var thisWidget = this;
 
 		if (!this.divMenu) {
-			this.divMenu = document.getElementById(this.widgetId +"mapMenu");
+			this.divMenu = document.getElementById(this.widgetId + "mapMenu");
 		}
 		this.divMenu.innerHTML = "";
 
@@ -247,14 +261,17 @@ AutoMicrosite.Widget.Map.prototype = {
 			return;
 		}
 
+		var widgetDimensions = this.OpenAjax.getDimensions();
+		var buttonHeight = widgetDimensions.height * 0.1;
+
 		var a;
 		for (var i in this.columns) {
 			a = document.createElement("a");
 			a.innerHTML = this.columns[i];
 			a.href = "#"+ this.columns[i];
 			a.columnNumber = i;
+			a.style.lineHeight = buttonHeight + "px";
 			a.onclick = function() {
-				//console.log("Loading year "+ thisWidget.columns[this.columnNumber]);
 				thisWidget.drawMap(this.columnNumber);
 				return false;
 			};

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget name="TableWidget" id="AutoMicrosite/Widget/Table"
 		spec="1.0" width="800" height="600" jsClass="AutoMicrosite.Widget.Table"
+		x:min-width="100" x:min-height="100"
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
-		xmlns="http://openajax.org/metadata">
+		xmlns="http://openajax.org/metadata"
+		sandbox="true"
+		scrolling="true">
 
 	<require type="javascript" src="Table.js?v=2"></require>
 
@@ -46,7 +49,7 @@
 		]]>
     </content>
 	
-	<topic name="AutoMicrosite.Data.Table" type="object" publish="true">
+	<topic name="AutoMicrosite.LabourCost.Data" type="object" publish="true">
 		<example><![CDATA[
 			{"data": [
 					["Country", "1999", "2000"],
