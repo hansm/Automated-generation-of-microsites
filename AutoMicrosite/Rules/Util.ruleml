@@ -2,51 +2,6 @@
 <RuleML xmlns="http://ruleml.org/spec">
 	<Assert mapClosure="universal">
 
-		<!--
-		Response to widget query
-		-->
-		<Implies>
-			<if>
-				<And>
-					<Atom>
-						<Rel>Location</Rel>
-						<slot><Ind>widget</Ind><Var>widget</Var></slot>
-						<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
-						<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
-					</Atom>
-
-					<Atom>
-						<Rel>Width</Rel>
-						<slot><Ind>widget</Ind><Var>widget</Var></slot>
-						<slot><Ind>width</Ind><Var>width</Var></slot>
-					</Atom>
-
-					<Atom>
-						<Rel>Height</Rel>
-						<slot><Ind>widget</Ind><Var>widget</Var></slot>
-						<slot><Ind>height</Ind><Var>height</Var></slot>
-					</Atom>
-
-					<Atom>
-						<Rel>Priority</Rel>
-						<slot><Ind>widget</Ind><Var>widget</Var></slot>
-						<slot><Ind>priority</Ind><Var>priority</Var></slot>
-					</Atom>
-				</And>
-			</if>
-			<then>
-				<Atom>
-					<Rel>WidgetResponse</Rel>
-					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>horizontal</Ind><Var>locationHorizontal</Var></slot>
-					<slot><Ind>vertical</Ind><Var>locationVertical</Var></slot>
-					<slot><Ind>width</Ind><Var>width</Var></slot>
-					<slot><Ind>height</Ind><Var>height</Var></slot>
-					<slot><Ind>priority</Ind><Var>priority</Var></slot>
-				</Atom>
-			</then>
-		</Implies>
-
 		<!-- Check whether the widget is a data widget -->
 		<Implies>
 			<if>
@@ -388,6 +343,228 @@
 			<then>
 				<Atom>
 					<Rel>http://deepweb.ut.ee/#widgetsMissPlace</Rel>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Widget fits placeholder -->
+
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#templateExists</Rel>
+						<Var>template</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#isDataWidget</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Ind>false</Ind></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/TemplatePlaceholder#category</Rel>
+						<slot><Ind>template</Ind><Var>template</Var></slot>
+						<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+						<slot><Ind>category</Ind><Var>category</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://openajax.org/metadata#category</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>category</Ind><Var>category</Var></slot>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/#badDimensions</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+							<slot><Ind>template</Ind><Var>template</Var></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Check dimensions
+		-->
+
+		<!-- Placeholder max-height should be at least widget min-height -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/TemplatePlaceholder#max-height</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+						<Var>maxHeight</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height</Rel>
+						<Var>widget</Var>
+						<Var>minHeight</Var>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var>minHeight</Var>
+						<Var>maxHeight</Var>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#badDimensions</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Placeholder min-height should be at most widget max-height -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/TemplatePlaceholder#min-height</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+						<Var>minHeight</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height</Rel>
+						<Var>widget</Var>
+						<Var>maxHeight</Var>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var>minHeight</Var>
+						<Var>maxHeight</Var>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#badDimensions</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Placeholder max-width should be at least widget min-width -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/TemplatePlaceholder#max-width</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+						<Var>maxWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width</Rel>
+						<Var>widget</Var>
+						<Var>minWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var>minWidth</Var>
+						<Var>maxWidth</Var>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#badDimensions</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Placeholder min-width should be at most widget max-width -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/TemplatePlaceholder#min-width</Rel>
+						<Var>template</Var>
+						<Var>placeholder</Var>
+						<Var>minWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width</Rel>
+						<Var>widget</Var>
+						<Var>maxWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var>minWidth</Var>
+						<Var>maxWidth</Var>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#badDimensions</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
 				</Atom>
 			</then>

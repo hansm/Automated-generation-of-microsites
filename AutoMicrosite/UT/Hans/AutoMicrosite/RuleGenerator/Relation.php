@@ -39,9 +39,22 @@ class Relation {
 	const WIDGET_LOAD_FIRST = 'http://deepweb.ut.ee/automicrosite/#loadFirst';
 
 	/**
+	 * Widget dimensions
+	 */
+	const WIDGET_MIN_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#min-height';
+	const WIDGET_MAX_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#max-height';
+	const WIDGET_MIN_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#min-width';
+	const WIDGET_MAX_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#max-width';
+
+	/**
 	 * Template exists
 	 */
 	const TEMPLATE = 'http://deepweb.ut.ee/#templateExists';
+
+	/**
+	 * Template placeholder
+	 */
+	const PLACEHOLDER = 'http://deepweb.ut.ee/automicrosite/#placeholder';
 
 	/**
 	 * Template fits widgets relation
@@ -76,6 +89,11 @@ class Relation {
 	 * Template allows category in a placeholder
 	 */
 	const PLACE_CATEGORY = 'http://deepweb.ut.ee/TemplatePlaceholder#category';
+
+	/**
+	 * Widget does not fit in placeholder (or vice versa)
+	 */
+	const BAD_DIMENSIONS = 'http://deepweb.ut.ee/automicrosite/#badDimensions';
 
 	/**
 	 * Get template dimensions relation based on variable name

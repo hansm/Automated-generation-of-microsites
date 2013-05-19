@@ -92,6 +92,14 @@ class MicrodataTemplateToRuleMl {
 			$isOptional = isset($templateProp['optional']) && isset($templateProp['optional'][0])
 							&& strcasecmp($templateProp['optional'][0], 'true') == 0;
 
+			// Placeholder exists
+			$assert->appendChild(
+				self::createAtom(Relation::PLACEHOLDER, array(
+					new Ind($templateId),
+					new Ind($placeholderId)
+				))
+			);
+
 			// Category limits
 			if (!empty($templateProp['category'])) {
 				$assert->appendChildren(
@@ -105,12 +113,9 @@ class MicrodataTemplateToRuleMl {
 				if (!empty($templateProp[$dimensionVar])) {
 					$assert->appendChild(
 						self::createAtom(Relation::getTemplateDimensionsRel($dimensionVar), array(
-							new Slot(new Ind('template'), new Ind($templateId)),
-							new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-							new Slot(
-								new Ind($dimensionVar),
-								new Ind($templateProp[$dimensionVar][0], null, RuleMlType::INTEGER)
-							)
+							new Ind($templateId),
+							new Ind($placeholderId),
+							new Ind($templateProp[$dimensionVar][0], null, RuleMlType::INTEGER)
 						))
 					);
 				}
@@ -126,41 +131,6 @@ class MicrodataTemplateToRuleMl {
 					))
 				);
 			}
-
-			// Check that there is a widget for this placeholders
-			$implies = new Implies();
-			$assert->appendChild($implies);
-
-			$ifAnd = new AndElement();
-			$ifAnd->appendChild(
-				self::createAtom(Relation::PLACE_CATEGORY, array(
-					new Slot(new Ind('template'), new Ind($templateId)),
-					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-					new Slot(new Ind('category'), new Variable('category'))
-				))
-			);
-			$ifAnd->appendChild(
-				self::createAtom(Relation::WIDGET_CATEGORY, array(
-					new Slot(new Ind('widget'), new Variable('widget')),
-					new Slot(new Ind('category'), new Variable('category'))
-				))
-			);
-			$ifAnd->appendChild(
-				self::createAtom(Relation::WIDGET_IS_DATA, array(
-					new Slot(new Ind('widget'), new Variable('widget')),
-					new Slot(new Ind('value'), new Ind('false'))
-				))
-			);
-			$implies->createIf(array($ifAnd));
-
-			$implies->createThen();
-			$implies->getThen()->appendChild(
-				self::createAtom(Relation::WIDGET_PLACE, array(
-					new Slot(new Ind('widget'), new Variable('widget')),
-					new Slot(new Ind('placeholder'), new Ind($placeholderId)),
-					new Slot(new Ind('template'), new Ind($templateId)),
-				))
-			);
 
 			if (!$isOptional) {
 				$templateIfAnd->appendChild(
