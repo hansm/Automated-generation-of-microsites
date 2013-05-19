@@ -45,7 +45,7 @@ class Widget implements RuleGeneratorWidget {
 	 * @var string
 	 */
 	public $width;
-	public $minWidth = 100;
+	public $minWidth;
 	public $maxWidth;
 
 	/**
@@ -54,7 +54,7 @@ class Widget implements RuleGeneratorWidget {
 	 * @var string
 	 */
 	public $height;
-	public $minHeight = 100;
+	public $minHeight;
 	public $maxHeight;
 
 	/**
@@ -72,14 +72,9 @@ class Widget implements RuleGeneratorWidget {
 	public $separatePage;
 
 	/**
-	 * Line number of widget in mashup when multiple widgets are allowed in the placeholder
-	 *
-	 * @var int
-	 */
-	public $line;
-
-	/**
 	 * Whether widget contains user interface
+	 *
+	 * // TODO: probably should not use, use isDataWidget instead
 	 *
 	 * @var boolean
 	 */
@@ -98,6 +93,13 @@ class Widget implements RuleGeneratorWidget {
 	 * @var boolean´
 	 */
 	public $isMenuWidget;
+
+	/**
+	 * Widget should be loaded before all other widgets
+	 *
+	 * @var boolean
+	 */
+	public $loadFirst;
 
 	/**
 	 * Mapings generated for semantic integration widget
@@ -149,7 +151,7 @@ class Widget implements RuleGeneratorWidget {
 		$this->isDataWidget = $widget->isDataWidget();
 		$this->isMenuWidget = $widget->isMenuWidget();
 		$this->separatePage = $widget->separatePage();
-		$this->line = $widget->getLineNumber();
+		$this->loadFirst = $widget->getLoadFirst();
 	}
 
 	/**

@@ -48,13 +48,6 @@ interface IWidget {
 	 */
 	public function separatePage();
 
-	/**
-	 * Line number of the widget in a placeholder
-	 *
-	 * @return int
-	 */
-	public function getLineNumber();
-
 	public function getMaxWidth();
 
 	public function getMinWidth();
@@ -62,5 +55,12 @@ interface IWidget {
 	public function getMinHeight();
 
 	public function getMaxHeight();
+
+	/**
+	 * Whether the widget should be loaded before others
+	 *
+	 * @return boolean
+	 */
+	public function getLoadFirst();
 
 }

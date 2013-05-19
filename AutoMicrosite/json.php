@@ -1,6 +1,7 @@
 <?php
 /**
- * Initiate automatic generation of microsite
+ * Initiate Auto Microsite system
+ * JSON API
  *
  * @author Hans
  */

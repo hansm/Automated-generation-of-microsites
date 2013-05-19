@@ -114,6 +114,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				this.widgetData,
 				this.placeholders
 			);
+			this.setUpMenuManager();
 		},
 
 		/**
@@ -139,10 +140,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
-			// Listen on the MenuClick topic to track clicking on menu items
-			if (topic == "AutoMicrosite.MenuClick") {
-				this.loader.menuClick(data, this.size);
-			}
+			console.log("onPublish " + topic);
+			console.log(data);
 			return true;
 		},
 
@@ -182,6 +181,16 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		allWidgetsLoaded: function() {
 			this.curtain.disable();
+		},
+
+		/**
+		 * Monitor AutoMicrosite.MenuClick topic
+		 */
+		setUpMenuManager: function() {
+			this.hub.subscribe("AutoMicrosite.MenuClick", function(topic, data) {
+				console.log("AutoMicrosite.MenuClick " + data.widget)
+				this.loader.menuClick(data, this.size);
+			}, this);
 		}
 
 	});

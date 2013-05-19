@@ -25,7 +25,7 @@ class RuleMlWidget implements IWidget {
 	 *
 	 * @var string[]
 	 */
-	private $booleanVars = array('isDataWidget', 'separatePage', 'isMenuWidget');
+	private $booleanVars = array('isDataWidget', 'separatePage', 'isMenuWidget', 'loadFirst');
 
 	public function __construct($response) {
 		$variables = RuleMlService::getResponseVarNodes($response);
@@ -79,10 +79,6 @@ class RuleMlWidget implements IWidget {
 		return $this->getValue('separatePage');
 	}
 
-	public function getLineNumber() {
-		return $this->getValue('line');
-	}
-
 	public function getMaxHeight() {
 
 	}
@@ -97,6 +93,10 @@ class RuleMlWidget implements IWidget {
 
 	public function getMinWidth() {
 
+	}
+
+	public function getLoadFirst() {
+		return $this->getValue('loadFirst');
 	}
 
 }

@@ -8,5 +8,6 @@
 			<slot><Ind>isMenuWidget</Ind><Var>isMenuWidget</Var></slot>
 			<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
+			<slot><Ind>loadFirst</Ind><Var>loadFirst</Var></slot>
 		</Atom>
 </Query>

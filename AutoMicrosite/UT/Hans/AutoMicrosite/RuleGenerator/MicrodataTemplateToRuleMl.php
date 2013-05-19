@@ -218,7 +218,7 @@ class MicrodataTemplateToRuleMl {
 	 * @return array
 	 */
 	public static function getPlaceholders(MicrodataPhpDOMDocument $microdataDocument) {
-		$nodeList = $microdataDocument->getItems(self::PLACEHOLDER_ITEMTYPE); // TODO: maybe I should also go through all properties to find placeholders that are properties of other items???
+		$nodeList = $microdataDocument->getItems(self::PLACEHOLDER_ITEMTYPE);
 		$properties = array();
 		for ($i = 0; $i < $nodeList->length; $i++) {
 			$item = $nodeList->item($i);

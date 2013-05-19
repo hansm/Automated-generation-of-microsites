@@ -21,10 +21,10 @@
 
 function isValidURL($url)
 {
+	return true; // TODO: filter allowed hostnames
+
 	/* From http://stackoverflow.com/questions/161738/what-is-the-best-regular-expression-to-check-if-a-string-is-a-valid-url#161749,
 		Creative Commons license: http://creativecommons.org/licenses/by-sa/3.0/  */
-
-	return true;
 	return preg_match('/^(https?):\/\/(?#											protocol
 						)(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+(?#         username
 						)(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?(?#      password
@@ -66,14 +66,27 @@ if ( isset( $_GET['oawu'] ) ) {
     // POST request
     else if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		//var_dump('POST');
+		//var_dump($_SERVER['CONTENT_TYPE']);
         $ct = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'application/x-www-form-urlencoded';
         $rawdata = file_get_contents('php://input');
-        $headers = 'Content-Type: ' . $ct . PHP_EOL. 'Content-Length: ' . strlen( $rawdata ) . PHP_EOL;
-        $options = array('method'=>'POST',
-                         'header' => $headers,
-                         'content' => $rawdata);
-        $context = stream_context_create( array('http'=>$options) );
-		//var_dump($rawdata);
+        $headers = 'Content-Type: ' . $ct . "\r\n". 'Content-Length: ' . strlen( $rawdata ) . "\r\n";
+        $options = array('method'	=>	'POST',
+                         'header'	=>	$headers,
+                         'content'	=>	$rawdata);
+        $context = stream_context_create(array('http'	=>	$options));
+/*
+		$fp = fopen($url, 'rb', false, $context);
+		if (!$fp) {
+			echo 'Could not connect to host.';
+			exit();
+		}
+
+		echo @stream_get_contents($fp);
+
+		fclose($fp);
+   
+		var_dump($rawdata);
+		var_dump($url);*/
         echo file_get_contents( $url, false, $context );
     }
 }

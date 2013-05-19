@@ -34,6 +34,11 @@ class Relation {
 	const WIDGET_PRIORITY = 'http://deepweb.ut.ee/#priority2';
 
 	/**
+	 * Widget has to be loaded first
+	 */
+	const WIDGET_LOAD_FIRST = 'http://deepweb.ut.ee/automicrosite/#loadFirst';
+
+	/**
 	 * Template exists
 	 */
 	const TEMPLATE = 'http://deepweb.ut.ee/#templateExists';

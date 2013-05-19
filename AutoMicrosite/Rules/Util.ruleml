@@ -157,6 +157,52 @@
 			</then>
 		</Implies>
 
+		<!--
+		Whether widget needs to be loaded before other widgets
+		-->
+		<!-- Transformer widget has to be loaded first -->
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://openajax.org/metadata#category</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/Transformer</Ind></slot>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#loadFirst</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>true</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+		<!-- default=false -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/#loadFirst</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>value</Ind><Ind>true</Ind></slot>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/#loadFirst</Rel>
+					<slot><Ind>widget</Ind><Var>widget</Var></slot>
+					<slot><Ind>value</Ind><Ind>false</Ind></slot>
+				</Atom>
+			</then>
+		</Implies>
+
 		<!-- Combine widget query response -->
 		<Implies>
 			<if>
@@ -187,6 +233,11 @@
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Var>separatePage</Var></slot>
 					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/#loadFirst</Rel>
+						<slot><Ind>widget</Ind><Var>widget</Var></slot>
+						<slot><Ind>value</Ind><Var>loadFirst</Var></slot>
+					</Atom>
 				</And>
 			</if>
 			<then>
@@ -199,6 +250,7 @@
 					<slot><Ind>isMenuWidget</Ind><Var>isMenuWidget</Var></slot>
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 					<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
+					<slot><Ind>loadFirst</Ind><Var>loadFirst</Var></slot>
 				</Atom>
 			</then>
 		</Implies>

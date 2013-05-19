@@ -23,7 +23,7 @@ class GET extends AbstractRequest {
 
 		$widgets = array();
 		foreach ($_REQUEST['widget'] as $widgetNumber => $widgetUrl) {
-			$widget = new RequestWidget($widgetUrl);
+			$widget = new RequestWidget($widgetUrl, array(), $widgetNumber);
 			if (isset($_REQUEST['property'])
 					&& !empty($_REQUEST['property'][$widgetNumber])
 					&& \is_array($_REQUEST['property'][$widgetNumber])) {
@@ -53,10 +53,6 @@ class GET extends AbstractRequest {
 
 	public function response($result) {
 		echo $result;
-		/*
-			$url = $this->saveToFile($result);
-			header('Location: '. $url);
-		*/
 	}
 
 }

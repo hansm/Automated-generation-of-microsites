@@ -17,4 +17,4 @@ spl_autoload_register(function($className) {
 // Convert errors to ErrorExceptions
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
     throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
-}, E_ALL^E_NOTICE); // TODO: get rid of E_ALL^E_NOTICE
+}, E_ALL^E_NOTICE);

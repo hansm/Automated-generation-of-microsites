@@ -46,12 +46,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		dataWidgets: [],
 		dataWidgetsLoaded: [],
 
-		/**
-		 * Loaded widgets management objects
-		 */
-		visualWidgetsLoadedObjects: [],
-		dataWidgetsLoadedObjects: [],
-
 		constructor: function(openAjaxLoader, widgetData, placeholders) {
 			this.loader = openAjaxLoader;
 			this.data = widgetData;
@@ -70,7 +64,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.visualDoneCallback = visualDone;
 			this.allDoneCallback = allDone;
 
-			// TODO: parse placeholder info instead
 			this.emptyPlaceholders();
 
 			// Distribute widgets to data and visual
@@ -82,11 +75,45 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			}
 
-            // TODO: transformer should probably be loaded first, but should still
-            //       be in an OpenAjax metadata file
-            //this.attachTransformer(); // TODO: remove
+            this.loadFirstOrderWidgets();
+		},
 
-            this.loadVisualWidgets();
+		/**
+		 * Load widgets that have to be loaded first
+		 */
+		loadFirstOrderWidgets: function() {
+			var firstOrderWidgets = [];
+			for (var i in this.data) {
+				if (this.data[i].loadFirst) {
+					firstOrderWidgets.push(this.data[i]);
+				}
+			}
+
+			if (firstOrderWidgets.length == 0) {
+				this.firstOrderDone();
+				return;
+			}
+
+			var firstOrderLoaded = [];
+
+			// Callback for loaded widgets
+			var callback = function(widget, widgetObject) {
+				firstOrderLoaded.push(widget.id);
+				if (widget.isDataWidget) {
+					this.dataWidgetsLoaded.push(widget.id);
+				} else {
+					this.visualWidgetsLoaded.push(widget.id);
+				}
+
+				if (firstOrderLoaded.length >= firstOrderWidgets.length) {
+					this.firstOrderDone();
+				}
+			};
+
+			// Load
+			for (i in firstOrderWidgets) {
+				this.loadWidget(firstOrderWidgets[i], callback.bind(this, firstOrderWidgets[i]));
+			}
 		},
 
         /**
@@ -116,48 +143,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 		},
 
-		// TODO: move to a metadata file
-		attachTransformer: function() {
-			var transformerWidgetUrl = "http://automicrosite.maesalu.com:8833/TransformerWidget.html";
-			var tunnelUrl = window.location.href.replace(/\/[^\/]*$/, '') + "/js/tunnel.html";
-
-			var div = domConstruct.create("div", {
-				id: "transformerWidget"
-			}, document.body);
-
-			new OpenAjax.hub.IframeContainer(this.loader.hub , "transformerWidget",
-			  {
-				Container: {
-				  onSecurityAlert: function() {},
-				  onConnect:       function() {},
-				  onDisconnect:    function() {}
-				},
-				IframeContainer: {
-				  // DOM element that is parent of this container:
-				  parent:      div,
-				  // Container's iframe will have these CSS styles:
-				  iframeAttrs: { id: "smallHidden" },
-				  // Container's iframe loads the following URL:
-				  uri: transformerWidgetUrl,
-				  // Tunnel URL required by IframeHubClient. This particular tunnel URL
-				  // is the one that corresponds to release/all/OpenAjaxManagedHub-all.js:
-				  tunnelURI:  tunnelUrl
-				}
-			  }
-			);
-
-		},
-
 		/**
 		 * Load visual widget
 		 */
 		loadVisualWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
-				widget.openAjax = widgetObject;
-
 				this.visualWidgetsLoaded.push(widgetId);
-
-				this.visualWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
 
 				// All visual widgets done
 				if (this.visualWidgetsLoaded.length == this.visualWidgets.length) {
@@ -172,10 +163,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		loadDataWidget: function(widget) {
 			var callback = (function(widgetId, widgetObject) {
-				widget.openAjax = widgetObject;
-
 				this.dataWidgetsLoaded.push(widgetId);
-				this.dataWidgetsLoadedObjects.push(widgetObject); // TODO: get rid of this
 
 				// All data widgets done
 				if (this.dataWidgetsLoaded.length == this.dataWidgets.length) {
@@ -200,12 +188,10 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			if (widget.isDataWidget) {
 				domStyle.set(widget.div, "display", "none");
 			} else {
-				domStyle.set(widget.div, "overflow", "auto");
+				domStyle.set(widget.div, "overflow", "hidden");
 			}
 
 			var thisLoader = this.loader;
-
-			thisLoader.hub.subscribe("ee.stacc.transformer.mapping.add.raw", function() {}); // TODO: remove, only needed so 'onPublish' would be called when no subscribers
 
 			// Load widget
 			this.loader.create({
@@ -213,17 +199,21 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				target:		widget.div,
 				properties: (widget.properties ? widget.properties : {}),
 				onComplete: function(widgetObject) {
-					//console.log("Widget loaded: "+ widget.id);
+					widget.loaded = true;
+					widget.openAjax = widgetObject;
 
 					widgetObject.widgetId2 = widget.id;
 					widgetObject.autoMicrositeData = widget;
 					callback(widgetObject);
 
-					thisLoader.hub.publish("ee.stacc.transformer.mapping.add.raw",
-						widget.mappings);
+					// Publish mappings
+					if (widget.mappings) {
+						thisLoader.hub.publish("ee.stacc.transformer.mapping.add.raw",
+							widget.mappings);
+					}
 				},
-				onError:	function(error) {
-					alert(error);
+				onError: function(error) {
+					console.log("Failed loading widget: " + error);
 				}
 			});
 		},
@@ -245,11 +235,17 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		/**
+		 * First order widgets loaded
+		 */
+		firstOrderDone: function() {
+			this.loadVisualWidgets();
+		},
+
+		/**
 		 * All widgets finished loading
 		 */
 		visualDone: function() {
 			console.log("WidgetLoad.visualDone");
-			//this.buildNavigation();
 
 			if (typeof this.visualDone == "function") {
 				this.visualDoneCallback(this.visualWidgets
@@ -259,48 +255,8 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.loadDataWidgets();
 		},
 
-		buildNavigation: function() {
-			var menuWidget = this.getMenuWidget();
-			if (!menuWidget) return;
-
-			// Hide 'separatePage' widgets
-			var widget, widgetId, widgetDiv, menuItems;
-
-			for (var i = 0; i < this.visualWidgets.length; i++) {
-				if (!this.visualWidgets[i].separatePage) continue;
-
-				widget = this.visualWidgets[i];
-				widget.enabled = false;
-				widget.div.style.display = "none";
-
-				menuItems = menuWidget.OpenAjax.getPropertyValue("buttons");
-				if (!menuItems) {
-					menuItems = [];
-					menuItems.push({
-						label: "Main", // TODO: maybe combine from rest of the widget titles
-						href: {widget: null, placeholder: widget.placeholder}
-					});
-				}
-				menuItems.push({
-					label: widget.title ? widget.title : "123",
-					href: {widget: widget.id, placeholder: widget.placeholder}
-				});
-
-				menuWidget.OpenAjax.setPropertyValue("buttons", menuItems);
-			}
-		},
-
-		getMenuWidget: function() {
-			// TODO: this info should probably come from server side, in case menu is used
-			for (var i = 0; i < this.visualWidgetsLoadedObjects.length; i++) {
-				if (this.visualWidgetsLoadedObjects[i].divMenu) { // TODO: really-really bad way to find menu
-					return this.visualWidgetsLoadedObjects[i];
-				}
-			}
-		},
-
 		menuClick: function(widgetInfo, size) {
-			console.log("WidgetLoad.menuClick "+ widgetInfo);
+		// TODO: move to Navigation.js
 			var widgetId = widgetInfo.widget;
 			var placeholderWidgets = this.getWidgetsInPlaceholder(widgetInfo.placeholder);
 			this.forEach(placeholderWidgets, function(w) {
@@ -323,8 +279,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		done: function() {
 			console.log("WidgetLoad.done");
 			if (typeof this.allDoneCallback == "function") {
-				this.allDoneCallback(this.visualWidgetsLoadedObjects
-					, this.dataWidgetsLoadedObjects);
+				this.allDoneCallback();
 			}
 		},
 
@@ -340,9 +295,12 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				}
 			}
 
-			return document.body;
+			return document.body; // no placeholder, append to the end of body
 		},
 
+		/**
+		 * Clear placeholders of microdata/default content
+		 */
 		emptyPlaceholders: function() {
 			for (var i in this.placeholders) {
 				this.placeholders[i].innerHTML = "";

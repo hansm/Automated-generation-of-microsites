@@ -130,31 +130,6 @@ abstract class AbstractRequest implements IRequest {
 	}
 
 	/**
-	 * Save response to file
-	 *
-	 * @param string $contents
-	 * @return string URL of the file
-	 * @throws \Exception
-	 */
-	protected function saveToFile($contents) {
-		$mashupDir = $this->getConf('general', 'cache_dir');
-		$fileName = \str_replace(' ', '-', $this->getTitle())
-						.'-'. \time() .'.html';
-		while (\file_exists($mashupDir . $fileName)) {
-			$fileName = \mt_rand(0, 9) . $fileName;
-		}
-
-		try {
-			\file_put_contents($mashupDir . $fileName, $contents);
-		} catch (ErrorException $e) {
-			$this->log->exception($e);
-			throw new Exception('Could not save mashup.');
-		}
-
-		return $this->getConf('general', 'mashup_dir_url') . \urlencode($fileName);
-	}
-
-	/**
 	 * Try to load cached mashup
 	 *
 	 * @return string
