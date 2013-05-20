@@ -1,0 +1,336 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY schema "http://schema.org/" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY r1 "https://www.inforegister.ee/onto/business/2013/r1/" >
+]>
+
+
+<rdf:RDF xmlns="https://www.inforegister.ee/onto/business/2013/r1#"
+     xml:base="https://www.inforegister.ee/onto/business/2013/r1"
+     xmlns:schema="http://schema.org/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:r1="https://www.inforegister.ee/onto/business/2013/r1/">
+    <owl:Ontology rdf:about="https://www.inforegister.ee/onto/business/2013/r1">
+        <owl:imports rdf:resource="http://schema.org/"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/annualTurnover -->
+
+    <owl:ObjectProperty rdf:about="&r1;annualTurnover">
+        <rdfs:range rdf:resource="&r1;NumericRange"/>
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/balanceSheetTotal -->
+
+    <owl:ObjectProperty rdf:about="&r1;balanceSheetTotal">
+        <rdfs:range rdf:resource="&r1;NumericRange"/>
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/numberOfEmployees -->
+
+    <owl:ObjectProperty rdf:about="&r1;numberOfEmployees">
+        <rdfs:range rdf:resource="&r1;NumericRange"/>
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/officeAddress -->
+
+    <owl:ObjectProperty rdf:about="&r1;officeAddress">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+        <rdfs:range rdf:resource="&r1;PostalAddress"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/postalAddress -->
+
+    <owl:ObjectProperty rdf:about="&r1;postalAddress">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+        <rdfs:range rdf:resource="&r1;PostalAddress"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/countryCode -->
+
+    <owl:DatatypeProperty rdf:about="&r1;countryCode">
+        <rdfs:domain rdf:resource="&r1;PostalAddress"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/countyName -->
+
+    <owl:DatatypeProperty rdf:about="&r1;countyName">
+        <rdfs:domain rdf:resource="&r1;PostalAddress"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/emtakCode -->
+
+    <owl:DatatypeProperty rdf:about="&r1;emtakCode">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/establishmentYear -->
+
+    <owl:DatatypeProperty rdf:about="&r1;establishmentYear">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/fixedCapitalAmount -->
+
+    <owl:DatatypeProperty rdf:about="&r1;fixedCapitalAmount">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/fixedCapitalCurrency -->
+
+    <owl:DatatypeProperty rdf:about="&r1;fixedCapitalCurrency">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/isLegalEntity -->
+
+    <owl:DatatypeProperty rdf:about="&r1;isLegalEntity"/>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/krdxDebtCurrency -->
+
+    <owl:DatatypeProperty rdf:about="&r1;krdxDebtCurrency">
+        <rdfs:domain rdf:resource="&r1;DebtSum"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/krdxDebtSum -->
+
+    <owl:DatatypeProperty rdf:about="&r1;krdxDebtSum">
+        <rdfs:domain rdf:resource="&r1;DebtSum"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/krdxLabel -->
+
+    <owl:DatatypeProperty rdf:about="&r1;krdxLabel">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/legalForm -->
+
+    <owl:DatatypeProperty rdf:about="&r1;legalForm">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/lowerBound -->
+
+    <owl:DatatypeProperty rdf:about="&r1;lowerBound">
+        <rdfs:domain rdf:resource="&r1;NumericRange"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/previousOrganizationName -->
+
+    <owl:DatatypeProperty rdf:about="&r1;previousOrganizationName">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/registrationCode -->
+
+    <owl:DatatypeProperty rdf:about="&r1;registrationCode">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/registrationCountryCode -->
+
+    <owl:DatatypeProperty rdf:about="&r1;registrationCountryCode">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/registryDistrict -->
+
+    <owl:DatatypeProperty rdf:about="&r1;registryDistrict">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/reputationScore -->
+
+    <owl:DatatypeProperty rdf:about="&r1;reputationScore">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/statusCode -->
+
+    <owl:DatatypeProperty rdf:about="&r1;statusCode">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/taxDebtCurrency -->
+
+    <owl:DatatypeProperty rdf:about="&r1;taxDebtCurrency">
+        <rdfs:domain rdf:resource="&r1;DebtSum"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/taxDebtSum -->
+
+    <owl:DatatypeProperty rdf:about="&r1;taxDebtSum">
+        <rdfs:domain rdf:resource="&r1;DebtSum"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/taxDebtUpdateDate -->
+
+    <owl:DatatypeProperty rdf:about="&r1;taxDebtUpdateDate">
+        <rdfs:domain rdf:resource="&r1;DebtSum"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/trademark -->
+
+    <owl:DatatypeProperty rdf:about="&r1;trademark">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/upperBound -->
+
+    <owl:DatatypeProperty rdf:about="&r1;upperBound">
+        <rdfs:domain rdf:resource="&r1;NumericRange"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/webSiteURL -->
+
+    <owl:DatatypeProperty rdf:about="&r1;webSiteURL">
+        <rdfs:domain rdf:resource="&r1;Organization"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/AccessKey -->
+
+    <owl:Class rdf:about="&r1;AccessKey"/>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/DebtSum -->
+
+    <owl:Class rdf:about="&r1;DebtSum">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/NumericRange -->
+
+    <owl:Class rdf:about="&r1;NumericRange">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/Organization -->
+
+    <owl:Class rdf:about="&r1;Organization">
+        <rdfs:subClassOf rdf:resource="&schema;Organization"/>
+    </owl:Class>
+    
+
+
+    <!-- https://www.inforegister.ee/onto/business/2013/r1/PostalAddress -->
+
+    <owl:Class rdf:about="&r1;PostalAddress">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+
