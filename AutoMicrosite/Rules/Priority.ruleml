@@ -7,7 +7,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>

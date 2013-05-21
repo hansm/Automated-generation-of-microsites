@@ -219,7 +219,7 @@
 				<Atom>
 					<Rel>http://openajax.org/metadata#category</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
-					<slot><Ind>category</Ind><Ind>http://schema.org/Datasets</Ind></slot>
+					<slot><Ind>category</Ind><Ind>http://schema.org/Dataset</Ind></slot>
 				</Atom>
 			</if>
 			<then>

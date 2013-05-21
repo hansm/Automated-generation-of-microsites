@@ -28,7 +28,7 @@
 				</xsl:for-each>
 
 				<Atom>
-					<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+					<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 					<Ind><xsl:value-of select="$widget" /></Ind>
 				</Atom>
 
@@ -49,6 +49,36 @@
 					<slot><Ind>widget</Ind><Ind><xsl:value-of select="$widget" /></Ind></slot>
 					<slot><Ind>height</Ind><Ind type="Integer"><xsl:value-of select="//@height" /></Ind></slot>
 				</Atom>
+
+				<!-- Dimensions -->
+				<xsl:if test="//@oax:min-width">
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width</Rel>
+						<Ind><xsl:value-of select="$widget" /></Ind>
+						<Ind type="Integer"><xsl:value-of select="//@oax:min-width" /></Ind>
+					</Atom>
+				</xsl:if>
+				<xsl:if test="//@oax:max-width">
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width</Rel>
+						<Ind><xsl:value-of select="$widget" /></Ind>
+						<Ind type="Integer"><xsl:value-of select="//@oax:max-width" /></Ind>
+					</Atom>
+				</xsl:if>
+				<xsl:if test="//@oax:min-height">
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height</Rel>
+						<Ind><xsl:value-of select="$widget" /></Ind>
+						<Ind type="Integer"><xsl:value-of select="//@oax:min-height" /></Ind>
+					</Atom>
+				</xsl:if>
+				<xsl:if test="//@oax:max-height">
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height</Rel>
+						<Ind><xsl:value-of select="$widget" /></Ind>
+						<Ind type="Integer"><xsl:value-of select="//@oax:max-height" /></Ind>
+					</Atom>
+				</xsl:if>
 
 			</Assert>
 		</RuleML>

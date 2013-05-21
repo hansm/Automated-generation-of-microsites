@@ -1,6 +1,6 @@
 <Query>
 		<Atom>
-			<Rel>http://deepweb.ut.ee/#widgetQuery</Rel>
+			<Rel>http://deepweb.ut.ee/automicrosite/widgetQuery</Rel>
 			<slot><Ind>widget</Ind><Ind>{$widget}</Ind></slot>
 			<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 			<slot><Ind>template</Ind><Ind>{$template}</Ind></slot>
@@ -9,5 +9,9 @@
 			<slot><Ind>priority</Ind><Var>priority</Var></slot>
 			<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
 			<slot><Ind>loadFirst</Ind><Var>loadFirst</Var></slot>
+			<slot><Ind>minWidth</Ind><Var>minWidth</Var></slot>
+			<slot><Ind>maxWidth</Ind><Var>maxWidth</Var></slot>
+			<slot><Ind>minHeight</Ind><Var>minHeight</Var></slot>
+			<slot><Ind>maxHeight</Ind><Var>maxHeight</Var></slot>
 		</Atom>
 </Query>

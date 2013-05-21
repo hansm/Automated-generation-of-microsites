@@ -23,7 +23,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
@@ -65,7 +65,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
@@ -91,7 +91,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
@@ -137,7 +137,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
@@ -184,7 +184,7 @@
 						<slot><Ind>priority</Ind><Var>priority</Var></slot>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widgetSeparatePage</Rel>
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Var>separatePage</Var></slot>
 					</Atom>
@@ -193,11 +193,31 @@
 						<slot><Ind>widget</Ind><Var>widget</Var></slot>
 						<slot><Ind>value</Ind><Var>loadFirst</Var></slot>
 					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width2</Rel>
+						<Var>widget</Var>
+						<Var>minWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width2</Rel>
+						<Var>widget</Var>
+						<Var>maxWidth</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height2</Rel>
+						<Var>widget</Var>
+						<Var>minHeight</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height2</Rel>
+						<Var>widget</Var>
+						<Var>maxHeight</Var>
+					</Atom>
 				</And>
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://deepweb.ut.ee/#widgetQuery</Rel>
+					<Rel>http://deepweb.ut.ee/automicrosite/widgetQuery</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
@@ -206,6 +226,10 @@
 					<slot><Ind>priority</Ind><Var>priority</Var></slot>
 					<slot><Ind>separatePage</Ind><Var>separatePage</Var></slot>
 					<slot><Ind>loadFirst</Ind><Var>loadFirst</Var></slot>
+					<slot><Ind>minWidth</Ind><Var>minWidth</Var></slot>
+					<slot><Ind>maxWidth</Ind><Var>maxWidth</Var></slot>
+					<slot><Ind>minHeight</Ind><Var>minHeight</Var></slot>
+					<slot><Ind>maxHeight</Ind><Var>maxHeight</Var></slot>
 				</Atom>
 			</then>
 		</Implies>
@@ -215,7 +239,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#templateExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/template</Rel>
 						<Var>template</Var>
 					</Atom>
 					<Atom>
@@ -244,7 +268,7 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -255,13 +279,13 @@
 					<Atom>
 						<Rel>http://openajax.org/metadata#category</Rel>
 						<slot><Ind>widget</Ind><Var>widget2</Var></slot>
-						<slot><Ind>category</Ind><Ind>http://schema.org/SiteNavigationElement</Ind></slot>
+						<slot><Ind>category</Ind><Ind>http://deepweb.ut.ee/AutoMenu</Ind></slot>
 					</Atom>
 				</And>
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
+					<Rel>http://deepweb.ut.ee/automicrosite/widgetSeparatePage</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>true</Ind></slot>
 				</Atom>
@@ -271,12 +295,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Naf>
 						<Atom>
-							<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
+							<Rel>http://deepweb.ut.ee/automicrosite/widgetSeparatePage</Rel>
 							<slot><Ind>widget</Ind><Var>widget</Var></slot>
 							<slot><Ind>value</Ind><Ind>true</Ind></slot>
 						</Atom>
@@ -285,7 +309,7 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://deepweb.ut.ee/#widgetSeparatePage</Rel>
+					<Rel>http://deepweb.ut.ee/automicrosite/widgetSeparatePage</Rel>
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>value</Ind><Ind>false</Ind></slot>
 				</Atom>
@@ -297,9 +321,8 @@
 		<Implies>
 			<if>
 				<And>
-
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#template</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/templateFilled</Rel>
 						<slot><Ind>template</Ind><Var>template</Var></slot>
 					</Atom>
 					<Naf>
@@ -312,7 +335,68 @@
 			</if>
 			<then>
 				<Atom>
-					<Rel>http://deepweb.ut.ee/#templateQuery</Rel>
+					<Rel>http://deepweb.ut.ee/automicrosite/templateMatch</Rel>
+					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Find all templates that are not highest priority -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/templateMatch</Rel>
+						<slot><Ind>template</Ind><Var>template</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/templatePriority</Rel>
+						<Var>template</Var>
+						<Var>priority</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/templateMatch</Rel>
+						<slot><Ind>template</Ind><Var>template2</Var></slot>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/templatePriority</Rel>
+						<Var>template2</Var>
+						<Var>priority2</Var>
+					</Atom>
+					<Atom>
+						<Rel>greaterThan</Rel>
+						<Var>priority2</Var>
+						<Var>priority</Var>
+					</Atom>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/templateNotHighestPriority</Rel>
+					<Var>template</Var>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!-- Select template with highest priority (i.e. most placeholders) -->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/templateMatch</Rel>
+						<slot><Ind>template</Ind><Var>template</Var></slot>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/templateNotHighestPriority</Rel>
+							<Var>template</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/templateQuery</Rel>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
 				</Atom>
 			</then>
@@ -322,22 +406,22 @@
 		<Implies>
 			<if>
 				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/template</Rel>
+						<Var>template</Var>
+					</Atom>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
 						<Atom>
-							<Rel>http://deepweb.ut.ee/#templateExists</Rel>
-							<Var>template</Var>
+							<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
+							<slot><Ind>widget</Ind><Var>widget</Var></slot>
+							<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
+							<slot><Ind>template</Ind><Var>template</Var></slot>
 						</Atom>
-						<Atom>
-							<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
-							<Var>widget</Var>
-						</Atom>
-						<Naf>
-							<Atom>
-								<Rel>http://deepweb.ut.ee/#widgetPlace</Rel>
-								<slot><Ind>widget</Ind><Var>widget</Var></slot>
-								<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
-								<slot><Ind>template</Ind><Var>template</Var></slot>
-							</Atom>
-						</Naf>
+					</Naf>
 				</And>
 			</if>
 			<then>
@@ -354,16 +438,16 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#templateExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/template</Rel>
 						<Var>template</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/placeholder</Rel>
 						<Var>template</Var>
 						<Var>placeholder</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -411,12 +495,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/placeholder</Rel>
 						<Var>template</Var>
 						<Var>placeholder</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -452,12 +536,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/placeholder</Rel>
 						<Var>template</Var>
 						<Var>placeholder</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -493,12 +577,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/placeholder</Rel>
 						<Var>template</Var>
 						<Var>placeholder</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -534,12 +618,12 @@
 			<if>
 				<And>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/automicrosite/#placeholder</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/placeholder</Rel>
 						<Var>template</Var>
 						<Var>placeholder</Var>
 					</Atom>
 					<Atom>
-						<Rel>http://deepweb.ut.ee/#widgetExists</Rel>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
 						<Var>widget</Var>
 					</Atom>
 					<Atom>
@@ -566,6 +650,173 @@
 					<slot><Ind>widget</Ind><Var>widget</Var></slot>
 					<slot><Ind>placeholder</Ind><Var>placeholder</Var></slot>
 					<slot><Ind>template</Ind><Var>template</Var></slot>
+				</Atom>
+			</then>
+		</Implies>
+
+		<!--
+		Default widget maximum and minimum dimensions, for query response
+		-->
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width</Rel>
+							<Var>widget</Var>
+							<Var>x</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width2</Rel>
+					<Var>widget</Var>
+					<Ind type="Integer">25</Ind>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-width2</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</then>
+		</Implies>
+
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width</Rel>
+							<Var>widget</Var>
+							<Var>x</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width2</Rel>
+					<Var>widget</Var>
+					<Ind type="Integer">10000</Ind>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-width2</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</then>
+		</Implies>
+
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height</Rel>
+							<Var>widget</Var>
+							<Var>x</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height2</Rel>
+					<Var>widget</Var>
+					<Ind type="Integer">25</Ind>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#min-height2</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</then>
+		</Implies>
+
+		<Implies>
+			<if>
+				<And>
+					<Atom>
+						<Rel>http://deepweb.ut.ee/automicrosite/widget</Rel>
+						<Var>widget</Var>
+					</Atom>
+					<Naf>
+						<Atom>
+							<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height</Rel>
+							<Var>widget</Var>
+							<Var>x</Var>
+						</Atom>
+					</Naf>
+				</And>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height2</Rel>
+					<Var>widget</Var>
+					<Ind type="Integer">10000</Ind>
+				</Atom>
+			</then>
+		</Implies>
+		<Implies>
+			<if>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
+				</Atom>
+			</if>
+			<then>
+				<Atom>
+					<Rel>http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension#max-height2</Rel>
+					<Var>widget</Var>
+					<Var>x</Var>
 				</Atom>
 			</then>
 		</Implies>
