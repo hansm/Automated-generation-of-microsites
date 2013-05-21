@@ -48,12 +48,32 @@ interface IWidget {
 	 */
 	public function separatePage();
 
+	/**
+	 * Get widget maximum width
+	 *
+	 * @return int
+	 */
 	public function getMaxWidth();
 
+	/**
+	 * Get widget minimum width
+	 *
+	 * @return int
+	 */
 	public function getMinWidth();
 
+	/**
+	 * Get widget min height
+	 *
+	 * @return int
+	 */
 	public function getMinHeight();
 
+	/**
+	 * Get widget max height
+	 *
+	 * @return int
+	 */
 	public function getMaxHeight();
 
 	/**

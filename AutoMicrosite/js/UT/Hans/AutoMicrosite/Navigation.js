@@ -86,9 +86,43 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		/**
 		 * Click event on menu widget
 		 */
-		clickMenu: function(data) {
-			//
+		clickMenu: function(widgetInfo) {
+			var widgetId = widgetInfo.widget;
+			var placeholderWidgets = this.getWidgetsInPlaceholder(widgetInfo.placeholder);
+
+			this.forEach(placeholderWidgets, function(w) {
+				if (w.id == widgetId || widgetId == null && w.separatePage == false) {
+					domStyle.set(w.div, { display: "block" });
+					w.enabled = true;
+				} else {
+					domStyle.set(w.div, { display: "none" });
+					w.enabled = false;
+				}
+			});
+
 			this.size.run();
+		},
+
+		/**
+		 * Get widgets in requested placeholder
+		 */
+		getWidgetsInPlaceholder: function(placeholder) {
+			var widgets = [];
+			for (var i = 0; i < this.widgets.length; i++) {
+				if (this.widgets[i].placeholder == placeholder) {
+					widgets.push(this.widgets[i]);
+				}
+			}
+			return widgets;
+		},
+
+		/**
+		 * Run callback on every array/object element
+		 */
+		forEach: function(array, callback) {
+			for (var i in array) {
+				callback(array[i]);
+			}
 		}
 
 	});

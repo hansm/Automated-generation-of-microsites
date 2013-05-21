@@ -5,6 +5,7 @@ use RuntimeException;
 use ErrorException;
 use DOMNode;
 use DOMDocument;
+use UT\Hans\AutoMicrosite\Util\Log;
 
 /**
  * OO jDREW RuleML service client
@@ -36,6 +37,8 @@ class RuleMlService extends AbstractClient {
 		try {
 			$this->rulesetId = $this->curlClient->create($ruleset);
 		} catch (Exception $e) {
+			$log = new Log('system');
+			$log->exception($e);
 			throw new RuntimeException('Rule service connection problem.');
 		}
 	}

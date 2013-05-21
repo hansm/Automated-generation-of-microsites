@@ -24,12 +24,12 @@ AutoMicrosite.Widget.OrganizationDeptInfo.prototype = {
 	 * Widget loaded
 	 */
 	onLoad: function() {
+		var thisWidget = this;
 		this.widgetId = this.OpenAjax.getId();
-        
-		this.OpenAjax.hub.subscribe("AutoMicrosite.Table.OrganizationData",
-			(function(topic, receivedData) {
-				this.fillTable(receivedData);
-			}).bind(this)
+		this.OpenAjax.hub.subscribe("AutoMicrosite.Table.OrganizationData.Dept",
+			function (topic, receivedData) {
+				thisWidget.fillTable(receivedData);
+			}
 		);
 	},
 	
@@ -41,9 +41,24 @@ AutoMicrosite.Widget.OrganizationDeptInfo.prototype = {
 		for (var i in data) {
 			j = document.getElementById(this.widgetId + i);
 			if (j) {
-				j.innerHTML = data[i];
+				j.innerHTML = this.cleanValue(data[i]);
 			}
 		}
+	},
+
+	/**
+	 * Remove proxy artifacts from the data
+	 */
+	cleanValue: function(value) {
+		if (typeof(value) == "string" && value.substr(0, 1) == "{") {
+			try {
+				var jsObject = $.parseJSON(value);
+				if (jsObject && jsObject["_value_"]) {
+					value = jsObject["_value_"];
+				}
+			} catch (e) { }
+		}
+		return value;
 	}
 
 };

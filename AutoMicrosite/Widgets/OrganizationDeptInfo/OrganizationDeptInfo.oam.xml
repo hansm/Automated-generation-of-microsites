@@ -3,21 +3,32 @@
 		spec="1.0" width="640" height="480" jsClass="AutoMicrosite.Widget.OrganizationDeptInfo"
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
 		xmlns="http://openajax.org/metadata"
-		x:min-width="100" x:max-width="9999"
+		x:min-width="300" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
 		sandbox="true"
+		scrolling="true"
 	>
 
-	<require type="javascript" src="OrganizationDeptInfo.js?v=2"></require>
+	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
+		<require type="javascript" src="jquery.min.js"/>
+	</library>
+	<require type="javascript" src="OrganizationDeptInfo.js"></require>
 
 	<content><![CDATA[
 		<style type="text/css">
 			#__WID__table {
 				width: 100%;
 				font-family: sans-serif;
+				border: 1px solid #CCCCCC;
+				border-collapse: collapse;
+			}
+			#__WID__table td {
+				border: 1px solid #CCCCCC;
+				padding: 0.5em;
 			}
 			#__WID__table thead {
 				font-weight: bold;
+				background-color: #FAFAFA;
 			}
 		</style>
 		<div style="width:100%;height:100%;overflow: auto;">
@@ -48,11 +59,11 @@
 		<description>
 			Show organization dept data in a table
 		</description>
-		<property name="taxDebtSum" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtSum" />
-		<property name="taxDebtCurrency" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtCurrency" />
-		<property name="taxDebtUpdateDate" datatype="string" required="true" urlparam="http://deepweb.ut.ee/taxDebtUpdateDate" />
-		<property name="krdxDebtSum" datatype="string" required="true" urlparam="http://deepweb.ut.ee/krdxDebtSum" />
-		<property name="krdxDebtCurrency" datatype="string" required="true" urlparam="http://deepweb.ut.ee/krdxDebtCurrency" />
+		<property name="taxDebtSum" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/taxDebtSum" />
+		<property name="taxDebtCurrency" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/taxDebtCurrency" />
+		<property name="taxDebtUpdateDate" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/taxDebtUpdateDate" />
+		<property name="krdxDebtSum" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/krdxDebtSum" />
+		<property name="krdxDebtCurrency" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/krdxDebtCurrency" />
 	</topic>
 
 	<categories>

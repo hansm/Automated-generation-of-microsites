@@ -14,7 +14,10 @@ AutoMicrosite.BusinessRegisterQuery.prototype = {
 	 * Widget loaded
 	 */
 	onLoad: function() {
-		this.query();
+		var thisWidget = this;
+		setTimeout(function() {
+			thisWidget.query();
+		}, 2000); // Delay the execution a bit
 	},
 	
 	/**
@@ -31,7 +34,7 @@ AutoMicrosite.BusinessRegisterQuery.prototype = {
 		var name = this.OpenAjax.getPropertyValue("name");
 		if (!name) return;
 		var thisWidget = this;
-		var serviceUrl = this.OpenAjax.rewriteURI("http://automicrosite.maesalu.com/BusinessRegister/BusinessRegisterQuery.php");
+		var serviceUrl = this.OpenAjax.rewriteURI("http://deepweb.ut.ee/automicrosite/BusinessRegister/BusinessRegisterQuery.php");
 		$.post(serviceUrl, {name: name}, function(data) {
 			if (data.error && data.error > 0) {
 				console.log(data.message);
@@ -39,6 +42,8 @@ AutoMicrosite.BusinessRegisterQuery.prototype = {
 				return;
 			}
 			for (var i in data.businesses) {
+				data.businesses[i].registrationCountryCode = "EE";
+				data.businesses[i].isLegalEntity = "true";
 				thisWidget.OpenAjax.hub.publish("AutoMicrosite.BusinessRegister.QueryResponse",
 					data.businesses[i]);
 			}

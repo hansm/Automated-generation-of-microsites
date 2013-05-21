@@ -88,6 +88,14 @@ class MicrodataTemplateToRuleMl {
 			self::createAtom(Relation::TEMPLATE, array(new Ind($templateId)))
 		);
 
+		// Template priority (number of placeholders)
+		$assert->appendChild(
+			self::createAtom(Relation::TEMPLATE_PRIORITY, array(
+				new Ind($templateId),
+				new Ind(count($properties), null, RuleMlType::INTEGER)
+			))
+		);
+
 		foreach ($properties as $placeholderId => $templateProp) {
 			$isOptional = isset($templateProp['optional']) && isset($templateProp['optional'][0])
 							&& strcasecmp($templateProp['optional'][0], 'true') == 0;

@@ -80,49 +80,13 @@ class Template implements RuleGeneratorTemplate {
 		return $this->getFileUrl();
 	}
 
+	/**
+	 * Append contents to the end of head tag
+	 *
+	 * @param string $html
+	 */
 	public function appendToHead($html) {
 		$this->headHtml[] = $html;
-	}
-/*
-	public function setSlot(MicrodataPhpDOMElement $element, $newContents) {
-		$newElement = DomHtml::stringToDomElement($newContents, $element->ownerDocument);
-		$element->parentNode->replaceChild($newElement, $element);
-	}*/
-
-	/**
-	 * Get RuleML facts for RuleML engine
-	 *
-	 * @return \UT\Hans\AutoMicrosite\RuleMl\RuleMl
-	 *
-	public function toRuleMl() {
-		$transformer = new MicrodataTemplateToRuleMl();
-		$result = $transformer->transformTemplate($this->dom, $this->fileUrl);
-		return $result;
-	}
-
-	/**
-	 * Get JSON data about the template
-	 * TODO: possibly do this on client side since placeholder data is still available there
-	 *
-	public function getJson() {
-		$templateData = MicrodataTemplateToRuleMl::getPlaceholders($this->dom);
-		foreach ($templateData as &$placeHolder) {
-			$placeHolder['multiple'] = isset($placeHolder['multiple'])
-				&& isset($placeHolder['multiple'][0])
-				&& strcasecmp($placeHolder['multiple'][0], 'true') === 0;
-
-			$placeHolder['optional'] = isset($placeHolder['optional'])
-				&& isset($placeHolder['optional'][0])
-				&& strcasecmp($placeHolder['optional'][0], 'true') === 0;
-		}
-		return \json_encode($templateData);
-	}
-*/
-
-
-	public function getJson() {
-		// TODO: implement, possibly on client side instead
-		return \json_encode(array());
 	}
 
 	/**

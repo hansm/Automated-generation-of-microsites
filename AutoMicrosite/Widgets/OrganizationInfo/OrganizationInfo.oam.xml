@@ -6,8 +6,12 @@
 		x:min-width="100" x:max-width="9999"
 		x:min-height="100" x:max-height="9999"
 		sandbox="true"
+		scrolling="true"
 	>
 
+	<library name="jQuery" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/" version="1.7.1">
+		<require type="javascript" src="jquery.min.js"/>
+	</library>
 	<require type="javascript" src="OrganizationInfo.js"></require>
 
 	<content><![CDATA[
@@ -15,9 +19,16 @@
 			#__WID__table {
 				width: 100%;
 				font-family: sans-serif;
+				border: 1px solid #CCCCCC;
+				border-collapse: collapse;
+			}
+			#__WID__table td {
+				border: 1px solid #CCCCCC;
+				padding: 0.5em;
 			}
 			#__WID__table .label {
 				font-weight: bold;
+				background-color: #FAFAFA;
 			}
 		</style>
 		<div style="width:100%;height:100%;overflow: auto;">
@@ -32,24 +43,12 @@
 						<td class="value" id="__WID__taxID"></td>
 					</tr>
 					<tr>
+						<td class="label">Establishment year</td>
+						<td class="value" id="__WID__establishmentYear"></td>
+					</tr>
+					<tr>
 						<td class="label">Address</td>
 						<td class="value" id="__WID__address"></td>
-					</tr>
-					<tr>
-						<td class="label">Telephone</td>
-						<td class="value" id="__WID__telephone"></td>
-					</tr>
-					<tr>
-						<td class="label">Email</td>
-						<td class="value" id="__WID__email"></td>
-					</tr>
-					<tr>
-						<td class="label">Number of employees</td>
-						<td class="value" id="__WID__employees"></td>
-					</tr>
-					<tr>
-						<td class="label">Annual turnover</td>
-						<td class="value" id="__WID__annualTurnover"></td>
 					</tr>
 					<tr>
 						<td class="label">Description of field</td>
@@ -64,33 +63,21 @@
 		<description>
 			Show organization data in a table
 		</description>
-		<property name="legalName" datatype="string" required="true" urlparam="http://schema.org/legalName" /><!-- organizationName -->
-		<property name="taxID" datatype="string" required="true" urlparam="http://schema.org/taxID" /><!-- registrationCode -->
-		<property name="address" datatype="object">
-			<property name="addressCountry" datatype="string" required="true" urlparam="http://schema.org/addressCountry" /><!-- officeAddress.countryCode -->
-			<property name="addressRegion" datatype="string" required="true" urlparam="http://schema.org/addressRegion" /><!-- officeAddress.countyName -->
-			<property name="postalCode" datatype="string" required="true" urlparam="http://schema.org/postalCode" /><!-- officeAddress.postalCode -->
-			<property name="addressLocality" datatype="string" required="true" urlparam="http://schema.org/addressLocality" /><!-- officeAddress.cityName -->
-			<property name="streetAddress" datatype="string" required="true" urlparam="http://schema.org/streetAddress" /><!-- officeAddress.streetPart -->
+		<property name="legalName" datatype="string" required="true" urlparam="http://schema.org/legalName" />
+		<property name="taxID" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/registrationCode" />
+		<property name="foundingDate" datatype="string" required="true" urlparam="http://schema.org/foundingDate" />
+		<property name="description" datatype="string" required="true" urlparam="http://schema.org/description" />
+		<property name="establishmentYear" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/establishmentYear" />
+		<property name="address" datatype="object" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/officeAddress">
+			<property name="postalCode" datatype="string" required="true" urlparam="http://schema.org/postalCode" />
+			<property name="countryCode" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/countryCode" />
+			<property name="countyName" datatype="string" required="true" urlparam="https://www.inforegister.ee/onto/business/2013/r1/countyName" />
+			<property name="cityName" datatype="string" required="true" urlparam="http://schema.org/addressLocality" />
+			<property name="street" datatype="string" required="true" urlparam="http://schema.org/streetAddress" />
 		</property>
-		<property name="telephone" datatype="string" required="true" urlparam="http://schema.org/telephone" /><!-- phoneNumber -->
-		<property name="email" datatype="string" required="true" urlparam="http://schema.org/email" /><!-- emailAddress -->
-		<property name="employees" datatype="string" required="true" urlparam="http://schema.org/employees" /><!-- numberOfEmployees.upperBound -->
-		<property name="annualTurnover" datatype="string" required="true" urlparam="http://deepweb.ut.ee/annualTurnover" /><!-- annualTurnover.upperBound -->
-		<property name="foundingDate" datatype="string" required="true" urlparam="http://schema.org/foundingDate" /><!-- registrationDate -->
-		<property name="description" datatype="string" required="true" urlparam="http://schema.org/description" /><!-- organizationDescription -->
-	</topic>
-
-	<topic name="AutoMicrosite.Table.OrganizationData2" type="array" publish="true">
-<property name="address" datatype="object">
-			<property name="addressCountry" datatype="string" required="true" urlparam="http://schema.org/elevant" /><!-- officeAddress.countryCode -->
-</property>
 	</topic>
 
 	<categories>
-		<!-- TODO: currently application does not handle situations when 2 widgets match the same placeholder
-		<category x:iri="http://schema.org/Table" />
-		-->
 		<category x:iri="http://schema.org/AboutPage" />
     </categories>
 

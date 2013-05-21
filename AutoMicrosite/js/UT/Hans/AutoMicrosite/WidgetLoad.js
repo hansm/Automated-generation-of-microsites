@@ -51,9 +51,21 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			this.data = widgetData;
 			this.placeholders = placeholders;
 
-			// Reorder widgets in priority order
+			// Reorder widgets in priority and workflow order
 			this.data.sort(function(a, b) {
-				return b.priority - a.priority;
+				var order = b.priority - a.priority;
+				if (order == 0) {
+					if (a.workflowOrder && !b.workflowOrder) {
+						return -1;
+					} else if (!a.workflowOrder && b.workflowOrder) {
+						return 1;
+					} else if (!a.workflowOrder && !b.workflowOrder) {
+						return 0;
+					} else {
+						return a.workflowOrder - b.workflowOrder;
+					}
+				}
+				return order;
 			});
 		},
 
@@ -218,22 +230,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			});
 		},
 
-		getWidgetsInPlaceholder: function(placeholder) {
-			var widgets = [];
-			for (var i = 0; i < this.visualWidgets.length; i++) {
-				if (this.visualWidgets[i].placeholder == placeholder) {
-					widgets.push(this.visualWidgets[i]);
-				}
-			}
-			return widgets;
-		},
-
-		forEach: function(array, callback) {
-			for (var i in array) {
-				callback(array[i]);
-			}
-		},
-
 		/**
 		 * First order widgets loaded
 		 */
@@ -253,24 +249,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			}
 
 			this.loadDataWidgets();
-		},
-
-		menuClick: function(widgetInfo, size) {
-		// TODO: move to Navigation.js
-			var widgetId = widgetInfo.widget;
-			var placeholderWidgets = this.getWidgetsInPlaceholder(widgetInfo.placeholder);
-			this.forEach(placeholderWidgets, function(w) {
-				// TODO: instead of w.separatePage use w.firstPage
-				if (w.id == widgetId || widgetId == null && w.separatePage == false) {
-					w.div.style.display = "block";
-					w.enabled = true;
-				} else {
-					w.div.style.display = "none";
-					w.enabled = false;
-				}
-			});
-
-			size.run();
 		},
 
 		/**

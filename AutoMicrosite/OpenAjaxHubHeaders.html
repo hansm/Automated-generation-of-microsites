@@ -22,7 +22,7 @@ oaaLoaderConfig = {
 var widgetData = {$widgetData};
 require(["UT/Hans/AutoMicrosite/Mashup", "dojo/ready"], function(Mashup, ready){
 	ready(function() {
-		var mashup = new Mashup("mashup", widgetData, {$templateData});
+		var mashup = new Mashup("mashup", widgetData);
 		mashup.start();
 	});
 });

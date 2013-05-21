@@ -53,7 +53,7 @@ class Log {
 	private function write($logText) {
 		try {
 			\file_put_contents('log/'. $this->file
-				, \date('r') . $logText ."\n\n"
+				, \date('r') . "\t" . $logText ."\n\n"
 				, FILE_APPEND);
 		} catch (Exception $e) {}
 	}

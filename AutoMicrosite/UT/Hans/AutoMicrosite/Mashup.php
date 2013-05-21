@@ -6,6 +6,7 @@ use UT\Hans\AutoMicrosite\RuleGenerator\Factory as RuleGeneratorFactory;
 use UT\Hans\AutoMicrosite\MappingsGenerator\Factory as MappingsGeneratorFactory;
 use ErrorException;
 use RuntimeException;
+use UT\Hans\AutoMicrosite\Util\Log;
 
 /**
  * Masup creation happens here
@@ -49,6 +50,7 @@ class Mashup {
 	public function process($title, array $requestWidgets) {
 		$widgets = Widget::createFromRequestWidgets($requestWidgets);
 		$hub = new Hub($title, $widgets);
+		$log = new Log('RuleEngineTime');
 
 		try {
 			$generalizationRules = \file_get_contents($this->getConf('rules', 'generalization'));
@@ -88,7 +90,11 @@ class Mashup {
 						$widgetQuery);
 
 		// Query for template
+		$startTime = microtime(true);
 		$templateId = $ruleService->getTemplate();
+		$endTime = microtime(true);
+		$log->info('getTemplate ' . ($endTime - $startTime));
+
 		foreach ($templates as $t) {
 			if ($t->getId() == $templateId) {
 				$template = $t;
@@ -102,9 +108,12 @@ class Mashup {
 		$hub->setTemplate($template);
 
 		// Query all widgets' info
+		$startTime = microtime(true);
 		foreach ($widgets as $widget) {
 			$widget->setData($ruleService->getWidgetInfo($widget->getId(), $templateId));
 		}
+		$endTime = microtime(true);
+		$log->info('getWidgetInfo ' . ($endTime - $startTime) . ' / ' .count($widgets));
 
 		// Generate widgets' message mappings
 		$mappingsGenerator = MappingsGeneratorFactory::build($this->getConf('general', 'mappings_generator'));

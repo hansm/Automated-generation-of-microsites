@@ -40,20 +40,12 @@ class Widget implements RuleGeneratorWidget {
 	public $placeholder;
 
 	/**
-	 * Width with units
+	 * Widget dimensions
 	 *
 	 * @var string
 	 */
-	public $width;
 	public $minWidth;
 	public $maxWidth;
-
-	/**
-	 * Height with units
-	 *
-	 * @var string
-	 */
-	public $height;
 	public $minHeight;
 	public $maxHeight;
 
@@ -63,6 +55,13 @@ class Widget implements RuleGeneratorWidget {
 	 * @var int
 	 */
 	public $priority;
+
+	/**
+	 * Workflow order number
+	 *
+	 * @var int
+	 */
+	public $workflowOrder;
 
 	/**
 	 * Widget requires a separate page (when multiple widgets are placed in a single placeholder)
@@ -124,10 +123,11 @@ class Widget implements RuleGeneratorWidget {
 		return $this->metadataFile;
 	}
 
-	public function __construct($fileUrl, array $properties = array()) {
+	public function __construct($fileUrl, array $properties = array(), $workflowOrder = null) {
 		$this->id = self::generateId();
 		$this->metadataFile = $fileUrl;
 		$this->properties = empty($properties) ? null : $properties;
+		$this->workflowOrder = $workflowOrder;
 
 		try {
 			$metadata = \file_get_contents($this->metadataFile);
@@ -152,6 +152,10 @@ class Widget implements RuleGeneratorWidget {
 		$this->isMenuWidget = $widget->isMenuWidget();
 		$this->separatePage = $widget->separatePage();
 		$this->loadFirst = $widget->getLoadFirst();
+		$this->maxHeight = $widget->getMaxHeight();
+		$this->maxWidth = $widget->getMaxHeight();
+		$this->minHeight = $widget->getMinHeight();
+		$this->minWidth = $widget->getMinWidth();
 	}
 
 	/**
@@ -183,8 +187,10 @@ class Widget implements RuleGeneratorWidget {
 	public static function createFromRequestWidgets(array $requestWidgets) {
 		$widgets = array();
 		foreach ($requestWidgets as $widget) {
-			$widgets[] = new Widget($widget->getUrl(), $widget->getProperties());
+			$widgets[] = new Widget($widget->getUrl(), $widget->getProperties(),
+										$widget->getFlowOrder());
 		}
+
 		return $widgets;
 	}
 

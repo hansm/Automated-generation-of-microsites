@@ -11,7 +11,7 @@ class Relation {
 	/**
 	 * Widget exists
 	 */
-	const WIDGET = 'http://deepweb.ut.ee/#widgetExists';
+	const WIDGET = 'http://deepweb.ut.ee/automicrosite/widget';
 
 	/**
 	 * Widget belongs to category
@@ -49,18 +49,18 @@ class Relation {
 	/**
 	 * Template exists
 	 */
-	const TEMPLATE = 'http://deepweb.ut.ee/#templateExists';
+	const TEMPLATE = 'http://deepweb.ut.ee/automicrosite/template';
 
 	/**
 	 * Template placeholder
 	 */
-	const PLACEHOLDER = 'http://deepweb.ut.ee/automicrosite/#placeholder';
+	const PLACEHOLDER = 'http://deepweb.ut.ee/automicrosite/placeholder';
 
 	/**
 	 * Template fits widgets relation
 	 * Widgets for all template placeholders
 	 */
-	const TEMPLATE_WIDGETS = 'http://deepweb.ut.ee/#template';
+	const TEMPLATE_WIDGETS = 'http://deepweb.ut.ee/automicrosite/templateFilled';
 
 	/**
 	 * All visual widgets have a placeholders in a template
@@ -72,12 +72,12 @@ class Relation {
 	 */
 	const WIDGET_PLACE = 'http://deepweb.ut.ee/#widgetPlace';
 
+	/**
+	 * Template dimensions
+	 */
 	const TEMPLATE_MIN_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#min-height';
-
 	const TEMPLATE_MAX_HEIGHT = 'http://deepweb.ut.ee/TemplatePlaceholder#max-height';
-
 	const TEMPLATE_MIN_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#min-width';
-
 	const TEMPLATE_MAX_WIDTH = 'http://deepweb.ut.ee/TemplatePlaceholder#max-width';
 
 	/**
@@ -94,6 +94,11 @@ class Relation {
 	 * Widget does not fit in placeholder (or vice versa)
 	 */
 	const BAD_DIMENSIONS = 'http://deepweb.ut.ee/automicrosite/#badDimensions';
+
+	/**
+	 * Template priority, when several templates match the one with the highest priority is chosen
+	 */
+	const TEMPLATE_PRIORITY = 'http://deepweb.ut.ee/automicrosite/templatePriority';
 
 	/**
 	 * Get template dimensions relation based on variable name

@@ -3,12 +3,6 @@ namespace UT\Hans\AutoMicrosite;
 
 use RuntimeException;
 use ErrorException;
-use UT\Hans\AutoMicrosite\Clients\RuleMlServiceClient; // TODO: remove
-use UT\Hans\AutoMicrosite\RuleMl\RuleMl;
-use UT\Hans\AutoMicrosite\RuleMl\OpenAjaxToRuleMl;
-use UT\Hans\AutoMicrosite\RuleMl\RuleMlQuery;
-use UT\Hans\AutoMicrosite\Template\Templates;
-use UT\Hans\AutoMicrosite\Template\MicrodataTemplate;
 
 /**
  * Hub creation class
@@ -104,8 +98,8 @@ class Hub {
 			throw new RuntimeException('Could not load OpenAjax hub headers.');
 		}
 		$this->template->setTitle($this->getTitle());
-		$openAjaxHubHeaders = \str_replace('{$widgetData}', $this->widgetsJson(), $openAjaxHubHeaders);
-		$openAjaxHubHeaders = \str_replace('{$templateData}', $this->template->getJson(), $openAjaxHubHeaders);
+		$openAjaxHubHeaders = \str_replace('{$widgetData}', $this->widgetsJson(),
+												$openAjaxHubHeaders);
 		$this->template->appendToHead($openAjaxHubHeaders);
 
 		return $this->template->toHtml();

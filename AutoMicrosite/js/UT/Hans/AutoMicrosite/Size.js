@@ -53,6 +53,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 			return widgets;
 		},
 
+		/**
+		 * Run a callback on each element of an array/object
+		 */
 		forEach: function(array, callback) {
 			for (var i in array) {
 				callback(array[i]);
@@ -82,36 +85,114 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 				width: dimensions.w,
 				height: dimensions.h
 			};
-			console.log(placeholderDimensions);
-
 			this.forEach(widgets, function(w) {
 				domStyle.set(w.div, {
 					display: "block"
 				});
 			});
 
+			// Distribute widgets between lines
+			var perLine = 1;
+			var widgetDimensions = [];
+			if (widgets.length == 2 || widgets.length == 4) {
+				perLine = 2;
+			} else {
+				perLine = 3;
+			}
+			var j = 0, minWidth = 0, maxWidth = 0;
+			var line = [];
+			var lines = [];
+			var pushed;
 			for (var i = 0; i < widgets.length; i++) {
-				this.setWidgetDimensions(widgets[i], placeholderDimensions);
+				j++;
+				pushed = false;
+
+				minWidth += widgets[i].minWidth;
+				maxWidth += widgets[i].maxWidth;
+
+				if (minWidth <= placeholderDimensions.width || line.length == 0) {
+					line.push(widgets[i]);
+					pushed = true;
+				}
+
+				if (j >= perLine && maxWidth >= placeholderDimensions.width
+						|| minWidth >= placeholderDimensions.width) {
+					lines.push(line);
+					j = 0;
+					minWidth = 0;
+					maxWidth = 0;
+					line = [];
+					if (!pushed) {
+						i--;
+					}
+				}
+			}
+			if (line.length > 0) {
+				lines.push(line);
+			}
+
+			// Distribute width
+			var widgetWidth, availableWidth, multipleWidgets, lineNotDone, widget, widgetsRemaining;
+			for (var i = 0; i < lines.length; i++) {
+				availableWidth = placeholderDimensions.width;
+				multipleWidgets = lines[i].length > 1;
+
+				do {
+					widgetsRemaining = this.countNotNull(lines[i]);
+					if (widgetsRemaining == 0) {
+						break;
+					}
+					widgetWidth = parseInt(availableWidth / widgetsRemaining); // Distribute equally
+					lineNotDone = false;
+
+					for (var j = 0; j < lines[i].length; j++) {
+						widget = lines[i][j];
+						if (!widget) continue; // Already correct size
+
+						// TODO: use min-height and max-heigth value
+						widget.height = placeholderDimensions.height / lines.length;
+
+						// Widget has special requirements
+						if (widgetWidth < widget.minWidth || widgetWidth > widget.maxWidth) {
+							widget.width = widgetWidth < widget.minWidth ? widget.minWidth : widget.maxWidth;
+							availableWidth -= widget.width;
+							this.setWidgetDimensions(widget, multipleWidgets);
+							lines[i][j] = null;
+							lineNotDone = true;
+							break;
+						}
+
+						widget.width = widgetWidth;
+						this.setWidgetDimensions(widget, multipleWidgets);
+					}
+				} while (lineNotDone);
 			}
 		},
 
-		setWidgetDimensions: function(widget, dimensions) {
-			var placeholderWidgets = this.getWidgetsInPlaceholder(widget.placeholder, true);
-
-			var widgetDimensions = {
-				width: dimensions.width,
-				height: dimensions.height
-			};
-
-			if (placeholderWidgets.length > 1) {
+		/**
+		 * Set widget dimensions to desired value
+		 */
+		setWidgetDimensions: function(widget, multipleWidgets) {
+			if (multipleWidgets) {
 				widget.div.style.cssFloat = "left";
-				widgetDimensions.width = widgetDimensions.width / placeholderWidgets.length;
 			}
+			widget.openAjax.OpenAjax.adjustDimensions({
+				width: widget.width,
+				height: widget.height
+			});
+		},
 
-			// TODO: consider actual and allowed dimensions when fitting
-
-			// TODO: shouldn't it be 'requestSizeChange'?
-			widget.openAjax.OpenAjax.adjustDimensions(widgetDimensions);
+		/**
+		 * Count not NULL values in an array
+		 */
+		countNotNull: function(a) {
+			var c = 0;
+			for (var i = 0; i < a.length; i++) {
+				if (a[i]) {
+					c++;
+				}
+			}
+			return c;
 		}
 
 	});

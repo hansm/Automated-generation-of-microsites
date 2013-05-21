@@ -18,14 +18,16 @@ class RuleMlWidget implements IWidget {
 	 *
 	 * @var string[]
 	 */
-	private $intVars = array('priority', 'line');
+	private $intVars = array('priority', 'minWidth', 'maxWidth', 'minHeight',
+								'maxHeight');
 
 	/**
 	 * Response variables converted to boolean
 	 *
 	 * @var string[]
 	 */
-	private $booleanVars = array('isDataWidget', 'separatePage', 'isMenuWidget', 'loadFirst');
+	private $booleanVars = array('isDataWidget', 'separatePage', 'isMenuWidget',
+									'loadFirst');
 
 	public function __construct($response) {
 		$variables = RuleMlService::getResponseVarNodes($response);
@@ -80,19 +82,19 @@ class RuleMlWidget implements IWidget {
 	}
 
 	public function getMaxHeight() {
-
+		return $this->getValue('maxHeight');
 	}
 
 	public function getMaxWidth() {
-
+		return $this->getValue('maxWidth');
 	}
 
 	public function getMinHeight() {
-
+		return $this->getValue('minHeight');
 	}
 
 	public function getMinWidth() {
-
+		return $this->getValue('minWidth');
 	}
 
 	public function getLoadFirst() {

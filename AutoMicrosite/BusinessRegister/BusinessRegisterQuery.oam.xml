@@ -9,7 +9,7 @@
 		<require type="javascript" src="jquery.min.js"/>
 	</library>
 
-	<require type="javascript" src="BusinessRegisterQuery.js?v=8"></require>
+	<require type="javascript" src="BusinessRegisterQuery.js"></require>
 
 	<!-- Empty content element is required by the widget loader, somehow it does not work without -->
 	<content src=""><![CDATA[ ]]></content>
@@ -20,13 +20,17 @@
 		</description>
 		<example><![CDATA[
 			{"name": "EVETERM OÜ",
-				"code": 11375683}
+				"code": 11375683,
+				"registrationCountryCode": "EE",
+				"isLegalEntity": "true"}
 		]]></example>
-		<property name="name" datatype="string" urlparam="http://schema.org/Organization#legalName" />
-		<property name="code" datatype="number" urlparam="http://schema.org/Organization#taxID" />
+		<property name="name" datatype="string" urlparam="http://schema.org/legalName" />
+		<property name="code" datatype="number" urlparam="https://www.inforegister.ee/onto/business/2013/r1/registrationCode" />
+		<property name="registrationCountryCode" datatype="string" urlparam="https://www.inforegister.ee/onto/business/2013/r1/registrationCountryCode" />
+		<property name="isLegalEntity" datatype="string" urlparam="https://www.inforegister.ee/onto/business/2013/r1/isLegalEntity" />
 	</topic>
 
-	<property name="name" datatype="string" urlparam="http://schema.org/Organization#name" required="true" defaultValue="EVETERM OÜ"/>
+	<property name="name" datatype="string" urlparam="http://schema.org/legalName" required="true" defaultValue="EVETERM OÜ"/>
 
 	<categories>
 		<category x:iri="http://deepweb.ut.ee/Datasets" />

@@ -53,7 +53,6 @@ if ( isset( $_GET['oawu'] ) ) {
 
     // GET request
     if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-		//var_dump('GET');
         $ct = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
         header( 'Content-Type: ' . $ct );
         $contents = @file_get_contents( $url );
@@ -65,8 +64,6 @@ if ( isset( $_GET['oawu'] ) ) {
 
     // POST request
     else if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-		//var_dump('POST');
-		//var_dump($_SERVER['CONTENT_TYPE']);
         $ct = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'application/x-www-form-urlencoded';
         $rawdata = file_get_contents('php://input');
         $headers = 'Content-Type: ' . $ct . "\r\n". 'Content-Length: ' . strlen( $rawdata ) . "\r\n";
@@ -74,19 +71,6 @@ if ( isset( $_GET['oawu'] ) ) {
                          'header'	=>	$headers,
                          'content'	=>	$rawdata);
         $context = stream_context_create(array('http'	=>	$options));
-/*
-		$fp = fopen($url, 'rb', false, $context);
-		if (!$fp) {
-			echo 'Could not connect to host.';
-			exit();
-		}
-
-		echo @stream_get_contents($fp);
-
-		fclose($fp);
-   
-		var_dump($rawdata);
-		var_dump($url);*/
         echo file_get_contents( $url, false, $context );
     }
 }

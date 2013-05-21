@@ -24,11 +24,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		widgetData: [],
 
 		/**
-		 * Data about the template received from server-side
-		 */
-		templateData: [],
-
-		/**
 		 * Mashup DOM element
 		 */
 		divMashup: null,
@@ -79,10 +74,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 *
 		 * @param string divMashupId ID of element where hub should be attached
 		 */
-		constructor: function(divMashupId, widgetData, templateData) {
+		constructor: function(divMashupId, widgetData) {
 			this.divMashup = dom.byId(divMashupId);
 			this.widgetData = widgetData;
-			this.templateData = templateData;
 
 			// Create hub with loader object
 			this.openAjaxLoader = new OpenAjax.widget.Loader({ManagedHub: {
@@ -140,8 +134,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		},
 
 		onPublish: function(topic, data, publishContainer, subscribeContainer) {
-			console.log("onPublish " + topic);
-			console.log(data);
 			return true;
 		},
 
@@ -157,7 +149,6 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		* Security alert from OpenAjax hub
 		*/
 		onSecurityAlert: function(source, alertType) {
-			// TODO: do something about it
 			this.handleError("Security alert: "+ source +" "+ alertType);
 		},
 
@@ -165,9 +156,9 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 * Actions to perform once visual widgets have finished loading
 		 */
 		visualWidgetsLoaded: function(visualWidgets, dataWidgets) {
+			this.size = new SizeHandler(visualWidgets, this.placeholders);
 			this.navigation = new Navigation(visualWidgets, this.size);
 			this.navigation.build();
-			this.size = new SizeHandler(visualWidgets, this.placeholders);
 			this.size.run();
 
 			// Re-calculate sizes when page is resized
@@ -188,8 +179,7 @@ define(["dojo/_base/declare", "dojo/dom", "dojo/dom-construct", "dojo/dom-style"
 		 */
 		setUpMenuManager: function() {
 			this.hub.subscribe("AutoMicrosite.MenuClick", function(topic, data) {
-				console.log("AutoMicrosite.MenuClick " + data.widget)
-				this.loader.menuClick(data, this.size);
+				this.navigation.clickMenu(data, this.size);
 			}, this);
 		}
 

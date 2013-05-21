@@ -317,7 +317,6 @@
 		</Implies>
 
 		<!-- Combine template response -->
-		<!-- TODO: consider all possibilities -->
 		<Implies>
 			<if>
 				<And>

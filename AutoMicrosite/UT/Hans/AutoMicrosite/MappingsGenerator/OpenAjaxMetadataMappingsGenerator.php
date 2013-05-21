@@ -114,6 +114,10 @@ class OpenAjaxMetadataMappingsGenerator implements IMappingsGenerator {
 			'type'	=>	$type
 		);
 
+		if ($type == 'string') {
+			$jsonSchema['required'] = true;
+		}
+
 		if ($type == 'object') {
 			$jsonSchema['properties'] = array();
 			for ($i = 0; $i < $property->childNodes->length; $i++) {

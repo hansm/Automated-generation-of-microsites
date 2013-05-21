@@ -35,6 +35,10 @@ class RequestWidget implements IRequestWidget {
 		return $this->url;
 	}
 
+	public function getFlowOrder() {
+		return $this->flowOrder;
+	}
+
 	/**
 	 * @param string $url
 	 * @param array $properties
@@ -54,10 +58,6 @@ class RequestWidget implements IRequestWidget {
 	 */
 	public function addProperty($name, $value) {
 		$this->properties[$name] = $value;
-	}
-
-	public function getFlowOrder() {
-		return $this->flowOrder;
 	}
 
 }

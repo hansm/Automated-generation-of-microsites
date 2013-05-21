@@ -8,7 +8,7 @@ use Exception;
  * JSON request handler
  * {
  *		"title": "My Mashup",
- *		"widgets": [
+ *		"widget": [
  *			{
  *				"url": "http://deepweb.ut.ee/automicrosite/Widgets/Table/Table.oam.xml",
  *				"properties": {
@@ -32,14 +32,14 @@ class JSON extends AbstractRequest {
 
 		$inputObject = \json_decode($inputData);
 		if (!$inputObject || empty($inputObject->title)
-				|| empty($inputObject->widgets) || !\is_array($inputObject->widgets)) {
+				|| empty($inputObject->widget) || !\is_array($inputObject->widget)) {
 			throw new RuntimeException('Invalid input data.');
 		}
 
 		$this->setTitle($inputObject->title);
 
 		$widgets = array();
-		foreach ($inputObject->widgets as $widget) {
+		foreach ($inputObject->widget as $widget) {
 			if (empty($widget->url)) {
 				throw new RuntimeException('Invalid widget given.');
 			}

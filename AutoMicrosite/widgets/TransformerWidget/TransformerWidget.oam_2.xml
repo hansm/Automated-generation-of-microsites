@@ -2,15 +2,12 @@
 <widget name="TransformerWidget" id="AutoMicrosite/TransformerWidget"
 		spec="1.0" width="0" height="0"
 		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
-		xmlns="http://openajax.org/metadata"
-		sandbox="true"
-		jsClass="AutoMicrosite.Widget.Transformer"
-	>
+		xmlns="http://openajax.org/metadata">
 
-	<content x:iri="http://deepweb.ut.ee/proxywidget/TransformerWidget.html" />
+	<content src="http://automicrosite.maesalu.com:8833/TransformerWidget.html"><![CDATA[ ]]></content>
 
 	<categories>
-		<category x:iri="http://deepweb.ut.ee/Transformer" />
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
     </categories>
 
 </widget>

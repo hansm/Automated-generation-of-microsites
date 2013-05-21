@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget name="KeyWidget" id="AutoMicrosite/KeyWidget"
+		spec="1.0" width="0" height="0" jsClass="AutoMicrosite.Widget.Key"
+		xmlns:x="http://deepweb.ut.ee/automicrosite/OpenAjaxMetadataExtension"
+		xmlns="http://openajax.org/metadata"
+		sandbox="true">
+
+	<require type="javascript" src="Key.js"></require>
+
+	<!-- Empty content element is required by the widget loader, somewhy it does not work without -->
+	<content src=""><![CDATA[ ]]></content>
+
+	<topic name="AutoMicrosite.SoapKey" type="object" publish="true">
+		<description>
+			Return company code and name in response to a query.
+		</description>
+		<example><![CDATA[
+			{"key": "123412341234"}
+		]]></example>
+		<property name="key" datatype="string" urlparam="https://www.inforegister.ee/onto/business/2013/r1/AccessKey" />
+	</topic>
+	<topic name="AutoMicrosite.BusinessRegister.QueryResponse" type="object" subscribe="true" />
+
+	<property name="key" datatype="string" urlparam="https://www.inforegister.ee/onto/business/2013/r1/registrationCode" required="true" />
+
+	<categories>
+		<category x:iri="http://deepweb.ut.ee/Datasets" />
+    </categories>
+</widget>
